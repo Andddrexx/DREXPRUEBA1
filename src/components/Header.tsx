@@ -1,14 +1,48 @@
-import { ShoppingCart, Leaf, MessageCircle } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { ShoppingCart, MessageCircle, ChevronDown } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 interface HeaderProps {
   onNavigate: (page: string) => void;
   currentPage: string;
+  onScrollToSection?: (section: string) => void;
 }
 
-export const Header = ({ onNavigate, currentPage }: HeaderProps) => {
+export const Header = ({ onNavigate, currentPage, onScrollToSection }: HeaderProps) => {
   const { getTotalItems } = useCart();
   const totalItems = getTotalItems();
+  const [showCatalogMenu, setShowCatalogMenu] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setShowCatalogMenu(false);
+      }
+    };
+
+    if (showCatalogMenu) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showCatalogMenu]);
+
+  const handleCatalogClick = (section?: string) => {
+    if (currentPage !== 'home') {
+      onNavigate('home');
+      setTimeout(() => {
+        if (section && onScrollToSection) {
+          onScrollToSection(section);
+        }
+      }, 100);
+    } else if (section && onScrollToSection) {
+      onScrollToSection(section);
+    }
+    setShowCatalogMenu(false);
+  };
 
   return (
     <header className="bg-green-800 text-white shadow-lg sticky top-0 z-40">
@@ -25,14 +59,40 @@ export const Header = ({ onNavigate, currentPage }: HeaderProps) => {
           </div>
 
           <nav className="hidden md:flex items-center gap-6">
-            <button
-              onClick={() => onNavigate('home')}
-              className={`hover:text-green-200 transition ${
-                currentPage === 'home' ? 'text-green-200 font-semibold' : ''
-              }`}
-            >
-              Catálogo
-            </button>
+            <div className="relative" ref={menuRef}>
+              <button
+                onClick={() => setShowCatalogMenu(!showCatalogMenu)}
+                className={`flex items-center gap-1 hover:text-green-200 transition ${
+                  currentPage === 'home' ? 'text-green-200 font-semibold' : ''
+                }`}
+              >
+                Catálogo
+                <ChevronDown className={`w-4 h-4 transition-transform ${showCatalogMenu ? 'rotate-180' : ''}`} />
+              </button>
+
+              {showCatalogMenu && (
+                <div className="absolute top-full right-0 mt-2 bg-white rounded-lg shadow-lg overflow-hidden min-w-[200px]">
+                  <button
+                    onClick={() => handleCatalogClick('vapers')}
+                    className="block w-full text-left px-4 py-3 text-gray-700 hover:bg-green-50 transition"
+                  >
+                    Vapers
+                  </button>
+                  <button
+                    onClick={() => handleCatalogClick('mecheros')}
+                    className="block w-full text-left px-4 py-3 text-gray-700 hover:bg-green-50 transition"
+                  >
+                    Mecheros
+                  </button>
+                  <button
+                    onClick={() => handleCatalogClick('accesorios')}
+                    className="block w-full text-left px-4 py-3 text-gray-700 hover:bg-green-50 transition"
+                  >
+                    Estuches/Accesorios
+                  </button>
+                </div>
+              )}
+            </div>
             <button
               onClick={() => onNavigate('contact')}
               className={`hover:text-green-200 transition ${

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { Trash2, Plus, Minus, ShoppingBag, MessageCircle } from 'lucide-react';
-import { supabase } from '../lib/supabase';
 
 export const Cart = () => {
   const { cart, removeFromCart, updateQuantity, getTotalPrice, clearCart } = useCart();
@@ -22,21 +21,6 @@ export const Cart = () => {
     setLoading(true);
 
     try {
-      const orderData = {
-        customer_name: formData.name,
-        customer_email: formData.email,
-        customer_phone: formData.phone,
-        items: cart,
-        total: totalPrice,
-        status: 'pending',
-        notes: formData.notes,
-      };
-
-      if (supabase) {
-        const { error } = await supabase.from('orders').insert([orderData]);
-        if (error) throw error;
-      }
-
       const whatsappMessage = encodeURIComponent(
         `🛒 NUEVO PEDIDO\n\n` +
         `👤 Cliente: ${formData.name}\n` +

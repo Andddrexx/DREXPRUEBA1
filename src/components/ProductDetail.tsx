@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Product, Promotion } from '../types';
 import { X, Minus, Plus, ShoppingCart, MessageCircle, TrendingDown } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { supabase } from '../lib/supabase';
+import { promotions as promotionsData } from '../data/products';
 
 interface ProductDetailProps {
   product: Product;
@@ -11,32 +11,14 @@ interface ProductDetailProps {
 
 export const ProductDetail = ({ product, onClose }: ProductDetailProps) => {
   const [quantity, setQuantity] = useState(1);
-  const [promotions, setPromotions] = useState<Promotion[]>([]);
+  const [promotions] = useState<Promotion[]>(promotionsData);
   const [totalPrice, setTotalPrice] = useState(product.price);
   const [savings, setSavings] = useState(0);
   const { addToCart } = useCart();
 
   useEffect(() => {
-    loadPromotions();
-  }, []);
-
-  useEffect(() => {
     calculatePrice();
-  }, [quantity]);
-
-  const loadPromotions = async () => {
-    try {
-      if (!supabase) return;
-      const { data, error } = await supabase
-        .from('promotions')
-        .select('*')
-        .order('quantity', { ascending: true });
-      if (error) throw error;
-      setPromotions(data || []);
-    } catch (error) {
-      console.error('Error loading promotions:', error);
-    }
-  };
+  }, [quantity, promotions]);
 
   const calculatePrice = () => {
     let finalPrice = product.price * quantity;

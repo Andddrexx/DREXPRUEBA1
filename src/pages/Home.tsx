@@ -3,20 +3,15 @@ import { Product } from '../types';
 import { ProductCard } from '../components/ProductCard';
 import { ProductDetail } from '../components/ProductDetail';
 import { IntensityInfo } from '../components/IntensityInfo';
-import { supabase } from '../lib/supabase';
+import { products as productsData } from '../data/products';
 import { useCart } from '../context/CartContext';
-import { MessageCircle, Loader } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 
 export const Home = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products] = useState<Product[]>(productsData);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState('vapers');
   const { addToCart } = useCart();
-
-  useEffect(() => {
-    loadProducts();
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,29 +33,6 @@ export const Home = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const loadProducts = async () => {
-    try {
-      if (!supabase) {
-        console.warn('Supabase not configured');
-        setProducts([]);
-        return;
-      }
-
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .order('featured', { ascending: false })
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      setProducts(data || []);
-    } catch (error) {
-      console.error('Error loading products:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleAddToCart = (product: Product) => {
     addToCart(product, 1);
@@ -142,72 +114,64 @@ export const Home = () => {
       </nav>
 
       <div className="container mx-auto px-4 py-12">
-        {loading ? (
-          <div className="flex justify-center items-center py-20">
-            <Loader className="w-12 h-12 text-green-600 animate-spin" />
+        <section id="vapers" className="scroll-mt-32 mb-16">
+          <IntensityInfo />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {vapers.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                onViewDetails={setSelectedProduct}
+                onAddToCart={handleAddToCart}
+              />
+            ))}
           </div>
-        ) : (
-          <>
-            <section id="vapers" className="scroll-mt-32 mb-16">
-              <IntensityInfo />
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {vapers.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    onViewDetails={setSelectedProduct}
-                    onAddToCart={handleAddToCart}
-                  />
-                ))}
-              </div>
-              {vapers.length === 0 && (
-                <div className="text-center py-20">
-                  <p className="text-gray-500 text-lg">No hay vapers disponibles en este momento.</p>
-                </div>
-              )}
-            </section>
+          {vapers.length === 0 && (
+            <div className="text-center py-20">
+              <p className="text-gray-500 text-lg">No hay vapers disponibles en este momento.</p>
+            </div>
+          )}
+        </section>
 
-            <section id="mecheros" className="scroll-mt-32 mb-16">
-              <h2 className="text-3xl font-bold text-gray-800 mb-2">Mecheros</h2>
-              <p className="text-gray-600 mb-8">Encendido confiable con diseños únicos</p>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {mecheros.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    onViewDetails={setSelectedProduct}
-                    onAddToCart={handleAddToCart}
-                  />
-                ))}
-              </div>
-              {mecheros.length === 0 && (
-                <div className="text-center py-20">
-                  <p className="text-gray-500 text-lg">No hay mecheros disponibles en este momento.</p>
-                </div>
-              )}
-            </section>
+        <section id="mecheros" className="scroll-mt-32 mb-16">
+          <h2 className="text-3xl font-bold text-gray-800 mb-2">Mecheros</h2>
+          <p className="text-gray-600 mb-8">Encendido confiable con diseños únicos</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {mecheros.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                onViewDetails={setSelectedProduct}
+                onAddToCart={handleAddToCart}
+              />
+            ))}
+          </div>
+          {mecheros.length === 0 && (
+            <div className="text-center py-20">
+              <p className="text-gray-500 text-lg">No hay mecheros disponibles en este momento.</p>
+            </div>
+          )}
+        </section>
 
-            <section id="accesorios" className="scroll-mt-32 mb-16">
-              <h2 className="text-3xl font-bold text-gray-800 mb-2">Estuches y Accesorios</h2>
-              <p className="text-gray-600 mb-8">Complementos premium para proteger y transportar</p>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {accesorios.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    onViewDetails={setSelectedProduct}
-                    onAddToCart={handleAddToCart}
-                  />
-                ))}
-              </div>
-              {accesorios.length === 0 && (
-                <div className="text-center py-20">
-                  <p className="text-gray-500 text-lg">No hay accesorios disponibles en este momento.</p>
-                </div>
-              )}
-            </section>
-          </>
-        )}
+        <section id="accesorios" className="scroll-mt-32 mb-16">
+          <h2 className="text-3xl font-bold text-gray-800 mb-2">Estuches y Accesorios</h2>
+          <p className="text-gray-600 mb-8">Complementos premium para proteger y transportar</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {accesorios.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                onViewDetails={setSelectedProduct}
+                onAddToCart={handleAddToCart}
+              />
+            ))}
+          </div>
+          {accesorios.length === 0 && (
+            <div className="text-center py-20">
+              <p className="text-gray-500 text-lg">No hay accesorios disponibles en este momento.</p>
+            </div>
+          )}
+        </section>
       </div>
 
       {selectedProduct && (
