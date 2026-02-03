@@ -43,7 +43,7 @@ export const ProductDetail = ({ product, onClose }: ProductDetailProps) => {
   };
 
   const whatsappMessage = encodeURIComponent(
-    `Hola 👋\nEstoy interesado en:\n1️⃣ Producto: ${product.name}\n2️⃣ Precio: ${product.price}€\n3️⃣ Confirmo que soy mayor de 18 años\n\n¿Puedes darme más información?`
+    `Hola \nEstoy interesado en:\n Producto: ${product.name}\n Precio: ${product.price}€\n Confirmo que soy mayor de 18 años\n\n¿Puedes darme más información?`
   );
 
   return (

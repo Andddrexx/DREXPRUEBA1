@@ -38,7 +38,6 @@ export const Footer = () => {
             <ul className="space-y-2 text-sm text-gray-400">
               <li>WhatsApp: +34 681 872 420</li>
               <li>Email: cbdrexstore@gmail.com</li>
-              <li>Horario: L-S 10:00 - 20:00</li>
             </ul>
           </div>
         </div>
