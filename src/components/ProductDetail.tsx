@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Product, Promotion } from '../types';
-import { X, Minus, Plus, ShoppingCart, MessageCircle, AlertCircle, TrendingDown } from 'lucide-react';
+import { X, Minus, Plus, ShoppingCart, MessageCircle, TrendingDown } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { supabase } from '../lib/supabase';
 
@@ -113,13 +113,6 @@ export const ProductDetail = ({ product, onClose }: ProductDetailProps) => {
                     {product.stock > 0 ? `${product.stock} unidades disponibles` : 'Sin stock'}
                   </p>
                 </div>
-              </div>
-
-              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 flex gap-3">
-                <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
-                <p className="text-sm text-amber-800">
-                  Producto exclusivo para mayores de 18 años. Cannabis legal en España. Entrega en mano con verificación de edad.
-                </p>
               </div>
 
               <div className="border-t pt-6">
