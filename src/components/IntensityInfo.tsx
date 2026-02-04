@@ -6,15 +6,20 @@ export const IntensityInfo = () => {
 
   return (
     <>
-      <div className="flex items-center gap-2 mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">Nuestros Vapers</h2>
-        <button
-          onClick={() => setShowModal(true)}
-          className="inline-flex items-center justify-center w-6 h-6 rounded-full border-2 border-gray-400 text-gray-600 hover:border-blue-500 hover:text-blue-500 transition"
-          title="Información sobre intensidad"
-        >
-          <Info size={16} />
-        </button>
+      <div className="mb-6">
+        <div className="flex items-center gap-3 flex-wrap">
+          <h2 className="text-3xl font-bold text-gray-800">
+            Nuestros Vapers con máxima{' '}
+            <span className="text-red-600">Intensidad</span>
+          </h2>
+          <button
+            onClick={() => setShowModal(true)}
+            className="inline-flex items-center justify-center w-7 h-7 rounded-full border-2 border-red-400 text-red-600 hover:border-red-600 hover:text-red-700 transition hover:bg-red-50"
+            title="Información sobre intensidad"
+          >
+            <Info size={18} />
+          </button>
+        </div>
       </div>
 
       {showModal && (

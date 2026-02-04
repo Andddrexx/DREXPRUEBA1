@@ -1,10 +1,17 @@
 export const Footer = () => {
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <footer className="bg-gray-900 text-white mt-auto">
       <div className="container mx-auto px-4 py-8">
         <div className="grid md:grid-cols-3 gap-8 mb-8">
           <div>
-            <div className="bg-white px-3 py-1 rounded inline-block mb-4">
+            <div
+              className="bg-white px-3 py-1 rounded inline-block mb-4 cursor-pointer hover:bg-green-50 transition"
+              onClick={scrollToTop}
+            >
               <span className="font-bold text-xl text-black">CBDREX</span>
             </div>
             <p className="text-gray-400 text-sm">

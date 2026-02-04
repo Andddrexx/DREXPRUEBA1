@@ -3,11 +3,10 @@ import { useCart } from '../context/CartContext';
 import { Trash2, Plus, Minus, ShoppingBag, MessageCircle } from 'lucide-react';
 
 export const Cart = () => {
-  const { cart, removeFromCart, updateQuantity, getTotalPrice, clearCart } = useCart();
+  const { cart, removeFromCart, updateQuantity, getTotalPrice, getDiscount, getFinalPrice, clearCart } = useCart();
   const [showCheckout, setShowCheckout] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
-    email: '',
     phone: '',
     notes: '',
   });
@@ -15,6 +14,8 @@ export const Cart = () => {
   const [orderSuccess, setOrderSuccess] = useState(false);
 
   const totalPrice = getTotalPrice();
+  const discount = getDiscount();
+  const finalPrice = getFinalPrice();
 
   const handleSubmitOrder = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,11 +25,12 @@ export const Cart = () => {
       const whatsappMessage = encodeURIComponent(
         `🛒 NUEVO PEDIDO\n\n` +
         `👤 Cliente: ${formData.name}\n` +
-        `📧 Email: ${formData.email}\n` +
         `📱 Teléfono: ${formData.phone}\n\n` +
         `📦 PRODUCTOS:\n` +
         cart.map(item => `• ${item.product.name} x${item.quantity} - ${(item.product.price * item.quantity).toFixed(2)}€`).join('\n') +
-        `\n\n💰 TOTAL: ${totalPrice.toFixed(2)}€\n\n` +
+        `\n\n💰 SUBTOTAL: ${totalPrice.toFixed(2)}€` +
+        (discount > 0 ? `\n💝 DESCUENTO: -${discount.toFixed(2)}€\n💰 TOTAL: ${finalPrice.toFixed(2)}€` : `\n💰 TOTAL: ${totalPrice.toFixed(2)}€`) +
+        `\n\n` +
         (formData.notes ? `📝 Notas: ${formData.notes}\n\n` : '') +
         `✅ Confirmo que soy mayor de 18 años y acepto las condiciones de entrega en mano.`
       );
@@ -37,7 +39,7 @@ export const Cart = () => {
 
       setOrderSuccess(true);
       clearCart();
-      setFormData({ name: '', email: '', phone: '', notes: '' });
+      setFormData({ name: '', phone: '', notes: '' });
 
       setTimeout(() => {
         setOrderSuccess(false);
@@ -100,9 +102,19 @@ export const Cart = () => {
                   </span>
                 </div>
               ))}
+              <div className="flex justify-between py-2 text-gray-700">
+                <span>Subtotal</span>
+                <span>{totalPrice.toFixed(2)}€</span>
+              </div>
+              {discount > 0 && (
+                <div className="flex justify-between py-2 border-b text-green-700 font-semibold">
+                  <span>Descuento ({cart.reduce((total, item) => total + item.quantity, 0)} items)</span>
+                  <span>-{discount.toFixed(2)}€</span>
+                </div>
+              )}
               <div className="flex justify-between py-4 font-bold text-lg">
                 <span>Total</span>
-                <span className="text-green-700">{totalPrice.toFixed(2)}€</span>
+                <span className="text-green-700">{finalPrice.toFixed(2)}€</span>
               </div>
             </div>
 
@@ -124,27 +136,19 @@ export const Cart = () => {
 
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Email *
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Teléfono *
                   </label>
                   <input
                     type="tel"
                     required
+                    inputMode="numeric"
                     value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    onChange={(e) => {
+                      const value = e.target.value.replace(/[^\d]/g, '');
+                      setFormData({ ...formData, phone: value });
+                    }}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    placeholder="Ej: 681872420"
                   />
                 </div>
 
@@ -258,9 +262,21 @@ export const Cart = () => {
           </div>
 
           <div className="bg-white rounded-lg shadow-md p-6">
+            {discount > 0 && (
+              <div className="space-y-2 mb-6 pb-6 border-b">
+                <div className="flex justify-between text-gray-700">
+                  <span>Subtotal</span>
+                  <span>{totalPrice.toFixed(2)}€</span>
+                </div>
+                <div className="flex justify-between text-green-700 font-semibold">
+                  <span>Descuento (3+ items)</span>
+                  <span>-{discount.toFixed(2)}€</span>
+                </div>
+              </div>
+            )}
             <div className="flex justify-between items-center mb-6">
               <span className="text-xl font-bold text-gray-800">Total</span>
-              <span className="text-2xl font-bold text-green-700">{totalPrice.toFixed(2)}€</span>
+              <span className="text-2xl font-bold text-green-700">{finalPrice.toFixed(2)}€</span>
             </div>
 
             <button

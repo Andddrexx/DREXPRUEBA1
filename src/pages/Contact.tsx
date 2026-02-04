@@ -1,6 +1,9 @@
-import { MessageCircle, Mail, Phone, MapPin } from 'lucide-react';
+import { useState } from 'react';
+import { MessageCircle, Mail, Phone, MapPin, X } from 'lucide-react';
 
 export const Contact = () => {
+  const [showChatInfo, setShowChatInfo] = useState(false);
+
   const whatsappMessage = encodeURIComponent(
     'Hola 👋\nGracias por contactar con CBDrex.\nEste servicio es exclusivo para mayores de 18 años y productos de cannabis legal (CBD / cáñamo).\nIndica:\n1️⃣ Producto que te interesa\n2️⃣ Cantidad\n3️⃣ Confirmación de que eres mayor de edad\nTe responderemos lo antes posible.'
   );
@@ -104,16 +107,69 @@ export const Contact = () => {
             <p className="mb-6">
               Nuestro equipo está disponible para resolver todas tus preguntas sobre nuestros productos.
             </p>
-            <a
-              href={`https://wa.me/34681872420?text=${whatsappMessage}`}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={() => setShowChatInfo(true)}
               className="inline-flex items-center gap-2 bg-white text-green-700 px-8 py-3 rounded-lg font-semibold hover:bg-green-50 transition"
             >
               <MessageCircle className="w-5 h-5" />
               Chatea con nosotros
-            </a>
+            </button>
           </div>
+
+          {showChatInfo && (
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+              <div className="bg-white rounded-lg shadow-lg max-w-md w-full">
+                <div className="flex justify-between items-center p-6 border-b">
+                  <h3 className="text-lg font-bold text-gray-800">Información Importante</h3>
+                  <button
+                    onClick={() => setShowChatInfo(false)}
+                    className="text-gray-500 hover:text-gray-700 transition"
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+
+                <div className="p-6 space-y-4">
+                  <p className="text-gray-700 font-semibold">
+                    Hola, gracias por contactar con CBDrex.
+                  </p>
+                  <p className="text-gray-700">
+                    Este servicio es <strong>exclusivo para mayores de 18 años</strong> y para productos de cannabis legal (CBD / cáñamo).
+                  </p>
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <p className="text-sm font-semibold text-blue-900 mb-2">Por favor, indica:</p>
+                    <ul className="text-sm text-blue-900 space-y-1">
+                      <li>1. Producto que te interesa</li>
+                      <li>2. Cantidad</li>
+                      <li>3. Confirmación de que eres mayor de 18 años</li>
+                    </ul>
+                  </div>
+                  <p className="text-gray-600 text-sm italic">
+                    Te responderemos lo antes posible.
+                  </p>
+                </div>
+
+                <div className="flex gap-3 p-6 border-t">
+                  <button
+                    onClick={() => setShowChatInfo(false)}
+                    className="flex-1 border-2 border-gray-300 text-gray-700 py-2 px-4 rounded-lg font-semibold hover:bg-gray-50 transition"
+                  >
+                    Cancelar
+                  </button>
+                  <a
+                    href={`https://wa.me/34681872420?text=${whatsappMessage}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setShowChatInfo(false)}
+                    className="flex-1 inline-flex items-center justify-center bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg font-semibold transition gap-2"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    Continuar
+                  </a>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -50,7 +50,7 @@ export const Header = ({ onNavigate, currentPage, onScrollToSection }: HeaderPro
         <div className="flex items-center justify-between">
           <div
             className="flex items-center gap-2 cursor-pointer"
-            onClick={() => onNavigate('home')}
+            onClick={() => window.location.reload()}
           >
             <div className="bg-white px-3 py-1 rounded">
               <h1 className="text-2xl font-bold text-black">CBDREX</h1>
