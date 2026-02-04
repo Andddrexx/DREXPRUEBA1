@@ -9,7 +9,7 @@ export const Contact = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white py-12">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-12">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-4xl font-bold text-gray-800 mb-4 text-center">Contacto</h2>
@@ -20,8 +20,8 @@ export const Contact = () => {
           <div className="grid md:grid-cols-2 gap-8 mb-12">
             <div className="bg-white rounded-lg shadow-md p-6">
               <div className="flex items-center gap-3 mb-4">
-                <div className="bg-green-100 p-3 rounded-lg">
-                  <MessageCircle className="w-6 h-6 text-green-600" />
+                <div className="bg-gray-100 p-3 rounded-lg">
+                  <MessageCircle className="w-6 h-6 text-gray-900" />
                 </div>
                 <div>
                   <h3 className="font-bold text-lg">WhatsApp</h3>
@@ -35,7 +35,7 @@ export const Contact = () => {
                 href={`https://wa.me/34681872420?text=${whatsappMessage}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block text-center bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg font-semibold transition"
+                className="block text-center bg-black hover:bg-gray-800 text-white py-3 px-6 rounded-lg font-semibold transition"
               >
                 Abrir WhatsApp
               </a>
@@ -43,8 +43,8 @@ export const Contact = () => {
 
             <div className="bg-white rounded-lg shadow-md p-6">
               <div className="flex items-center gap-3 mb-4">
-                <div className="bg-blue-100 p-3 rounded-lg">
-                  <Mail className="w-6 h-6 text-blue-600" />
+                <div className="bg-gray-100 p-3 rounded-lg">
+                  <Mail className="w-6 h-6 text-gray-900" />
                 </div>
                 <div>
                   <h3 className="font-bold text-lg">Email</h3>
@@ -56,7 +56,7 @@ export const Contact = () => {
               </p>
               <a
                 href="mailto:cbdrexstore@gmail.com"
-                className="block text-center bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold transition"
+                className="block text-center bg-gray-800 hover:bg-gray-900 text-white py-3 px-6 rounded-lg font-semibold transition"
               >
                 cbdrexstore@gmail.com
               </a>
@@ -68,8 +68,8 @@ export const Contact = () => {
 
             <div className="grid md:grid-cols-2 gap-6">
               <div className="flex gap-4">
-                <div className="bg-green-100 p-3 rounded-lg h-fit">
-                  <Phone className="w-6 h-6 text-green-600" />
+                <div className="bg-gray-100 p-3 rounded-lg h-fit">
+                  <Phone className="w-6 h-6 text-gray-900" />
                 </div>
                 <div>
                   <h4 className="font-bold mb-2">Teléfono</h4>
@@ -79,8 +79,8 @@ export const Contact = () => {
               </div>
 
               <div className="flex gap-4">
-                <div className="bg-green-100 p-3 rounded-lg h-fit">
-                  <MapPin className="w-6 h-6 text-green-600" />
+                <div className="bg-gray-100 p-3 rounded-lg h-fit">
+                  <MapPin className="w-6 h-6 text-gray-900" />
                 </div>
                 <div>
                   <h4 className="font-bold mb-2">Entrega</h4>
@@ -102,14 +102,14 @@ export const Contact = () => {
             </div>
           </div>
 
-          <div className="mt-8 bg-gradient-to-r from-green-700 to-green-600 text-white rounded-lg shadow-lg p-8 text-center">
+          <div className="mt-8 bg-gradient-to-r from-gray-900 to-gray-800 text-white rounded-lg shadow-lg p-8 text-center">
             <h3 className="text-2xl font-bold mb-4">¿Tienes dudas?</h3>
             <p className="mb-6">
               Nuestro equipo está disponible para resolver todas tus preguntas sobre nuestros productos.
             </p>
             <button
               onClick={() => setShowChatInfo(true)}
-              className="inline-flex items-center gap-2 bg-white text-green-700 px-8 py-3 rounded-lg font-semibold hover:bg-green-50 transition"
+              className="inline-flex items-center gap-2 bg-white text-black px-8 py-3 rounded-lg font-semibold hover:bg-gray-200 transition"
             >
               <MessageCircle className="w-5 h-5" />
               Chatea con nosotros
@@ -161,7 +161,7 @@ export const Contact = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setShowChatInfo(false)}
-                    className="flex-1 inline-flex items-center justify-center bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg font-semibold transition gap-2"
+                    className="flex-1 inline-flex items-center justify-center bg-black hover:bg-gray-800 text-white py-2 px-4 rounded-lg font-semibold transition gap-2"
                   >
                     <MessageCircle className="w-4 h-4" />
                     Continuar

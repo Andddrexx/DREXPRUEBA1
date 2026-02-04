@@ -35,7 +35,7 @@ export const ProductCard = ({ product, onViewDetails, onAddToCart }: ProductCard
 
         <div className="flex items-center justify-between mb-4">
           <div>
-            <span className="text-2xl font-bold text-green-700">{product.price.toFixed(2)}€</span>
+            <span className="text-2xl font-bold text-black">{product.price.toFixed(2)}€</span>
             <span className="text-xs text-gray-500 ml-2">{product.format}</span>
           </div>
         </div>
@@ -44,13 +44,13 @@ export const ProductCard = ({ product, onViewDetails, onAddToCart }: ProductCard
           <div className="flex gap-2">
             <button
               onClick={() => onViewDetails(product)}
-              className="flex-1 border-2 border-green-600 text-green-600 py-2 px-4 rounded-lg font-semibold hover:bg-green-50 transition"
+              className="flex-1 border-2 border-black text-black py-2 px-4 rounded-lg font-semibold hover:bg-gray-50 transition"
             >
               Ver detalles
             </button>
             <button
               onClick={() => onAddToCart(product)}
-              className="bg-green-600 hover:bg-green-700 text-white p-2 rounded-lg transition"
+              className="bg-black hover:bg-gray-800 text-white p-2 rounded-lg transition"
             >
               <ShoppingCart className="w-5 h-5" />
             </button>

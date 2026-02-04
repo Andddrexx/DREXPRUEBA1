@@ -71,7 +71,7 @@ export const ProductDetail = ({ product, onClose }: ProductDetailProps) => {
 
             <div>
               <div className="mb-4">
-                <span className="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">
+                <span className="inline-block bg-gray-100 text-gray-900 px-3 py-1 rounded-full text-sm font-semibold">
                   {product.category}
                 </span>
               </div>
@@ -79,17 +79,17 @@ export const ProductDetail = ({ product, onClose }: ProductDetailProps) => {
               <p className="text-gray-700 mb-6 leading-relaxed">{product.description}</p>
 
               <div className="space-y-4 mb-6">
-                <div className="border-l-4 border-green-600 pl-4">
+                <div className="border-l-4 border-black pl-4">
                   <p className="text-sm font-semibold text-gray-600">Sabor/Aroma</p>
                   <p className="text-gray-800">{product.flavor}</p>
                 </div>
 
-                <div className="border-l-4 border-green-600 pl-4">
+                <div className="border-l-4 border-black pl-4">
                   <p className="text-sm font-semibold text-gray-600">Formato</p>
                   <p className="text-gray-800">{product.format}</p>
                 </div>
 
-                <div className="border-l-4 border-green-600 pl-4">
+                <div className="border-l-4 border-black pl-4">
                   <p className="text-sm font-semibold text-gray-600">Disponibilidad</p>
                   <p className="text-gray-800">
                     {product.stock > 0 ? `${product.stock} unidades disponibles` : 'Sin stock'}
@@ -107,10 +107,10 @@ export const ProductDetail = ({ product, onClose }: ProductDetailProps) => {
                   {promotions.map((promo) => (
                     <div
                       key={promo.id}
-                      className="flex items-center gap-2 text-sm bg-green-50 border border-green-200 rounded-lg p-2"
+                      className="flex items-center gap-2 text-sm bg-gray-50 border border-gray-200 rounded-lg p-2"
                     >
-                      <TrendingDown className="w-4 h-4 text-green-600 flex-shrink-0" />
-                      <span className="text-green-700 font-medium">{promo.description}</span>
+                      <TrendingDown className="w-4 h-4 text-gray-900 flex-shrink-0" />
+                      <span className="text-gray-900 font-medium">{promo.description}</span>
                     </div>
                   ))}
                 </div>
@@ -136,12 +136,12 @@ export const ProductDetail = ({ product, onClose }: ProductDetailProps) => {
                       </div>
                     </div>
 
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4">
                       <p className="text-sm text-gray-600 mb-1">Total por {quantity} unidad{quantity !== 1 ? 'es' : ''}:</p>
                       <div className="flex items-baseline gap-2">
-                        <span className="text-3xl font-bold text-blue-700">{totalPrice.toFixed(2)}€</span>
+                        <span className="text-3xl font-bold text-black">{totalPrice.toFixed(2)}€</span>
                         {savings > 0 && (
-                          <span className="text-sm font-semibold text-green-600 bg-green-100 px-3 py-1 rounded-full">
+                          <span className="text-sm font-semibold text-gray-900 bg-gray-200 px-3 py-1 rounded-full">
                             Ahorras {savings.toFixed(2)}€
                           </span>
                         )}
@@ -151,7 +151,7 @@ export const ProductDetail = ({ product, onClose }: ProductDetailProps) => {
                     <div className="flex gap-3">
                       <button
                         onClick={handleAddToCart}
-                        className="flex-1 bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg font-semibold flex items-center justify-center gap-2 transition"
+                        className="flex-1 bg-black hover:bg-gray-800 text-white py-3 px-6 rounded-lg font-semibold flex items-center justify-center gap-2 transition"
                       >
                         <ShoppingCart className="w-5 h-5" />
                         Añadir al carrito
@@ -160,7 +160,7 @@ export const ProductDetail = ({ product, onClose }: ProductDetailProps) => {
                         href={`https://wa.me/34681872420?text=${whatsappMessage}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-green-500 hover:bg-green-600 text-white p-3 rounded-lg transition"
+                        className="bg-gray-800 hover:bg-gray-900 text-white p-3 rounded-lg transition"
                       >
                         <MessageCircle className="w-6 h-6" />
                       </a>

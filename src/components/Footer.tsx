@@ -8,12 +8,12 @@ export const Footer = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="grid md:grid-cols-3 gap-8 mb-8">
           <div>
-            <div
-              className="bg-white px-3 py-1 rounded inline-block mb-4 cursor-pointer hover:bg-green-50 transition"
+            <img
+              src="/assets/logo.jpeg"
+              alt="CBDREX"
+              className="h-12 w-auto mb-4 cursor-pointer hover:opacity-80 transition"
               onClick={scrollToTop}
-            >
-              <span className="font-bold text-xl text-black">CBDREX</span>
-            </div>
+            />
             <p className="text-gray-400 text-sm">
               Cannabis legal premium. Calidad garantizada para usuarios adultos responsables.
             </p>

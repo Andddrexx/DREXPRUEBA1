@@ -71,8 +71,8 @@ export const Cart = () => {
     return (
       <div className="min-h-screen bg-gray-50 py-12 flex items-center justify-center">
         <div className="bg-white rounded-lg shadow-lg p-8 max-w-md text-center">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <MessageCircle className="w-8 h-8 text-green-600" />
+          <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <MessageCircle className="w-8 h-8 text-gray-900" />
           </div>
           <h2 className="text-2xl font-bold text-gray-800 mb-2">¡Pedido Enviado!</h2>
           <p className="text-gray-600">
@@ -107,14 +107,14 @@ export const Cart = () => {
                 <span>{totalPrice.toFixed(2)}€</span>
               </div>
               {discount > 0 && (
-                <div className="flex justify-between py-2 border-b text-green-700 font-semibold">
+                <div className="flex justify-between py-2 border-b text-black font-semibold">
                   <span>Descuento ({cart.reduce((total, item) => total + item.quantity, 0)} items)</span>
                   <span>-{discount.toFixed(2)}€</span>
                 </div>
               )}
               <div className="flex justify-between py-4 font-bold text-lg">
                 <span>Total</span>
-                <span className="text-green-700">{finalPrice.toFixed(2)}€</span>
+                <span className="text-black">{finalPrice.toFixed(2)}€</span>
               </div>
             </div>
 
@@ -130,7 +130,7 @@ export const Cart = () => {
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                   />
                 </div>
 
@@ -147,7 +147,7 @@ export const Cart = () => {
                       const value = e.target.value.replace(/[^\d]/g, '');
                       setFormData({ ...formData, phone: value });
                     }}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                     placeholder="Ej: 681872420"
                   />
                 </div>
@@ -160,7 +160,7 @@ export const Cart = () => {
                     value={formData.notes}
                     onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                     rows={3}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent"
                   />
                 </div>
 
@@ -185,7 +185,7 @@ export const Cart = () => {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="flex-1 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white py-3 px-6 rounded-lg font-semibold transition flex items-center justify-center gap-2"
+                    className="flex-1 bg-black hover:bg-gray-800 disabled:bg-gray-400 text-white py-3 px-6 rounded-lg font-semibold transition flex items-center justify-center gap-2"
                   >
                     {loading ? 'Enviando...' : (
                       <>
@@ -224,7 +224,7 @@ export const Cart = () => {
                 <div className="flex-1">
                   <h3 className="font-bold text-lg text-gray-800">{item.product.name}</h3>
                   <p className="text-sm text-gray-600 mb-2">{item.product.flavor}</p>
-                  <p className="text-green-700 font-bold">{item.product.price.toFixed(2)}€</p>
+                  <p className="text-black font-bold">{item.product.price.toFixed(2)}€</p>
                 </div>
 
                 <div className="flex md:flex-col items-center md:items-end gap-4">
@@ -268,7 +268,7 @@ export const Cart = () => {
                   <span>Subtotal</span>
                   <span>{totalPrice.toFixed(2)}€</span>
                 </div>
-                <div className="flex justify-between text-green-700 font-semibold">
+                <div className="flex justify-between text-black font-semibold">
                   <span>Descuento (3+ items)</span>
                   <span>-{discount.toFixed(2)}€</span>
                 </div>
@@ -276,12 +276,12 @@ export const Cart = () => {
             )}
             <div className="flex justify-between items-center mb-6">
               <span className="text-xl font-bold text-gray-800">Total</span>
-              <span className="text-2xl font-bold text-green-700">{finalPrice.toFixed(2)}€</span>
+              <span className="text-2xl font-bold text-black">{finalPrice.toFixed(2)}€</span>
             </div>
 
             <button
               onClick={() => setShowCheckout(true)}
-              className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg font-semibold transition"
+              className="w-full bg-black hover:bg-gray-800 text-white py-3 px-6 rounded-lg font-semibold transition"
             >
               Proceder al pedido
             </button>
