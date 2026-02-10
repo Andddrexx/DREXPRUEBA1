@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { MessageCircle, Mail, Phone, MapPin, X } from 'lucide-react';
+import { buildWhatsAppUrl, DEFAULT_WHATSAPP_MESSAGE } from '../lib/constants';
 
 export const Contact = () => {
   const [showChatInfo, setShowChatInfo] = useState(false);
 
-  const whatsappMessage = encodeURIComponent(
-    'Hola 👋\nGracias por contactar con CBDrex.\nEste servicio es exclusivo para mayores de 18 años y productos de cannabis legal (CBD / cáñamo).\nIndica:\n1️⃣ Producto que te interesa\n2️⃣ Cantidad\n3️⃣ Confirmación de que eres mayor de edad\nTe responderemos lo antes posible.'
-  );
+  const whatsappUrl = buildWhatsAppUrl(DEFAULT_WHATSAPP_MESSAGE);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-12">
@@ -32,7 +31,7 @@ export const Contact = () => {
                 La forma más rápida de contactarnos. Respondemos en minutos.
               </p>
               <a
-                href={`https://wa.me/34681872420?text=${whatsappMessage}`}
+                href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block text-center bg-black hover:bg-gray-800 text-white py-3 px-6 rounded-lg font-semibold transition"
@@ -157,7 +156,7 @@ export const Contact = () => {
                     Cancelar
                   </button>
                   <a
-                    href={`https://wa.me/34681872420?text=${whatsappMessage}`}
+                    href={whatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setShowChatInfo(false)}

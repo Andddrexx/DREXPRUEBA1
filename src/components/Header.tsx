@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { ShoppingCart, MessageCircle, ChevronDown } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { buildWhatsAppUrl, DEFAULT_WHATSAPP_MESSAGE } from '../lib/constants';
 
 interface HeaderProps {
   onNavigate: (page: string) => void;
@@ -44,8 +45,10 @@ export const Header = ({ onNavigate, currentPage, onScrollToSection }: HeaderPro
     setShowCatalogMenu(false);
   };
 
+  const whatsappUrl = buildWhatsAppUrl(DEFAULT_WHATSAPP_MESSAGE);
+
   return (
-    <header className="#FFFFFF">
+    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-gray-200 shadow-sm">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div
@@ -64,8 +67,8 @@ export const Header = ({ onNavigate, currentPage, onScrollToSection }: HeaderPro
             <div className="relative" ref={menuRef}>
               <button
                 onClick={() => setShowCatalogMenu(!showCatalogMenu)}
-                className={`flex items-center gap-1 hover:text-gray-300 transition ${
-                  currentPage === 'home' ? 'text-gray-300 font-semibold' : ''
+                className={`flex items-center gap-1 hover:text-black transition ${
+                  currentPage === 'home' ? 'text-black font-semibold' : 'text-gray-700'
                 }`}
               >
                 Catálogo
@@ -97,8 +100,8 @@ export const Header = ({ onNavigate, currentPage, onScrollToSection }: HeaderPro
             </div>
             <button
               onClick={() => onNavigate('contact')}
-              className={`hover:text-gray-300 transition ${
-                currentPage === 'contact' ? 'text-gray-300 font-semibold' : ''
+              className={`hover:text-black transition ${
+                currentPage === 'contact' ? 'text-black font-semibold' : 'text-gray-700'
               }`}
             >
               Contacto
@@ -107,7 +110,7 @@ export const Header = ({ onNavigate, currentPage, onScrollToSection }: HeaderPro
 
           <div className="flex items-center gap-4">
             <a
-              href="https://wa.me/34681872420?text=Hola%20%F0%9F%91%8B%0AGracias%20por%20contactar%20con%20CBDrex.%0AEste%20servicio%20es%20exclusivo%20para%20mayores%20de%2018%20a%C3%B1os%20y%20productos%20de%20cannabis%20legal%20(CBD%20/%20c%C3%A1%C3%B1amo).%0AIndica:%0A1%EF%B8%8F%E2%83%A3%20Producto%20que%20te%20interesa%0A2%EF%B8%8F%E2%83%A3%20Cantidad%0A3%EF%B8%8F%E2%83%A3%20Confirmaci%C3%B3n%20de%20que%20eres%20mayor%20de%20edad%0ATe%20responderemos%20lo%20antes%20posible."
+              href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="hidden md:flex items-center gap-2 bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg transition"

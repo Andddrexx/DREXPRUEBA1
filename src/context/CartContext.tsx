@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { Product, CartItem } from '../types';
 
 interface CartContextType {
@@ -15,8 +15,28 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
+
+const CART_STORAGE_KEY = 'cbdrex-cart';
+
+const readStoredCart = (): CartItem[] => {
+  if (typeof window === 'undefined') return [];
+  try {
+    const storedCart = localStorage.getItem(CART_STORAGE_KEY);
+    if (!storedCart) return [];
+    const parsedCart = JSON.parse(storedCart);
+    return Array.isArray(parsedCart) ? parsedCart : [];
+  } catch (error) {
+    console.error('Error reading cart from storage:', error);
+    return [];
+  }
+};
+
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const [cart, setCart] = useState<CartItem[]>(readStoredCart);
+
+  useEffect(() => {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+  }, [cart]);
 
   const addToCart = (product: Product, quantity: number) => {
     setCart((prevCart) => {
