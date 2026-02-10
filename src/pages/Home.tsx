@@ -5,13 +5,16 @@ import { ProductDetail } from '../components/ProductDetail';
 import { IntensityInfo } from '../components/IntensityInfo';
 import { products as productsData } from '../data/products';
 import { useCart } from '../context/CartContext';
-import { MessageCircle } from 'lucide-react';
+import { MessageCircle, ShieldCheck, Truck, Sparkles } from 'lucide-react';
+import { buildWhatsAppUrl, DEFAULT_WHATSAPP_MESSAGE } from '../lib/constants';
 
 export const Home = () => {
   const [products] = useState<Product[]>(productsData);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [activeSection, setActiveSection] = useState('vapers');
+  const [query, setQuery] = useState('');
   const { addToCart } = useCart();
+  const whatsappUrl = buildWhatsAppUrl(DEFAULT_WHATSAPP_MESSAGE);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,9 +51,19 @@ export const Home = () => {
     }
   };
 
-  const vapers = products.filter(p => p.category === '10-OH-HHC');
-  const mecheros = products.filter(p => p.category === 'mechero');
-  const accesorios = products.filter(p => p.category === 'accesorio');
+  const normalizedQuery = query.trim().toLowerCase();
+  const filteredProducts = products.filter((product) => {
+    if (!normalizedQuery) return true;
+    return (
+      product.name.toLowerCase().includes(normalizedQuery) ||
+      product.description.toLowerCase().includes(normalizedQuery) ||
+      product.flavor.toLowerCase().includes(normalizedQuery)
+    );
+  });
+
+  const vapers = filteredProducts.filter(p => p.category === '10-OH-HHC');
+  const mecheros = filteredProducts.filter(p => p.category === 'mechero');
+  const accesorios = filteredProducts.filter(p => p.category === 'accesorio');
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -61,20 +74,34 @@ export const Home = () => {
             alt="CBDREX"
             className="h-24 w-auto mx-auto mb-4"
           />
-          <p className="text-xl mb-6 text-gray-300">
-            Cannabis legal premium de la más alta calidad. Solo para mayores de 18 años.
-          </p>
-          <a
-            href="https://wa.me/34681872420?text=Hola%20%F0%9F%91%8B%0AGracias%20por%20contactar%20con%20CBDrex.%0AEste%20servicio%20es%20exclusivo%20para%20mayores%20de%2018%20a%C3%B1os%20y%20productos%20de%20cannabis%20legal%20(CBD%20/%20c%C3%A1%C3%B1amo).%0AIndica:%0A1%EF%B8%8F%E2%83%A3%20Producto%20que%20te%20interesa%0A2%EF%B8%8F%E2%83%A3%20Cantidad%0A3%EF%B8%8F%E2%83%A3%20Confirmaci%C3%B3n%20de%20que%20eres%20mayor%20de%20edad%0ATe%20responderemos%20lo%20antes%20posible."
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-white text-black px-8 py-3 rounded-lg font-semibold hover:bg-gray-200 transition"
+              <p className="text-xl mb-6 text-gray-300">
+                Cannabis legal premium de la más alta calidad. Solo para mayores de 18 años.
+              </p>
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-white text-black px-8 py-3 rounded-lg font-semibold hover:bg-gray-200 transition"
           >
             <MessageCircle className="w-5 h-5" />
             Consulta por WhatsApp
-          </a>
-        </div>
-      </section>
+              </a>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-8 max-w-4xl mx-auto text-sm">
+                <div className="bg-white/10 rounded-lg p-3 flex items-center justify-center gap-2">
+                  <ShieldCheck className="w-4 h-4" />
+                  <span>Venta exclusiva +18</span>
+                </div>
+                <div className="bg-white/10 rounded-lg p-3 flex items-center justify-center gap-2">
+                  <Truck className="w-4 h-4" />
+                  <span>Entrega en mano</span>
+                </div>
+                <div className="bg-white/10 rounded-lg p-3 flex items-center justify-center gap-2">
+                  <Sparkles className="w-4 h-4" />
+                  <span>Calidad premium</span>
+                </div>
+              </div>
+            </div>
+          </section>
 
       <nav className="sticky top-0 z-30 bg-white border-b shadow-sm">
         <div className="container mx-auto px-4">
@@ -116,6 +143,21 @@ export const Home = () => {
       </nav>
 
       <div className="container mx-auto px-4 py-12">
+        <div className="mb-8">
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Buscar por nombre, descripción o sabor..."
+            className="w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-black focus:border-transparent"
+          />
+          {!!normalizedQuery && (
+            <p className="text-sm text-gray-500 mt-2">
+              Mostrando resultados para: <span className="font-semibold text-gray-700">{query}</span>
+            </p>
+          )}
+        </div>
+
         <section id="vapers" className="scroll-mt-32 mb-16">
           <IntensityInfo />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

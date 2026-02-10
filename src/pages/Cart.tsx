@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { Trash2, Plus, Minus, ShoppingBag, MessageCircle } from 'lucide-react';
+import { buildWhatsAppUrl } from '../lib/constants';
 
 export const Cart = () => {
   const { cart, removeFromCart, updateQuantity, getTotalPrice, getDiscount, getFinalPrice, clearCart } = useCart();
@@ -22,7 +23,7 @@ export const Cart = () => {
     setLoading(true);
 
     try {
-      const whatsappMessage = encodeURIComponent(
+      const whatsappMessage = (
         `🛒 NUEVO PEDIDO\n\n` +
         `👤 Cliente: ${formData.name}\n` +
         `📱 Teléfono: ${formData.phone}\n\n` +
@@ -35,7 +36,7 @@ export const Cart = () => {
         `✅ Confirmo que soy mayor de 18 años y acepto las condiciones de entrega en mano.`
       );
 
-      window.open(`https://wa.me/34681872420?text=${whatsappMessage}`, '_blank');
+      window.open(buildWhatsAppUrl(whatsappMessage), '_blank');
 
       setOrderSuccess(true);
       clearCart();
@@ -142,6 +143,8 @@ export const Cart = () => {
                     type="tel"
                     required
                     inputMode="numeric"
+                    pattern="[0-9]{9,15}"
+                    minLength={9}
                     value={formData.phone}
                     onChange={(e) => {
                       const value = e.target.value.replace(/[^\d]/g, '');
@@ -269,7 +272,7 @@ export const Cart = () => {
                   <span>{totalPrice.toFixed(2)}€</span>
                 </div>
                 <div className="flex justify-between text-black font-semibold">
-                  <span>Descuento (3+ items)</span>
+                  <span>Descuento por volumen</span>
                   <span>-{discount.toFixed(2)}€</span>
                 </div>
               </div>
