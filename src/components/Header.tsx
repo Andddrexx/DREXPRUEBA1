@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { ShoppingCart, MessageCircle, ChevronDown } from 'lucide-react';
+import { ShoppingCart, MessageCircle, ChevronDown, Menu, X } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 interface HeaderProps {
@@ -12,7 +12,15 @@ export const Header = ({ onNavigate, currentPage, onScrollToSection }: HeaderPro
   const { getTotalItems } = useCart();
   const totalItems = getTotalItems();
   const [showCatalogMenu, setShowCatalogMenu] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -20,116 +28,185 @@ export const Header = ({ onNavigate, currentPage, onScrollToSection }: HeaderPro
         setShowCatalogMenu(false);
       }
     };
-
-    if (showCatalogMenu) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    if (showCatalogMenu) document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [showCatalogMenu]);
 
   const handleCatalogClick = (section?: string) => {
     if (currentPage !== 'home') {
       onNavigate('home');
       setTimeout(() => {
-        if (section && onScrollToSection) {
-          onScrollToSection(section);
-        }
+        if (section && onScrollToSection) onScrollToSection(section);
       }, 100);
     } else if (section && onScrollToSection) {
       onScrollToSection(section);
     }
     setShowCatalogMenu(false);
+    setMobileMenuOpen(false);
   };
 
-  return (
-    <header className="#FFFFFF">
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
-          <div
-            className="flex items-center gap-3 cursor-pointer"
-            onClick={() => window.location.reload()}
-          >
-            <img
-              src="/assets/logo.jpeg"
-              alt="CBDREX"
-              className="h-12 w-auto"
-            />
-            <p className="text-xs text-gray-400 ml-2">Cannabis Legal +18</p>
-          </div>
+  const navTextClass = (active: boolean) =>
+    active
+      ? scrolled
+        ? 'text-white bg-white/10'
+        : 'text-white bg-white/10'
+      : scrolled
+        ? 'text-neutral-400 hover:text-white hover:bg-white/10'
+        : 'text-white/70 hover:text-white hover:bg-white/10';
 
-          <nav className="hidden md:flex items-center gap-6">
-            <div className="relative" ref={menuRef}>
+  return (
+    <>
+      <header
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
+          scrolled ? 'glass border-b border-neutral-800/50' : 'bg-transparent'
+        }`}
+      >
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="flex items-center justify-between h-16 lg:h-20">
+            <div
+              className="flex items-center gap-3 cursor-pointer group"
+              onClick={() => { onNavigate('home'); setMobileMenuOpen(false); }}
+            >
+              <img
+                src="/assets/logo.jpeg"
+                alt="CBDREX"
+                className="h-10 lg:h-12 w-auto rounded-lg transition-transform duration-300 group-hover:scale-105"
+              />
+              <div className="hidden sm:block">
+                <p className={`text-[10px] font-bold tracking-[0.25em] uppercase transition-colors duration-300 ${
+                  scrolled ? 'text-neutral-500' : 'text-white/50'
+                }`}>
+                  Cannabis Legal +18
+                </p>
+              </div>
+            </div>
+
+            <nav className="hidden lg:flex items-center gap-1">
+              <div className="relative" ref={menuRef}>
+                <button
+                  onClick={() => setShowCatalogMenu(!showCatalogMenu)}
+                  className={`flex items-center gap-1.5 px-4 py-2 rounded-xl font-medium transition-all duration-200 ${navTextClass(currentPage === 'home')}`}
+                >
+                  Catalogo
+                  <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${showCatalogMenu ? 'rotate-180' : ''}`} />
+                </button>
+
+                {showCatalogMenu && (
+                  <div className="absolute top-full right-0 mt-2 bg-neutral-800 border border-neutral-600/50 rounded-2xl shadow-xl shadow-black/30 overflow-hidden min-w-[220px] animate-scale-in">
+                    <div className="p-2">
+                      {[
+                        { id: 'vapers', label: 'Vapers' },
+                        { id: 'mecheros', label: 'Mecheros' },
+                        { id: 'accesorios', label: 'Estuches / Accesorios' },
+                      ].map((item) => (
+                        <button
+                          key={item.id}
+                          onClick={() => handleCatalogClick(item.id)}
+                          className="flex items-center gap-3 w-full text-left px-4 py-3 text-neutral-300 hover:text-white hover:bg-neutral-700 rounded-xl transition-colors duration-150 group"
+                        >
+                          <span className="w-1.5 h-1.5 rounded-full bg-white group-hover:scale-150 transition-transform" />
+                          <span className="font-medium">{item.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
               <button
-                onClick={() => setShowCatalogMenu(!showCatalogMenu)}
-                className={`flex items-center gap-1 hover:text-gray-300 transition ${
-                  currentPage === 'home' ? 'text-gray-300 font-semibold' : ''
+                onClick={() => onNavigate('contact')}
+                className={`px-4 py-2 rounded-xl font-medium transition-all duration-200 ${navTextClass(currentPage === 'contact')}`}
+              >
+                Contacto
+              </button>
+            </nav>
+
+            <div className="flex items-center gap-3">
+              <a
+                href="https://wa.me/34681872420?text=Hola%20%F0%9F%91%8B%0AGracias%20por%20contactar%20con%20CBDrex.%0AEste%20servicio%20es%20exclusivo%20para%20mayores%20de%2018%20a%C3%B1os%20y%20productos%20de%20cannabis%20legal%20(CBD%20/%20c%C3%A1%C3%B1amo).%0AIndica:%0A1%EF%B8%8F%E2%83%A3%20Producto%20que%20te%20interesa%0A2%EF%B8%8F%E2%83%A3%20Cantidad%0A3%EF%B8%8F%E2%83%A3%20Confirmaci%C3%B3n%20de%20que%20eres%20mayor%20de%20edad%0ATe%20responderemos%20lo%20antes%20posible."
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`hidden md:flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all duration-200 text-sm ${
+                  scrolled
+                    ? 'bg-white text-neutral-900 hover:bg-neutral-200'
+                    : 'bg-white/10 text-white hover:bg-white/20 border border-white/20'
                 }`}
               >
-                Catálogo
-                <ChevronDown className={`w-4 h-4 transition-transform ${showCatalogMenu ? 'rotate-180' : ''}`} />
+                <MessageCircle className="w-4 h-4" />
+                WhatsApp
+              </a>
+
+              <button
+                onClick={() => onNavigate('cart')}
+                className={`relative p-2.5 rounded-xl transition-all duration-200 ${
+                  scrolled
+                    ? 'bg-neutral-800 text-white hover:bg-neutral-700'
+                    : 'bg-white/10 text-white hover:bg-white/20'
+                }`}
+              >
+                <ShoppingCart className="w-5 h-5" />
+                {totalItems > 0 && (
+                  <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center animate-scale-in">
+                    {totalItems}
+                  </span>
+                )}
               </button>
 
-              {showCatalogMenu && (
-                <div className="absolute top-full right-0 mt-2 bg-white rounded-lg shadow-lg overflow-hidden min-w-[200px]">
-                  <button
-                    onClick={() => handleCatalogClick('vapers')}
-                    className="block w-full text-left px-4 py-3 text-gray-700 hover:bg-gray-100 transition"
-                  >
-                    Vapers
-                  </button>
-                  <button
-                    onClick={() => handleCatalogClick('mecheros')}
-                    className="block w-full text-left px-4 py-3 text-gray-700 hover:bg-gray-100 transition"
-                  >
-                    Mecheros
-                  </button>
-                  <button
-                    onClick={() => handleCatalogClick('accesorios')}
-                    className="block w-full text-left px-4 py-3 text-gray-700 hover:bg-gray-100 transition"
-                  >
-                    Estuches/Accesorios
-                  </button>
-                </div>
-              )}
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className={`lg:hidden p-2.5 rounded-xl transition-all duration-200 ${
+                  scrolled
+                    ? 'bg-neutral-800 text-white hover:bg-neutral-700'
+                    : 'bg-white/10 text-white hover:bg-white/20'
+                }`}
+              >
+                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
             </div>
-            <button
-              onClick={() => onNavigate('contact')}
-              className={`hover:text-gray-300 transition ${
-                currentPage === 'contact' ? 'text-gray-300 font-semibold' : ''
-              }`}
-            >
-              Contacto
-            </button>
-          </nav>
-
-          <div className="flex items-center gap-4">
-            <a
-              href="https://wa.me/34681872420?text=Hola%20%F0%9F%91%8B%0AGracias%20por%20contactar%20con%20CBDrex.%0AEste%20servicio%20es%20exclusivo%20para%20mayores%20de%2018%20a%C3%B1os%20y%20productos%20de%20cannabis%20legal%20(CBD%20/%20c%C3%A1%C3%B1amo).%0AIndica:%0A1%EF%B8%8F%E2%83%A3%20Producto%20que%20te%20interesa%0A2%EF%B8%8F%E2%83%A3%20Cantidad%0A3%EF%B8%8F%E2%83%A3%20Confirmaci%C3%B3n%20de%20que%20eres%20mayor%20de%20edad%0ATe%20responderemos%20lo%20antes%20posible."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden md:flex items-center gap-2 bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg transition"
-            >
-              <MessageCircle className="w-5 h-5" />
-              <span>WhatsApp</span>
-            </a>
-
-            <button
-              onClick={() => onNavigate('cart')}
-              className="relative bg-white text-black p-2 rounded-lg hover:bg-gray-200 transition"
-            >
-              <ShoppingCart className="w-6 h-6" />
-              {totalItems > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
-                  {totalItems}
-                </span>
-              )}
-            </button>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-30 lg:hidden">
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)} />
+          <div className="absolute top-0 right-0 w-80 max-w-[85vw] h-full bg-neutral-900 border-l border-neutral-700/50 shadow-2xl animate-slide-in-right">
+            <div className="p-6 pt-24 space-y-2">
+              <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-neutral-600 mb-4 px-4">Navegacion</p>
+              {[
+                { id: 'vapers', label: 'Vapers' },
+                { id: 'mecheros', label: 'Mecheros' },
+                { id: 'accesorios', label: 'Estuches / Accesorios' },
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => handleCatalogClick(item.id)}
+                  className="w-full text-left px-4 py-3 text-neutral-300 hover:text-white hover:bg-neutral-900 rounded-xl font-medium transition-colors"
+                >
+                  {item.label}
+                </button>
+              ))}
+              <div className="border-t border-neutral-700/50 my-4" />
+              <button
+                onClick={() => { onNavigate('contact'); setMobileMenuOpen(false); }}
+                className="w-full text-left px-4 py-3 text-neutral-300 hover:text-white hover:bg-neutral-900 rounded-xl font-medium transition-colors"
+              >
+                Contacto
+              </button>
+              <div className="border-t border-neutral-700/50 my-4" />
+              <a
+                href="https://wa.me/34681872420?text=Hola%20%F0%9F%91%8B%0AGracias%20por%20contactar%20con%20CBDrex.%0AEste%20servicio%20es%20exclusivo%20para%20mayores%20de%2018%20a%C3%B1os%20y%20productos%20de%20cannabis%20legal%20(CBD%20/%20c%C3%A1%C3%B1amo).%0AIndica:%0A1%EF%B8%8F%E2%83%A3%20Producto%20que%20te%20interesa%0A2%EF%B8%8F%E2%83%A3%20Cantidad%0A3%EF%B8%8F%E2%83%A3%20Confirmaci%C3%B3n%20de%20que%20eres%20mayor%20de%20edad%0ATe%20responderemos%20lo%20antes%20posible."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 w-full btn-primary"
+              >
+                <MessageCircle className="w-5 h-5" />
+                WhatsApp
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };

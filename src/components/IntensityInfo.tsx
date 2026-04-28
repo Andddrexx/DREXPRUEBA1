@@ -6,57 +6,65 @@ export const IntensityInfo = () => {
 
   return (
     <>
-      <div className="mb-6">
-        <div className="flex items-center gap-3 flex-wrap">
-          <h2 className="text-3xl font-bold text-gray-800">
-            Nuestros Vapers con máxima{' '}
-            <span className="text-red-600">Intensidad</span>
+      <div className="mb-8">
+        <div className="flex items-center gap-4 flex-wrap">
+          <h2 className="section-heading">
+            Nuestros Vapers
           </h2>
           <button
             onClick={() => setShowModal(true)}
-            className="inline-flex items-center justify-center w-7 h-7 rounded-full border-2 border-red-400 text-red-600 hover:border-red-600 hover:text-red-700 transition hover:bg-red-50"
-            title="Información sobre intensidad"
+            className="inline-flex items-center gap-2 text-sm font-medium text-neutral-400 hover:text-white bg-neutral-700 hover:bg-neutral-600 px-3 py-1.5 rounded-full transition-all duration-200 border border-neutral-600/50"
           >
-            <Info size={18} />
+            <Info size={14} />
+            Sobre la intensidad
           </button>
         </div>
+        <p className="text-neutral-400 mt-2 text-lg">
+          Maxima <span className="text-red-500 font-semibold">intensidad</span> con 97% 10-OH-HHC
+        </p>
+        <div className="divider-dark mt-4" />
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg shadow-lg max-w-md w-full max-h-96 overflow-y-auto">
-            <div className="flex justify-between items-center p-6 border-b sticky top-0 bg-white">
-              <h3 className="text-lg font-bold text-gray-800">Sobre la Intensidad</h3>
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50" onClick={() => setShowModal(false)}>
+          <div
+            className="bg-neutral-800 border border-neutral-600/50 shadow-2xl shadow-black/50 rounded-3xl max-w-md w-full max-h-96 overflow-y-auto animate-scale-in"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center p-6 border-b border-neutral-600/50 sticky top-0 bg-neutral-800/95 backdrop-blur-md rounded-t-3xl">
+              <h3 className="font-display text-lg font-bold text-white">Sobre la Intensidad</h3>
               <button
                 onClick={() => setShowModal(false)}
-                className="text-gray-500 hover:text-gray-700 transition"
+                className="w-8 h-8 rounded-lg bg-neutral-800 hover:bg-neutral-700 flex items-center justify-center transition-colors"
               >
-                <X size={20} />
+                <X size={16} className="text-neutral-400" />
               </button>
             </div>
 
             <div className="p-6 space-y-4">
-              <p className="text-gray-700">
-                La intensidad indicada es orientativa y se refiere a la percepción general del producto (sabor, sensación y efecto esperado).
+              <p className="text-neutral-400 leading-relaxed">
+                La intensidad indicada es orientativa y se refiere a la percepcion general del producto (sabor, sensacion y efecto esperado).
               </p>
 
-              <p className="text-gray-700">
-                Un vaper con menor intensidad <strong>no implica ausencia de efecto</strong>, sino una experiencia más suave y progresiva.
+              <p className="text-neutral-400 leading-relaxed">
+                Un vaper con menor intensidad <strong className="text-white">no implica ausencia de efecto</strong>, sino una experiencia mas suave y progresiva.
               </p>
 
-              <p className="text-gray-700">
-                La reacción puede variar según:
+              <p className="text-neutral-300 font-medium">
+                La reaccion puede variar segun:
               </p>
-              <ul className="list-disc list-inside text-gray-600 space-y-1">
-                <li>La persona y su tolerancia</li>
-                <li>La experiencia previa</li>
-                <li>El uso responsable del producto</li>
-                <li>Factores personales de sensibilidad</li>
+              <ul className="space-y-2 text-neutral-400">
+                {['La persona y su tolerancia', 'La experiencia previa', 'El uso responsable del producto', 'Factores personales de sensibilidad'].map((item) => (
+                  <li key={item} className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white flex-shrink-0" />
+                    {item}
+                  </li>
+                ))}
               </ul>
 
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
-                <p className="text-sm text-blue-900">
-                  <strong>Nota:</strong> Recomendamos comenzar con intensidades más bajas y aumentar según tu preferencia y experiencia.
+              <div className="bg-neutral-700/60 border border-neutral-600/40 rounded-2xl p-4 mt-4">
+                <p className="text-sm text-neutral-400">
+                  <strong className="text-white">Nota:</strong> Recomendamos comenzar con intensidades mas bajas y aumentar segun tu preferencia y experiencia.
                 </p>
               </div>
             </div>

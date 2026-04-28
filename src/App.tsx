@@ -21,6 +21,11 @@ function App() {
     }
   };
 
+  const handleNavigate = (page: string) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const renderPage = () => {
     switch (currentPage) {
       case 'home':
@@ -39,7 +44,7 @@ function App() {
       <div className="min-h-screen flex flex-col">
         <AgeWarning />
         <Header
-          onNavigate={setCurrentPage}
+          onNavigate={handleNavigate}
           currentPage={currentPage}
           onScrollToSection={scrollToSection}
         />

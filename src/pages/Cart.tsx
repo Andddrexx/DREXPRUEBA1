@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useCart } from '../context/CartContext';
-import { Trash2, Plus, Minus, ShoppingBag, MessageCircle } from 'lucide-react';
+import { Trash2, Plus, Minus, ShoppingBag, MessageCircle, ArrowLeft } from 'lucide-react';
 
 export const Cart = () => {
   const { cart, removeFromCart, updateQuantity, getTotalPrice, getDiscount, getFinalPrice, clearCart } = useCart();
@@ -23,16 +23,16 @@ export const Cart = () => {
 
     try {
       const whatsappMessage = encodeURIComponent(
-        `🛒 NUEVO PEDIDO\n\n` +
-        `👤 Cliente: ${formData.name}\n` +
-        `📱 Teléfono: ${formData.phone}\n\n` +
-        `📦 PRODUCTOS:\n` +
-        cart.map(item => `• ${item.product.name} x${item.quantity} - ${(item.product.price * item.quantity).toFixed(2)}€`).join('\n') +
-        `\n\n💰 SUBTOTAL: ${totalPrice.toFixed(2)}€` +
-        (discount > 0 ? `\n💝 DESCUENTO: -${discount.toFixed(2)}€\n💰 TOTAL: ${finalPrice.toFixed(2)}€` : `\n💰 TOTAL: ${totalPrice.toFixed(2)}€`) +
+        `NUEVO PEDIDO\n\n` +
+        `Cliente: ${formData.name}\n` +
+        `Telefono: ${formData.phone}\n\n` +
+        `PRODUCTOS:\n` +
+        cart.map(item => `- ${item.product.name} x${item.quantity} - ${(item.product.price * item.quantity).toFixed(2)}EUR`).join('\n') +
+        `\n\nSUBTOTAL: ${totalPrice.toFixed(2)}EUR` +
+        (discount > 0 ? `\nDESCUENTO: -${discount.toFixed(2)}EUR\nTOTAL: ${finalPrice.toFixed(2)}EUR` : `\nTOTAL: ${totalPrice.toFixed(2)}EUR`) +
         `\n\n` +
-        (formData.notes ? `📝 Notas: ${formData.notes}\n\n` : '') +
-        `✅ Confirmo que soy mayor de 18 años y acepto las condiciones de entrega en mano.`
+        (formData.notes ? `Notas: ${formData.notes}\n\n` : '') +
+        `Confirmo que soy mayor de 18 anos y acepto las condiciones de entrega en mano.`
       );
 
       window.open(`https://wa.me/34681872420?text=${whatsappMessage}`, '_blank');
@@ -47,7 +47,7 @@ export const Cart = () => {
       }, 3000);
     } catch (error) {
       console.error('Error creating order:', error);
-      alert('Error al procesar el pedido. Por favor, inténtalo de nuevo.');
+      alert('Error al procesar el pedido. Por favor, intenta de nuevo.');
     } finally {
       setLoading(false);
     }
@@ -55,12 +55,14 @@ export const Cart = () => {
 
   if (cart.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 py-12">
+      <div className="min-h-screen bg-gradient-to-b from-neutral-950 via-neutral-700 to-neutral-500 pt-28 pb-16">
         <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto text-center py-20">
-            <ShoppingBag className="w-24 h-24 text-gray-300 mx-auto mb-6" />
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Tu carrito está vacío</h2>
-            <p className="text-gray-600 mb-6">Añade productos para comenzar tu pedido</p>
+          <div className="max-w-lg mx-auto text-center py-20">
+            <div className="w-24 h-24 bg-neutral-800/80 rounded-3xl flex items-center justify-center mx-auto mb-6 border border-neutral-600/50">
+              <ShoppingBag className="w-12 h-12 text-neutral-600" />
+            </div>
+            <h2 className="font-display text-3xl font-bold text-white mb-3">Tu carrito esta vacio</h2>
+            <p className="text-neutral-500 mb-8">Anade productos para comenzar tu pedido</p>
           </div>
         </div>
       </div>
@@ -69,13 +71,13 @@ export const Cart = () => {
 
   if (orderSuccess) {
     return (
-      <div className="min-h-screen bg-gray-50 py-12 flex items-center justify-center">
-        <div className="bg-white rounded-lg shadow-lg p-8 max-w-md text-center">
-          <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <MessageCircle className="w-8 h-8 text-gray-900" />
+      <div className="min-h-screen bg-gradient-to-b from-neutral-950 via-neutral-800 to-neutral-600 pt-28 pb-16 flex items-center justify-center">
+        <div className="bg-neutral-800 border border-neutral-600/50 rounded-3xl p-10 max-w-md text-center animate-scale-in">
+          <div className="w-16 h-16 bg-emerald-900/30 rounded-2xl flex items-center justify-center mx-auto mb-5 border border-emerald-800/30">
+            <MessageCircle className="w-8 h-8 text-emerald-400" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">¡Pedido Enviado!</h2>
-          <p className="text-gray-600">
+          <h2 className="font-display text-2xl font-bold text-white mb-2">Pedido Enviado!</h2>
+          <p className="text-neutral-400 leading-relaxed">
             Tu pedido ha sido registrado y enviado por WhatsApp. Te contactaremos pronto para confirmar.
           </p>
         </div>
@@ -85,44 +87,52 @@ export const Cart = () => {
 
   if (showCheckout) {
     return (
-      <div className="min-h-screen bg-gray-50 py-12">
+      <div className="min-h-screen bg-gradient-to-b from-neutral-950 via-neutral-700 to-neutral-500 pt-28 pb-16">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto">
-            <h2 className="text-3xl font-bold text-gray-800 mb-8">Finalizar Pedido</h2>
+            <button
+              onClick={() => setShowCheckout(false)}
+              className="flex items-center gap-2 text-neutral-400 hover:text-white font-medium mb-6 transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Volver al carrito
+            </button>
 
-            <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-              <h3 className="font-bold text-lg mb-4">Resumen del pedido</h3>
+            <h2 className="font-display text-4xl font-bold text-white mb-8">Finalizar Pedido</h2>
+
+            <div className="bg-neutral-800/60 border border-neutral-600/40 rounded-2xl p-6 mb-6">
+              <h3 className="text-xs font-bold tracking-[0.2em] uppercase text-neutral-500 mb-4">Resumen del pedido</h3>
               {cart.map((item) => (
-                <div key={item.product.id} className="flex justify-between py-2 border-b">
-                  <span className="text-gray-700">
-                    {item.product.name} x{item.quantity}
+                <div key={item.product.id} className="flex justify-between py-3 border-b border-neutral-800 last:border-b-0">
+                  <span className="text-neutral-300 text-[15px]">
+                    {item.product.name} <span className="text-neutral-600">x{item.quantity}</span>
                   </span>
-                  <span className="font-semibold">
+                  <span className="font-semibold text-white">
                     {(item.product.price * item.quantity).toFixed(2)}€
                   </span>
                 </div>
               ))}
-              <div className="flex justify-between py-2 text-gray-700">
+              <div className="flex justify-between py-3 text-neutral-500 text-sm">
                 <span>Subtotal</span>
                 <span>{totalPrice.toFixed(2)}€</span>
               </div>
               {discount > 0 && (
-                <div className="flex justify-between py-2 border-b text-black font-semibold">
+                <div className="flex justify-between py-3 border-t border-neutral-800 text-emerald-400 font-semibold">
                   <span>Descuento ({cart.reduce((total, item) => total + item.quantity, 0)} items)</span>
                   <span>-{discount.toFixed(2)}€</span>
                 </div>
               )}
-              <div className="flex justify-between py-4 font-bold text-lg">
-                <span>Total</span>
-                <span className="text-black">{finalPrice.toFixed(2)}€</span>
+              <div className="flex justify-between py-4 font-bold text-lg border-t border-neutral-800">
+                <span className="text-white">Total</span>
+                <span className="text-white">{finalPrice.toFixed(2)}€</span>
               </div>
             </div>
 
-            <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-              <h3 className="font-bold text-lg mb-4">Tus datos</h3>
-              <form onSubmit={handleSubmitOrder} className="space-y-4">
+            <div className="bg-neutral-800/60 border border-neutral-600/40 rounded-2xl p-6 mb-6">
+              <h3 className="text-xs font-bold tracking-[0.2em] uppercase text-neutral-500 mb-4">Tus datos</h3>
+              <form onSubmit={handleSubmitOrder} className="space-y-5">
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-neutral-400 mb-2">
                     Nombre completo *
                   </label>
                   <input
@@ -130,13 +140,13 @@ export const Cart = () => {
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+                    className="input-field"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Teléfono *
+                  <label className="block text-sm font-medium text-neutral-400 mb-2">
+                    Telefono *
                   </label>
                   <input
                     type="tel"
@@ -147,54 +157,45 @@ export const Cart = () => {
                       const value = e.target.value.replace(/[^\d]/g, '');
                       setFormData({ ...formData, phone: value });
                     }}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+                    className="input-field"
                     placeholder="Ej: 681872420"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-neutral-400 mb-2">
                     Notas adicionales (opcional)
                   </label>
                   <textarea
                     value={formData.notes}
                     onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                     rows={3}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+                    className="input-field resize-none"
                   />
                 </div>
 
-                <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-                  <p className="text-sm text-amber-800">
-                    <strong>Importante:</strong> Este pedido NO se paga automáticamente.
+                <div className="bg-amber-900/20 border border-amber-800/30 rounded-2xl p-5">
+                  <p className="text-sm text-amber-300">
+                    <strong>Importante:</strong> Este pedido NO se paga automaticamente.
                     Te contactaremos por WhatsApp para confirmar y coordinar la entrega en mano.
                   </p>
-                  <p className="text-sm text-amber-800 mt-2">
-                    <strong>Forma de pago:</strong> Efectivo en la entrega o transferencia tras confirmación.
+                  <p className="text-sm text-amber-300 mt-2">
+                    <strong>Forma de pago:</strong> Efectivo en la entrega o transferencia tras confirmacion.
                   </p>
                 </div>
 
-                <div className="flex gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setShowCheckout(false)}
-                    className="flex-1 border-2 border-gray-300 text-gray-700 py-3 px-6 rounded-lg font-semibold hover:bg-gray-50 transition"
-                  >
-                    Volver al carrito
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="flex-1 bg-black hover:bg-gray-800 disabled:bg-gray-400 text-white py-3 px-6 rounded-lg font-semibold transition flex items-center justify-center gap-2"
-                  >
-                    {loading ? 'Enviando...' : (
-                      <>
-                        <MessageCircle className="w-5 h-5" />
-                        Enviar por WhatsApp
-                      </>
-                    )}
-                  </button>
-                </div>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full btn-primary flex items-center justify-center gap-2 py-4"
+                >
+                  {loading ? 'Enviando...' : (
+                    <>
+                      <MessageCircle className="w-5 h-5" />
+                      Enviar por WhatsApp
+                    </>
+                  )}
+                </button>
               </form>
             </div>
           </div>
@@ -204,56 +205,56 @@ export const Cart = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen bg-gradient-to-b from-neutral-950 via-neutral-800 to-neutral-600 pt-28 pb-16">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-800 mb-8">Tu Carrito</h2>
+          <h2 className="font-display text-4xl font-bold text-white mb-8">Tu Carrito</h2>
 
-          <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+          <div className="bg-neutral-900/60 border border-neutral-700/50 rounded-2xl p-6 mb-6">
             {cart.map((item) => (
               <div
                 key={item.product.id}
-                className="flex flex-col md:flex-row gap-4 py-4 border-b last:border-b-0"
+                className="flex flex-col md:flex-row gap-5 py-5 border-b border-neutral-600/30 last:border-b-0"
               >
                 <img
                   src={item.product.image_url}
                   alt={item.product.name}
-                  className="w-full md:w-32 h-32 object-cover rounded-lg"
+                  className="w-full md:w-28 h-28 object-cover rounded-2xl"
                 />
 
                 <div className="flex-1">
-                  <h3 className="font-bold text-lg text-gray-800">{item.product.name}</h3>
-                  <p className="text-sm text-gray-600 mb-2">{item.product.flavor}</p>
-                  <p className="text-black font-bold">{item.product.price.toFixed(2)}€</p>
+                  <h3 className="font-bold text-white mb-1">{item.product.name}</h3>
+                  <p className="text-sm text-neutral-500 mb-2">{item.product.flavor}</p>
+                  <p className="text-white font-bold">{item.product.price.toFixed(2)}€</p>
                 </div>
 
                 <div className="flex md:flex-col items-center md:items-end gap-4">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1 bg-neutral-700 rounded-xl p-1 border border-neutral-600/50">
                     <button
                       onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                      className="bg-gray-200 hover:bg-gray-300 p-1 rounded transition"
+                      className="w-8 h-8 rounded-lg hover:bg-neutral-600 flex items-center justify-center transition-colors text-neutral-300"
                     >
-                      <Minus className="w-4 h-4" />
+                      <Minus className="w-3.5 h-3.5" />
                     </button>
-                    <span className="w-12 text-center font-semibold">{item.quantity}</span>
+                    <span className="w-8 text-center font-bold text-white text-sm">{item.quantity}</span>
                     <button
                       onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                      className="bg-gray-200 hover:bg-gray-300 p-1 rounded transition"
+                      className="w-8 h-8 rounded-lg hover:bg-neutral-600 flex items-center justify-center transition-colors text-neutral-300"
                     >
-                      <Plus className="w-4 h-4" />
+                      <Plus className="w-3.5 h-3.5" />
                     </button>
                   </div>
 
                   <button
                     onClick={() => removeFromCart(item.product.id)}
-                    className="text-red-500 hover:text-red-700 transition"
+                    className="text-neutral-600 hover:text-red-400 transition-colors"
                   >
-                    <Trash2 className="w-5 h-5" />
+                    <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
 
-                <div className="md:text-right">
-                  <p className="font-bold text-lg">
+                <div className="md:text-right flex items-start">
+                  <p className="font-bold text-lg text-white">
                     {(item.product.price * item.quantity).toFixed(2)}€
                   </p>
                 </div>
@@ -261,27 +262,27 @@ export const Cart = () => {
             ))}
           </div>
 
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-neutral-900/60 border border-neutral-700/50 rounded-2xl p-6">
             {discount > 0 && (
-              <div className="space-y-2 mb-6 pb-6 border-b">
-                <div className="flex justify-between text-gray-700">
+              <div className="space-y-3 mb-6 pb-6 border-b border-neutral-600/30">
+                <div className="flex justify-between text-neutral-500 text-sm">
                   <span>Subtotal</span>
                   <span>{totalPrice.toFixed(2)}€</span>
                 </div>
-                <div className="flex justify-between text-black font-semibold">
+                <div className="flex justify-between text-emerald-400 font-semibold">
                   <span>Descuento (3+ items)</span>
                   <span>-{discount.toFixed(2)}€</span>
                 </div>
               </div>
             )}
             <div className="flex justify-between items-center mb-6">
-              <span className="text-xl font-bold text-gray-800">Total</span>
-              <span className="text-2xl font-bold text-black">{finalPrice.toFixed(2)}€</span>
+              <span className="text-lg font-bold text-white">Total</span>
+              <span className="text-3xl font-bold text-white tracking-tight">{finalPrice.toFixed(2)}€</span>
             </div>
 
             <button
               onClick={() => setShowCheckout(true)}
-              className="w-full bg-black hover:bg-gray-800 text-white py-3 px-6 rounded-lg font-semibold transition"
+              className="w-full btn-primary py-4 text-base"
             >
               Proceder al pedido
             </button>

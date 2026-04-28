@@ -1,115 +1,121 @@
 import { useState } from 'react';
-import { MessageCircle, Mail, Phone, MapPin, X } from 'lucide-react';
+import { MessageCircle, Mail, Phone, MapPin, X, Clock, Shield } from 'lucide-react';
 
 export const Contact = () => {
   const [showChatInfo, setShowChatInfo] = useState(false);
 
   const whatsappMessage = encodeURIComponent(
-    'Hola 👋\nGracias por contactar con CBDrex.\nEste servicio es exclusivo para mayores de 18 años y productos de cannabis legal (CBD / cáñamo).\nIndica:\n1️⃣ Producto que te interesa\n2️⃣ Cantidad\n3️⃣ Confirmación de que eres mayor de edad\nTe responderemos lo antes posible.'
+    'Hola\nGracias por contactar con CBDrex.\nEste servicio es exclusivo para mayores de 18 anos y productos de cannabis legal (CBD / canamo).\nIndica:\n1. Producto que te interesa\n2. Cantidad\n3. Confirmacion de que eres mayor de edad\nTe responderemos lo antes posible.'
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-12">
+    <div className="min-h-screen bg-gradient-to-b from-neutral-950 via-neutral-700 to-neutral-500 pt-28 pb-16">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-4xl font-bold text-gray-800 mb-4 text-center">Contacto</h2>
-          <p className="text-gray-600 text-center mb-12">
-            Estamos aquí para ayudarte. Contáctanos por tu canal preferido.
-          </p>
+          <div className="text-center mb-12">
+            <h2 className="font-display text-5xl font-bold text-white mb-3">Contacto</h2>
+            <p className="text-neutral-500 text-lg max-w-md mx-auto">
+              Estamos aqui para ayudarte. Contactanos por tu canal preferido.
+            </p>
+            <div className="divider-dark mx-auto mt-6" />
+          </div>
 
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="bg-gray-100 p-3 rounded-lg">
-                  <MessageCircle className="w-6 h-6 text-gray-900" />
+          <div className="grid md:grid-cols-2 gap-6 mb-10">
+            <div className="bg-neutral-800/60 border border-neutral-600/40 rounded-2xl p-8 hover:border-neutral-500/50 transition-all duration-300">
+              <div className="flex items-center gap-4 mb-5">
+                <div className="w-12 h-12 bg-neutral-700 rounded-xl flex items-center justify-center">
+                  <MessageCircle className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg">WhatsApp</h3>
-                  <p className="text-sm text-gray-600">Respuesta inmediata</p>
+                  <h3 className="font-bold text-white text-lg">WhatsApp</h3>
+                  <p className="text-sm text-neutral-500">Respuesta inmediata</p>
                 </div>
               </div>
-              <p className="text-gray-700 mb-4">
-                La forma más rápida de contactarnos. Respondemos en minutos.
+              <p className="text-neutral-400 mb-6 leading-relaxed">
+                La forma mas rapida de contactarnos. Respondemos en minutos.
               </p>
               <a
                 href={`https://wa.me/34681872420?text=${whatsappMessage}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block text-center bg-black hover:bg-gray-800 text-white py-3 px-6 rounded-lg font-semibold transition"
+                className="block text-center btn-primary"
               >
                 Abrir WhatsApp
               </a>
             </div>
 
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="bg-gray-100 p-3 rounded-lg">
-                  <Mail className="w-6 h-6 text-gray-900" />
+            <div className="bg-neutral-800/60 border border-neutral-600/40 rounded-2xl p-8 hover:border-neutral-500/50 transition-all duration-300">
+              <div className="flex items-center gap-4 mb-5">
+                <div className="w-12 h-12 bg-neutral-700 rounded-xl flex items-center justify-center">
+                  <Mail className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg">Email</h3>
-                  <p className="text-sm text-gray-600">Respuesta en 24h</p>
+                  <h3 className="font-bold text-white text-lg">Email</h3>
+                  <p className="text-sm text-neutral-500">Respuesta en 24h</p>
                 </div>
               </div>
-              <p className="text-gray-700 mb-4">
-                Envíanos un correo y te responderemos lo antes posible.
+              <p className="text-neutral-400 mb-6 leading-relaxed">
+                Envianos un correo y te responderemos lo antes posible.
               </p>
               <a
                 href="mailto:cbdrexstore@gmail.com"
-                className="block text-center bg-gray-800 hover:bg-gray-900 text-white py-3 px-6 rounded-lg font-semibold transition"
+                className="block text-center btn-outline"
               >
                 cbdrexstore@gmail.com
               </a>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-md p-8">
-            <h3 className="font-bold text-2xl mb-6 text-center">Información Adicional</h3>
+          <div className="bg-neutral-800/60 border border-neutral-600/40 rounded-2xl p-8 mb-10">
+            <h3 className="text-xs font-bold tracking-[0.2em] uppercase text-neutral-500 mb-6 text-center">Informacion Adicional</h3>
 
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="flex gap-4">
-                <div className="bg-gray-100 p-3 rounded-lg h-fit">
-                  <Phone className="w-6 h-6 text-gray-900" />
+            <div className="grid md:grid-cols-2 gap-4">
+              {[
+                { icon: Phone, title: 'Telefono', info: '+34 681 872 420', sub: 'Lunes a Sabado: 10:00 - 20:00' },
+                { icon: MapPin, title: 'Entrega', info: 'Entrega en mano', sub: 'Verificacion de edad +18 obligatoria' },
+                { icon: Clock, title: 'Horario', info: 'Lun - Sab: 10:00 - 20:00', sub: 'Domingo cerrado' },
+                { icon: Shield, title: 'Legal', info: '100% legal en Espana', sub: 'THC menor a 0.2%' },
+              ].map((item) => (
+                <div key={item.title} className="flex gap-4 p-4 bg-neutral-700/50 rounded-xl border border-neutral-600/40">
+                  <div className="w-10 h-10 bg-neutral-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <item.icon className="w-5 h-5 text-neutral-300" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-white mb-1">{item.title}</h4>
+                    <p className="text-neutral-400">{item.info}</p>
+                    <p className="text-xs text-neutral-600 mt-1">{item.sub}</p>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="font-bold mb-2">Teléfono</h4>
-                  <p className="text-gray-700">+34 681 872 420</p>
-                  <p className="text-sm text-gray-500 mt-1">Lunes a Sábado: 10:00 - 20:00</p>
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                <div className="bg-gray-100 p-3 rounded-lg h-fit">
-                  <MapPin className="w-6 h-6 text-gray-900" />
-                </div>
-                <div>
-                  <h4 className="font-bold mb-2">Entrega</h4>
-                  <p className="text-gray-700">Entrega en mano</p>
-                  <p className="text-sm text-gray-500 mt-1">Verificación de edad +18 obligatoria</p>
-                </div>
-              </div>
+              ))}
             </div>
 
-            <div className="mt-8 p-6 bg-amber-50 border border-amber-200 rounded-lg">
-              <h4 className="font-bold text-lg mb-3">Importante</h4>
-              <ul className="space-y-2 text-sm text-gray-700">
-                <li>• Todos nuestros productos son legales en España</li>
-                <li>• Venta exclusiva a mayores de 18 años</li>
-                <li>• Se verificará la edad en el momento de la entrega</li>
-                <li>• Entrega en mano con confirmación previa</li>
-                <li>• Pago en efectivo o transferencia tras confirmación</li>
+            <div className="mt-6 p-5 bg-amber-900/20 border border-amber-800/30 rounded-2xl">
+              <h4 className="font-bold text-amber-300 mb-3">Importante</h4>
+              <ul className="space-y-2 text-sm text-amber-200/80">
+                {[
+                  'Todos nuestros productos son legales en Espana',
+                  'Venta exclusiva a mayores de 18 anos',
+                  'Se verificara la edad en el momento de la entrega',
+                  'Entrega en mano con confirmacion previa',
+                  'Pago en efectivo o transferencia tras confirmacion',
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 flex-shrink-0 mt-1.5" />
+                    {item}
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
 
-          <div className="mt-8 bg-gradient-to-r from-gray-900 to-gray-800 text-white rounded-lg shadow-lg p-8 text-center">
-            <h3 className="text-2xl font-bold mb-4">¿Tienes dudas?</h3>
-            <p className="mb-6">
-              Nuestro equipo está disponible para resolver todas tus preguntas sobre nuestros productos.
+          <div className="bg-gradient-to-br from-neutral-800 to-neutral-700 text-white rounded-3xl p-10 text-center border border-neutral-600/40">
+            <h3 className="font-display text-3xl font-bold mb-3">Tienes dudas?</h3>
+            <p className="text-neutral-400 mb-8 max-w-md mx-auto">
+              Nuestro equipo esta disponible para resolver todas tus preguntas sobre nuestros productos.
             </p>
             <button
               onClick={() => setShowChatInfo(true)}
-              className="inline-flex items-center gap-2 bg-white text-black px-8 py-3 rounded-lg font-semibold hover:bg-gray-200 transition"
+              className="inline-flex items-center gap-2 bg-white text-neutral-900 px-8 py-3.5 rounded-xl font-semibold hover:bg-neutral-200 transition-all duration-300 hover:scale-105 active:scale-95"
             >
               <MessageCircle className="w-5 h-5" />
               Chatea con nosotros
@@ -117,42 +123,48 @@ export const Contact = () => {
           </div>
 
           {showChatInfo && (
-            <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-              <div className="bg-white rounded-lg shadow-lg max-w-md w-full">
-                <div className="flex justify-between items-center p-6 border-b">
-                  <h3 className="text-lg font-bold text-gray-800">Información Importante</h3>
+            <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50" onClick={() => setShowChatInfo(false)}>
+              <div
+                className="bg-neutral-800 border border-neutral-600/50 shadow-2xl shadow-black/50 max-w-md w-full rounded-3xl animate-scale-in"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex justify-between items-center p-6 border-b border-neutral-600/50">
+                  <h3 className="font-display text-lg font-bold text-white">Informacion Importante</h3>
                   <button
                     onClick={() => setShowChatInfo(false)}
-                    className="text-gray-500 hover:text-gray-700 transition"
+                    className="w-8 h-8 rounded-lg bg-neutral-800 hover:bg-neutral-700 flex items-center justify-center transition-colors"
                   >
-                    <X size={20} />
+                    <X size={16} className="text-neutral-400" />
                   </button>
                 </div>
 
                 <div className="p-6 space-y-4">
-                  <p className="text-gray-700 font-semibold">
+                  <p className="text-neutral-300 font-semibold">
                     Hola, gracias por contactar con CBDrex.
                   </p>
-                  <p className="text-gray-700">
-                    Este servicio es <strong>exclusivo para mayores de 18 años</strong> y para productos de cannabis legal (CBD / cáñamo).
+                  <p className="text-neutral-400 leading-relaxed">
+                    Este servicio es <strong className="text-white">exclusivo para mayores de 18 anos</strong> y para productos de cannabis legal (CBD / canamo).
                   </p>
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <p className="text-sm font-semibold text-blue-900 mb-2">Por favor, indica:</p>
-                    <ul className="text-sm text-blue-900 space-y-1">
-                      <li>1. Producto que te interesa</li>
-                      <li>2. Cantidad</li>
-                      <li>3. Confirmación de que eres mayor de 18 años</li>
+                  <div className="bg-neutral-700/60 border border-neutral-600/40 rounded-2xl p-4">
+                    <p className="text-sm font-semibold text-white mb-2">Por favor, indica:</p>
+                    <ul className="text-sm text-neutral-400 space-y-1.5">
+                      {['Producto que te interesa', 'Cantidad', 'Confirmacion de que eres mayor de 18 anos'].map((item, i) => (
+                        <li key={item} className="flex items-center gap-2">
+                          <span className="w-5 h-5 rounded-full bg-white text-neutral-900 text-xs flex items-center justify-center flex-shrink-0 font-bold">{i + 1}</span>
+                          {item}
+                        </li>
+                      ))}
                     </ul>
                   </div>
-                  <p className="text-gray-600 text-sm italic">
+                  <p className="text-neutral-600 text-sm italic">
                     Te responderemos lo antes posible.
                   </p>
                 </div>
 
-                <div className="flex gap-3 p-6 border-t">
+                <div className="flex gap-3 p-6 border-t border-neutral-600/50">
                   <button
                     onClick={() => setShowChatInfo(false)}
-                    className="flex-1 border-2 border-gray-300 text-gray-700 py-2 px-4 rounded-lg font-semibold hover:bg-gray-50 transition"
+                    className="flex-1 btn-outline"
                   >
                     Cancelar
                   </button>
@@ -161,7 +173,7 @@ export const Contact = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setShowChatInfo(false)}
-                    className="flex-1 inline-flex items-center justify-center bg-black hover:bg-gray-800 text-white py-2 px-4 rounded-lg font-semibold transition gap-2"
+                    className="flex-1 inline-flex items-center justify-center btn-primary gap-2"
                   >
                     <MessageCircle className="w-4 h-4" />
                     Continuar

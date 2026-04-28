@@ -47,101 +47,116 @@ export const ProductDetail = ({ product, onClose }: ProductDetailProps) => {
   );
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white border-b flex justify-between items-center p-4">
-          <h2 className="text-2xl font-bold text-gray-800">{product.name}</h2>
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={onClose}>
+      <div
+        className="bg-neutral-800 border border-neutral-600/50 rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto animate-scale-in shadow-2xl shadow-black/50"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="sticky top-0 bg-neutral-800/95 backdrop-blur-md border-b border-neutral-600/50 flex justify-between items-center p-5 rounded-t-3xl z-10">
+          <div>
+            <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-neutral-400">
+              {product.category === '10-OH-HHC' ? '10-OH-HHC' : product.category}
+            </span>
+            <h2 className="font-display text-xl font-bold text-white leading-snug">{product.name}</h2>
+          </div>
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 transition"
+            className="w-10 h-10 rounded-xl bg-neutral-700 hover:bg-neutral-600 flex items-center justify-center transition-colors"
           >
-            <X className="w-6 h-6" />
+            <X className="w-5 h-5 text-neutral-300" />
           </button>
         </div>
 
-        <div className="p-6">
+        <div className="p-6 lg:p-8">
           <div className="grid md:grid-cols-2 gap-8">
             <div>
-              <img
-                src={product.image_url}
-                alt={product.name}
-                className="w-full h-96 object-cover rounded-lg shadow-lg"
-              />
+              <div className="relative rounded-2xl overflow-hidden bg-neutral-700">
+                <img
+                  src={product.image_url}
+                  alt={product.name}
+                  className="w-full h-80 lg:h-[420px] object-cover"
+                />
+              </div>
             </div>
 
-            <div>
-              <div className="mb-4">
-                <span className="inline-block bg-gray-100 text-gray-900 px-3 py-1 rounded-full text-sm font-semibold">
-                  {product.category}
-                </span>
-              </div>
-
-              <p className="text-gray-700 mb-6 leading-relaxed">{product.description}</p>
+            <div className="flex flex-col">
+              <p className="text-neutral-300 mb-6 leading-relaxed text-[15px]">{product.description}</p>
 
               <div className="space-y-4 mb-6">
-                <div className="border-l-4 border-black pl-4">
-                  <p className="text-sm font-semibold text-gray-600">Sabor/Aroma</p>
-                  <p className="text-gray-800">{product.flavor}</p>
+                <div className="flex items-start gap-3">
+                  <div className="w-1 h-full min-h-[40px] bg-white rounded-full flex-shrink-0" />
+                  <div>
+                    <p className="text-[10px] font-bold tracking-[0.15em] uppercase text-neutral-400">Sabor / Aroma</p>
+                    <p className="text-white font-medium">{product.flavor}</p>
+                  </div>
                 </div>
 
-                <div className="border-l-4 border-black pl-4">
-                  <p className="text-sm font-semibold text-gray-600">Formato</p>
-                  <p className="text-gray-800">{product.format}</p>
+                <div className="flex items-start gap-3">
+                  <div className="w-1 h-full min-h-[40px] bg-white rounded-full flex-shrink-0" />
+                  <div>
+                    <p className="text-[10px] font-bold tracking-[0.15em] uppercase text-neutral-400">Formato</p>
+                    <p className="text-white font-medium">{product.format}</p>
+                  </div>
                 </div>
 
-                <div className="border-l-4 border-black pl-4">
-                  <p className="text-sm font-semibold text-gray-600">Disponibilidad</p>
-                  <p className="text-gray-800">
-                    {product.stock > 0 ? `${product.stock} unidades disponibles` : 'Sin stock'}
-                  </p>
+                <div className="flex items-start gap-3">
+                  <div className="w-1 h-full min-h-[40px] bg-white rounded-full flex-shrink-0" />
+                  <div>
+                    <p className="text-[10px] font-bold tracking-[0.15em] uppercase text-neutral-400">Disponibilidad</p>
+                    <p className="text-white font-medium">
+                      {product.stock > 0 ? `${product.stock} unidades disponibles` : 'Sin stock'}
+                    </p>
+                  </div>
                 </div>
               </div>
 
-              <div className="border-t pt-6">
-                <div className="mb-4">
-                  <p className="text-sm text-gray-600 mb-2">Precio unitario:</p>
-                  <span className="text-2xl font-bold text-gray-800">{product.price.toFixed(2)}€</span>
+              <div className="border-t border-neutral-600/50 pt-6 mt-auto">
+                <div className="flex items-baseline gap-2 mb-4">
+                  <span className="text-3xl font-bold text-white tracking-tight">
+                    {product.price.toFixed(2)}<span className="text-xl font-semibold text-neutral-400">€</span>
+                  </span>
+                  <span className="text-xs text-neutral-400">unidad</span>
                 </div>
 
-                <div className="mt-4 space-y-2 mb-6">
+                <div className="space-y-2 mb-6">
                   {promotions.map((promo) => (
                     <div
                       key={promo.id}
-                      className="flex items-center gap-2 text-sm bg-gray-50 border border-gray-200 rounded-lg p-2"
+                      className="flex items-center gap-2 text-sm bg-amber-900/20 border border-amber-800/30 rounded-xl p-3"
                     >
-                      <TrendingDown className="w-4 h-4 text-gray-900 flex-shrink-0" />
-                      <span className="text-gray-900 font-medium">{promo.description}</span>
+                      <TrendingDown className="w-4 h-4 text-amber-500 flex-shrink-0" />
+                      <span className="text-amber-400 font-medium">{promo.description}</span>
                     </div>
                   ))}
                 </div>
 
                 {product.stock > 0 ? (
                   <>
-                    <div className="flex items-center gap-4 mb-4">
-                      <span className="font-semibold text-gray-700">Cantidad:</span>
-                      <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-4 mb-5">
+                      <span className="text-sm font-medium text-neutral-400">Cantidad</span>
+                      <div className="flex items-center gap-1 bg-neutral-700 rounded-xl p-1 border border-neutral-600/50">
                         <button
                           onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                          className="bg-gray-200 hover:bg-gray-300 p-2 rounded-lg transition"
+                          className="w-9 h-9 rounded-lg hover:bg-neutral-600 flex items-center justify-center transition-colors text-neutral-300"
                         >
                           <Minus className="w-4 h-4" />
                         </button>
-                        <span className="w-12 text-center font-semibold">{quantity}</span>
+                        <span className="w-10 text-center font-bold text-white">{quantity}</span>
                         <button
                           onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
-                          className="bg-gray-200 hover:bg-gray-300 p-2 rounded-lg transition"
+                          className="w-9 h-9 rounded-lg hover:bg-neutral-600 flex items-center justify-center transition-colors text-neutral-300"
                         >
                           <Plus className="w-4 h-4" />
                         </button>
                       </div>
                     </div>
 
-                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4">
-                      <p className="text-sm text-gray-600 mb-1">Total por {quantity} unidad{quantity !== 1 ? 'es' : ''}:</p>
-                      <div className="flex items-baseline gap-2">
-                        <span className="text-3xl font-bold text-black">{totalPrice.toFixed(2)}€</span>
+                    <div className="bg-neutral-700/60 rounded-2xl p-5 mb-5 border border-neutral-600/40">
+                      <p className="text-xs text-neutral-400 mb-1">Total por {quantity} unidad{quantity !== 1 ? 'es' : ''}</p>
+                      <div className="flex items-baseline gap-3">
+                        <span className="text-4xl font-bold text-white tracking-tight">{totalPrice.toFixed(2)}€</span>
                         {savings > 0 && (
-                          <span className="text-sm font-semibold text-gray-900 bg-gray-200 px-3 py-1 rounded-full">
+                          <span className="badge-gold">
                             Ahorras {savings.toFixed(2)}€
                           </span>
                         )}
@@ -151,25 +166,25 @@ export const ProductDetail = ({ product, onClose }: ProductDetailProps) => {
                     <div className="flex gap-3">
                       <button
                         onClick={handleAddToCart}
-                        className="flex-1 bg-black hover:bg-gray-800 text-white py-3 px-6 rounded-lg font-semibold flex items-center justify-center gap-2 transition"
+                        className="flex-1 btn-primary flex items-center justify-center gap-2"
                       >
                         <ShoppingCart className="w-5 h-5" />
-                        Añadir al carrito
+                        Anadir al carrito
                       </button>
                       <a
                         href={`https://wa.me/34681872420?text=${whatsappMessage}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-gray-800 hover:bg-gray-900 text-white p-3 rounded-lg transition"
+                        className="bg-neutral-700 hover:bg-neutral-600 text-white p-3.5 rounded-xl transition-colors border border-neutral-600/50"
                       >
-                        <MessageCircle className="w-6 h-6" />
+                        <MessageCircle className="w-5 h-5" />
                       </a>
                     </div>
                   </>
                 ) : (
                   <button
                     disabled
-                    className="w-full bg-gray-300 text-gray-500 py-3 px-6 rounded-lg font-semibold cursor-not-allowed"
+                    className="w-full bg-neutral-700 text-neutral-400 py-3 px-6 rounded-xl font-semibold cursor-not-allowed border border-neutral-600/50"
                   >
                     Sin stock
                   </button>

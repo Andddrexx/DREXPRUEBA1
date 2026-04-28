@@ -9,60 +9,72 @@ interface ProductCardProps {
 
 export const ProductCard = ({ product, onViewDetails, onAddToCart }: ProductCardProps) => {
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow">
-      <div className="relative h-64 overflow-hidden group cursor-pointer" onClick={() => onViewDetails(product)}>
+    <div className="card-premium overflow-hidden group">
+      <div className="relative h-72 overflow-hidden cursor-pointer" onClick={() => onViewDetails(product)}>
         <img
           src={product.image_url}
           alt={product.name}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
         {product.featured && (
-          <div className="absolute top-2 right-2 bg-amber-500 text-white px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
-            <Star className="w-4 h-4 fill-current" />
+          <div className="absolute top-3 right-3 badge-gold">
+            <Star className="w-3 h-3 fill-current" />
             Destacado
           </div>
         )}
+
+        {product.stock > 0 && (
+          <div className="absolute top-3 left-3 badge-stock">
+            Disponible
+          </div>
+        )}
+
+        <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+          <button
+            onClick={(e) => { e.stopPropagation(); onViewDetails(product); }}
+            className="w-full bg-neutral-900/80 text-white py-2.5 rounded-xl font-semibold text-sm backdrop-blur-md border border-white/10"
+          >
+            Ver detalles
+          </button>
+        </div>
       </div>
 
-      <div className="p-4">
-        <h3 className="text-xl font-bold text-gray-800 mb-2">{product.name}</h3>
-        <p className="text-sm text-gray-600 mb-2 line-clamp-2">{product.description}</p>
-
-        <div className="mb-3">
-          <span className="text-xs text-gray-500 font-semibold">Sabor: </span>
-          <span className="text-xs text-gray-700">{product.flavor}</span>
+      <div className="p-5">
+        <div className="mb-2">
+          <span className="text-[10px] font-bold tracking-[0.15em] uppercase text-neutral-400">
+            {product.category === '10-OH-HHC' ? '10-OH-HHC' : product.category}
+          </span>
         </div>
 
-        <div className="flex items-center justify-between mb-4">
+        <h3 className="font-bold text-neutral-900 mb-1.5 leading-snug line-clamp-2 text-[15px]">
+          {product.name}
+        </h3>
+
+        <p className="text-xs text-neutral-500 mb-3 line-clamp-1">{product.flavor}</p>
+
+        <div className="flex items-end justify-between pt-3 border-t border-neutral-200">
           <div>
-            <span className="text-2xl font-bold text-black">{product.price.toFixed(2)}€</span>
-            <span className="text-xs text-gray-500 ml-2">{product.format}</span>
+            <span className="text-2xl font-bold text-neutral-900 tracking-tight">
+              {product.price.toFixed(2)}<span className="text-base font-semibold text-neutral-400">€</span>
+            </span>
+            <p className="text-[10px] text-neutral-400 mt-0.5">{product.format}</p>
           </div>
-        </div>
 
-        {product.stock > 0 ? (
-          <div className="flex gap-2">
-            <button
-              onClick={() => onViewDetails(product)}
-              className="flex-1 border-2 border-black text-black py-2 px-4 rounded-lg font-semibold hover:bg-gray-50 transition"
-            >
-              Ver detalles
-            </button>
+          {product.stock > 0 ? (
             <button
               onClick={() => onAddToCart(product)}
-              className="bg-black hover:bg-gray-800 text-white p-2 rounded-lg transition"
+              className="bg-neutral-900 hover:bg-neutral-800 text-white p-2.5 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
             >
-              <ShoppingCart className="w-5 h-5" />
+              <ShoppingCart className="w-4 h-4" />
             </button>
-          </div>
-        ) : (
-          <button
-            disabled
-            className="w-full bg-gray-300 text-gray-500 py-2 px-4 rounded-lg font-semibold cursor-not-allowed"
-          >
-            Sin stock
-          </button>
-        )}
+          ) : (
+            <span className="text-xs font-semibold text-neutral-400 bg-neutral-100 px-3 py-1.5 rounded-lg">
+              Sin stock
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );
