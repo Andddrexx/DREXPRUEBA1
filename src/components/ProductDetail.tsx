@@ -3,7 +3,7 @@ import { Product, Promotion, PromoColor } from '../types';
 import { X, Minus, Plus, ShoppingCart, MessageCircle, TrendingDown } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { promotions as promotionsData } from '../data/products';
-import { formatProductMessageForDetail } from '../lib/whatsappMessages';
+import { WhatsAppConsultModal } from './WhatsAppConsultModal';
 
 const promoColorStyles: Record<PromoColor, { bg: string; border: string; icon: string; text: string; savingsBg: string; savingsBorder: string; savingsText: string }> = {
   orange: { bg: 'bg-amber-900/20', border: 'border-amber-800/30', icon: 'text-amber-500', text: 'text-amber-400', savingsBg: 'bg-amber-900/40', savingsBorder: 'border-amber-700/50', savingsText: 'text-amber-400' },
@@ -22,6 +22,7 @@ export const ProductDetail = ({ product, onClose }: ProductDetailProps) => {
   const [promotions] = useState<Promotion[]>(promotionsData);
   const [totalPrice, setTotalPrice] = useState(product.price);
   const [savings, setSavings] = useState(0);
+  const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
   const { addToCart } = useCart();
 
   useEffect(() => {
@@ -50,9 +51,13 @@ export const ProductDetail = ({ product, onClose }: ProductDetailProps) => {
     onClose();
   };
 
-  const whatsappMessage = encodeURIComponent(formatProductMessageForDetail(product.name, product.price));
-
   return (
+    <>
+    <WhatsAppConsultModal
+      isOpen={showWhatsAppModal}
+      onClose={() => setShowWhatsAppModal(false)}
+      productName={product.name}
+    />
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={onClose}>
       <div
         className="bg-neutral-800 border border-neutral-600/50 rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto animate-scale-in shadow-2xl shadow-black/50"
@@ -163,14 +168,12 @@ export const ProductDetail = ({ product, onClose }: ProductDetailProps) => {
                         <ShoppingCart className="w-5 h-5" />
                         Anadir al carrito
                       </button>
-                      <a
-                        href={`https://wa.me/34681872420?text=${whatsappMessage}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                      <button
+                        onClick={() => setShowWhatsAppModal(true)}
                         className="bg-neutral-700 hover:bg-neutral-600 text-white p-3.5 rounded-xl transition-colors border border-neutral-600/50"
                       >
                         <MessageCircle className="w-5 h-5" />
-                      </a>
+                      </button>
                     </div>
                   </>
                 ) : (
@@ -187,5 +190,6 @@ export const ProductDetail = ({ product, onClose }: ProductDetailProps) => {
         </div>
       </div>
     </div>
+    </>
   );
 };

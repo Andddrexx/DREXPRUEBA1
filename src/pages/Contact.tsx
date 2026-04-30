@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { MessageCircle, Mail, Phone, MapPin, X, Clock, Shield } from 'lucide-react';
+import { WhatsAppConsultModal } from '../components/WhatsAppConsultModal';
 
 export const Contact = () => {
   const [showChatInfo, setShowChatInfo] = useState(false);
+  const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
 
   const whatsappMessage = encodeURIComponent(
-    'Hola\nGracias por contactar con CBDrex.\nEste servicio es exclusivo para mayores de 18 anos y productos de cannabis legal (CBD / canamo).\nIndica:\n1. Producto que te interesa\n2. Cantidad\n3. Confirmacion de que eres mayor de edad\nTe responderemos lo antes posible.'
+    'Hola\n Gracias por contactar con CBDREX.\n Este servicio es exclusivo para mayores de 18 años y productos de cannabis legal (CBD / THC).\n Indica:\n 1. Producto que te interesa\n 2. Cantidad\n 3. Confirmacion de que eres mayor de edad\n Te responderemos lo antes posible.'
   );
 
   return (
@@ -34,14 +36,12 @@ export const Contact = () => {
               <p className="text-neutral-400 mb-6 leading-relaxed">
                 La forma mas rapida de contactarnos. Respondemos en minutos.
               </p>
-              <a
-                href={`https://wa.me/34681872420?text=${whatsappMessage}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block text-center btn-primary"
+              <button
+                onClick={() => setShowWhatsAppModal(true)}
+                className="block text-center btn-primary w-full"
               >
                 Abrir WhatsApp
-              </a>
+              </button>
             </div>
 
             <div className="bg-neutral-800/60 border border-neutral-600/40 rounded-2xl p-8 hover:border-neutral-500/50 transition-all duration-300">
@@ -114,7 +114,7 @@ export const Contact = () => {
               Nuestro equipo esta disponible para resolver todas tus preguntas sobre nuestros productos.
             </p>
             <button
-              onClick={() => setShowChatInfo(true)}
+              onClick={() => setShowWhatsAppModal(true)}
               className="inline-flex items-center gap-2 bg-white text-neutral-900 px-8 py-3.5 rounded-xl font-semibold hover:bg-neutral-200 transition-all duration-300 hover:scale-105 active:scale-95"
             >
               <MessageCircle className="w-5 h-5" />
@@ -122,66 +122,10 @@ export const Contact = () => {
             </button>
           </div>
 
-          {showChatInfo && (
-            <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50" onClick={() => setShowChatInfo(false)}>
-              <div
-                className="bg-neutral-800 border border-neutral-600/50 shadow-2xl shadow-black/50 max-w-md w-full rounded-3xl animate-scale-in"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <div className="flex justify-between items-center p-6 border-b border-neutral-600/50">
-                  <h3 className="font-display text-lg font-bold text-white">Informacion Importante</h3>
-                  <button
-                    onClick={() => setShowChatInfo(false)}
-                    className="w-8 h-8 rounded-lg bg-neutral-800 hover:bg-neutral-700 flex items-center justify-center transition-colors"
-                  >
-                    <X size={16} className="text-neutral-400" />
-                  </button>
-                </div>
-
-                <div className="p-6 space-y-4">
-                  <p className="text-neutral-300 font-semibold">
-                    Hola, gracias por contactar con CBDrex.
-                  </p>
-                  <p className="text-neutral-400 leading-relaxed">
-                    Este servicio es <strong className="text-white">exclusivo para mayores de 18 anos</strong> y para productos de cannabis legal (CBD / canamo).
-                  </p>
-                  <div className="bg-neutral-700/60 border border-neutral-600/40 rounded-2xl p-4">
-                    <p className="text-sm font-semibold text-white mb-2">Por favor, indica:</p>
-                    <ul className="text-sm text-neutral-400 space-y-1.5">
-                      {['Producto que te interesa', 'Cantidad', 'Confirmacion de que eres mayor de 18 anos'].map((item, i) => (
-                        <li key={item} className="flex items-center gap-2">
-                          <span className="w-5 h-5 rounded-full bg-white text-neutral-900 text-xs flex items-center justify-center flex-shrink-0 font-bold">{i + 1}</span>
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <p className="text-neutral-600 text-sm italic">
-                    Te responderemos lo antes posible.
-                  </p>
-                </div>
-
-                <div className="flex gap-3 p-6 border-t border-neutral-600/50">
-                  <button
-                    onClick={() => setShowChatInfo(false)}
-                    className="flex-1 btn-outline"
-                  >
-                    Cancelar
-                  </button>
-                  <a
-                    href={`https://wa.me/34681872420?text=${whatsappMessage}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => setShowChatInfo(false)}
-                    className="flex-1 inline-flex items-center justify-center btn-primary gap-2"
-                  >
-                    <MessageCircle className="w-4 h-4" />
-                    Continuar
-                  </a>
-                </div>
-              </div>
-            </div>
-          )}
+          <WhatsAppConsultModal
+            isOpen={showWhatsAppModal}
+            onClose={() => setShowWhatsAppModal(false)}
+          />
         </div>
       </div>
     </div>

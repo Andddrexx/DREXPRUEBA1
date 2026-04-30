@@ -33,11 +33,11 @@ export const AgeWarning = () => {
         <div className="divider-dark mx-auto mb-6" />
 
         <p className="text-neutral-400 mb-6 leading-relaxed">
-          Este sitio web contiene productos derivados del cannabis legal destinados exclusivamente a mayores de 18 anos.
+          Este sitio web contiene productos derivados del cannabis legal destinados exclusivamente a mayores de 18 años.
         </p>
 
         <p className="text-white mb-8 font-bold text-lg">
-          Eres mayor de 18 anos?
+          Eres mayor de 18 años?
         </p>
 
         <div className="flex gap-3">

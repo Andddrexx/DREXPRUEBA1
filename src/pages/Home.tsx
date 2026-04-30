@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Product } from '../types';
 import { ProductCard } from '../components/ProductCard';
 import { ProductDetail } from '../components/ProductDetail';
+import { WhatsAppConsultModal } from '../components/WhatsAppConsultModal';
 import { products as productsData } from '../data/products';
 import { useCart } from '../context/CartContext';
 import { MessageCircle, ArrowDown, Flame, Shield, Truck } from 'lucide-react';
@@ -10,6 +11,8 @@ export const Home = () => {
   const [products] = useState<Product[]>(productsData);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [activeSection, setActiveSection] = useState('vapers');
+  const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
+  const [whatsappProductName, setWhatsappProductName] = useState('');
   const { addToCart } = useCart();
 
   useEffect(() => {
@@ -35,6 +38,11 @@ export const Home = () => {
 
   const handleAddToCart = (product: Product) => {
     addToCart(product, 1);
+  };
+
+  const handleWhatsAppConsult = (productName?: string) => {
+    setWhatsappProductName(productName || '');
+    setShowWhatsAppModal(true);
   };
 
   const scrollToSection = (sectionId: string) => {
@@ -79,15 +87,13 @@ export const Home = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up stagger-4">
-            <a
-              href="https://wa.me/34681872420?text=Hola%20%F0%9F%91%8B%0AGracias%20por%20contactar%20con%20CBDrex.%0AEste%20servicio%20es%20exclusivo%20para%20mayores%20de%2018%20a%C3%B1os%20y%20productos%20de%20cannabis%20legal%20(CBD%20/%20c%C3%A1%C3%B1amo).%0AIndica:%0A1%EF%B8%8F%E2%83%A3%20Producto%20que%20te%20interesa%0A2%EF%B8%8F%E2%83%A3%20Cantidad%0A3%EF%B8%8F%E2%83%A3%20Confirmaci%C3%B3n%20de%20que%20eres%20mayor%20de%20edad%0ATe%20responderemos%20lo%20antes%20posible."
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={() => handleWhatsAppConsult()}
               className="inline-flex items-center gap-2 bg-white text-neutral-900 px-8 py-3.5 rounded-xl font-semibold hover:bg-neutral-200 transition-all duration-300 hover:scale-105 active:scale-95"
             >
               <MessageCircle className="w-5 h-5" />
               Consulta por WhatsApp
-            </a>
+            </button>
             <button
               onClick={() => scrollToSection('vapers')}
               className="inline-flex items-center gap-2 border border-neutral-700 text-neutral-300 px-8 py-3.5 rounded-xl font-semibold hover:bg-neutral-800 hover:border-neutral-600 transition-all duration-300"
@@ -163,6 +169,7 @@ export const Home = () => {
                 product={product}
                 onViewDetails={setSelectedProduct}
                 onAddToCart={handleAddToCart}
+                onWhatsAppConsult={(name) => handleWhatsAppConsult(name)}
               />
             ))}
           </div>
@@ -184,6 +191,7 @@ export const Home = () => {
                 product={product}
                 onViewDetails={setSelectedProduct}
                 onAddToCart={handleAddToCart}
+                onWhatsAppConsult={(name) => handleWhatsAppConsult(name)}
               />
             ))}
           </div>
@@ -205,6 +213,7 @@ export const Home = () => {
                 product={product}
                 onViewDetails={setSelectedProduct}
                 onAddToCart={handleAddToCart}
+                onWhatsAppConsult={(name) => handleWhatsAppConsult(name)}
               />
             ))}
           </div>
@@ -222,6 +231,12 @@ export const Home = () => {
           onClose={() => setSelectedProduct(null)}
         />
       )}
+
+      <WhatsAppConsultModal
+        isOpen={showWhatsAppModal}
+        onClose={() => setShowWhatsAppModal(false)}
+        productName={whatsappProductName}
+      />
     </div>
   );
 };
