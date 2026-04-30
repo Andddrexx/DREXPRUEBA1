@@ -5,11 +5,11 @@ export const generateOrderId = () => {
 };
 
 export const formatProductName = (name: string) => {
-  // Simplify product name: "Vape Pen Desechable 10-OH-HHC MAC 1ml – Rollz" -> "Rollz 1ml – MAC"
+  // "Vape Pen Desechable 10-OH-HHC Triple Berry 1ml – Rollz" -> "Rollz 1ml Triple Berry"
   if (name.includes('Rollz')) {
-    const match = name.match(/(?:(\w+)\s+)?(\d+ml).*?–\s*(.+?)(?:\s*–\s*Rollz)?$/);
+    const match = name.match(/10-OH-HHC\s+(.+?)\s+(\d+ml)\s*–\s*Rollz/i);
     if (match) {
-      return `Rollz ${match[2]} – ${match[3].trim()}`;
+      return `Rollz ${match[2]} ${match[1].trim()}`;
     }
   }
   return name;
