@@ -71,9 +71,6 @@ export const Footer = () => {
           <p className="text-neutral-600 text-xs tracking-wide">
             2026 CBDREX. Todos los derechos reservados. Cannabis legal en Espana.
           </p>
-          <p className="text-neutral-700 text-xs">
-            Solo para mayores de 18 anos
-          </p>
         </div>
       </div>
     </footer>

@@ -1,7 +1,10 @@
+export type PromoColor = 'orange' | 'pink' | 'green' | 'purple';
+
 export interface Product {
   id: string;
   name: string;
   description: string;
+  features?: string[];
   price: number;
   image_url: string;
   category: string;
@@ -9,6 +12,7 @@ export interface Product {
   format: string;
   stock: number;
   featured: boolean;
+  promoColor?: PromoColor;
   created_at: string;
 }
 

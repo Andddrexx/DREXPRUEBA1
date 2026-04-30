@@ -9,7 +9,7 @@ export const IntensityInfo = () => {
       <div className="mb-8">
         <div className="flex items-center gap-4 flex-wrap">
           <h2 className="section-heading">
-            Nuestros Vapers
+            Nuestros Vapers de 10-OH-HHC
           </h2>
           <button
             onClick={() => setShowModal(true)}
@@ -19,10 +19,8 @@ export const IntensityInfo = () => {
             Sobre la intensidad
           </button>
         </div>
-        <p className="text-neutral-400 mt-2 text-lg">
-          Maxima <span className="text-red-500 font-semibold">intensidad</span> con 97% 10-OH-HHC
-        </p>
-        <div className="divider-dark mt-4" />
+   
+        <div className="divider-dark mt-4" /> 
       </div>
 
       {showModal && (

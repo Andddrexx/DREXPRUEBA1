@@ -55,13 +55,13 @@
   }
 
   .card-premium {
-    @apply bg-white border border-neutral-200 rounded-2xl shadow-sm hover:shadow-xl hover:shadow-black/15 transition-all duration-500;
+    @apply bg-neutral-800 border border-neutral-700/50 rounded-2xl shadow-sm hover:shadow-xl hover:shadow-black/30 transition-all duration-500;
   }
 
   .card-premium:hover {
     transform: translateY(-4px);
-    border-color: rgba(0, 0, 0, 0.12);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
   }
 
   .btn-primary {

@@ -1,8 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Product, Promotion } from '../types';
+import { Product, Promotion, PromoColor } from '../types';
 import { X, Minus, Plus, ShoppingCart, MessageCircle, TrendingDown } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { promotions as promotionsData } from '../data/products';
+
+const promoColorStyles: Record<PromoColor, { bg: string; border: string; icon: string; text: string }> = {
+  orange: { bg: 'bg-amber-900/20', border: 'border-amber-800/30', icon: 'text-amber-500', text: 'text-amber-400' },
+  pink: { bg: 'bg-pink-900/20', border: 'border-pink-500/30', icon: 'text-pink-400', text: 'text-pink-300' },
+  green: { bg: 'bg-lime-900/25', border: 'border-lime-400/40', icon: 'text-lime-300', text: 'text-lime-200' },
+  purple: { bg: 'bg-purple-900/20', border: 'border-purple-500/30', icon: 'text-purple-400', text: 'text-purple-300' },
+};
 
 interface ProductDetailProps {
   product: Product;
@@ -70,11 +77,11 @@ export const ProductDetail = ({ product, onClose }: ProductDetailProps) => {
         <div className="p-6 lg:p-8">
           <div className="grid md:grid-cols-2 gap-8">
             <div>
-              <div className="relative rounded-2xl overflow-hidden bg-neutral-700">
+              <div className="relative rounded-2xl overflow-hidden bg-neutral-900">
                 <img
                   src={product.image_url}
                   alt={product.name}
-                  className="w-full h-80 lg:h-[420px] object-cover"
+                  className="w-full h-100 lg:h-[396px] object-contain"
                 />
               </div>
             </div>
@@ -83,31 +90,14 @@ export const ProductDetail = ({ product, onClose }: ProductDetailProps) => {
               <p className="text-neutral-300 mb-6 leading-relaxed text-[15px]">{product.description}</p>
 
               <div className="space-y-4 mb-6">
-                <div className="flex items-start gap-3">
-                  <div className="w-1 h-full min-h-[40px] bg-white rounded-full flex-shrink-0" />
-                  <div>
-                    <p className="text-[10px] font-bold tracking-[0.15em] uppercase text-neutral-400">Sabor / Aroma</p>
-                    <p className="text-white font-medium">{product.flavor}</p>
+                {product.features && product.features.map((feature, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <div className="w-1 h-full min-h-[40px] bg-white rounded-full flex-shrink-0" />
+                    <div>
+                      <p className="text-white font-medium">{feature}</p>
+                    </div>
                   </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <div className="w-1 h-full min-h-[40px] bg-white rounded-full flex-shrink-0" />
-                  <div>
-                    <p className="text-[10px] font-bold tracking-[0.15em] uppercase text-neutral-400">Formato</p>
-                    <p className="text-white font-medium">{product.format}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <div className="w-1 h-full min-h-[40px] bg-white rounded-full flex-shrink-0" />
-                  <div>
-                    <p className="text-[10px] font-bold tracking-[0.15em] uppercase text-neutral-400">Disponibilidad</p>
-                    <p className="text-white font-medium">
-                      {product.stock > 0 ? `${product.stock} unidades disponibles` : 'Sin stock'}
-                    </p>
-                  </div>
-                </div>
+                ))}
               </div>
 
               <div className="border-t border-neutral-600/50 pt-6 mt-auto">
@@ -119,15 +109,18 @@ export const ProductDetail = ({ product, onClose }: ProductDetailProps) => {
                 </div>
 
                 <div className="space-y-2 mb-6">
-                  {promotions.map((promo) => (
-                    <div
-                      key={promo.id}
-                      className="flex items-center gap-2 text-sm bg-amber-900/20 border border-amber-800/30 rounded-xl p-3"
-                    >
-                      <TrendingDown className="w-4 h-4 text-amber-500 flex-shrink-0" />
-                      <span className="text-amber-400 font-medium">{promo.description}</span>
-                    </div>
-                  ))}
+                  {promotions.map((promo) => {
+                    const color = promoColorStyles[product.promoColor || 'orange'];
+                    return (
+                      <div
+                        key={promo.id}
+                        className={`flex items-center gap-2 text-sm ${color.bg} border ${color.border} rounded-xl p-3`}
+                      >
+                        <TrendingDown className={`w-4 h-4 ${color.icon} flex-shrink-0`} />
+                        <span className={`${color.text} font-medium`}>{promo.description}</span>
+                      </div>
+                    );
+                  })}
                 </div>
 
                 {product.stock > 0 ? (

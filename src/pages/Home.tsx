@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Product } from '../types';
 import { ProductCard } from '../components/ProductCard';
 import { ProductDetail } from '../components/ProductDetail';
-import { IntensityInfo } from '../components/IntensityInfo';
 import { products as productsData } from '../data/products';
 import { useCart } from '../context/CartContext';
 import { MessageCircle, ArrowDown, Flame, Shield, Truck } from 'lucide-react';
@@ -77,10 +76,6 @@ export const Home = () => {
 
           <p className="text-lg md:text-xl text-neutral-400 mb-4 max-w-xl mx-auto animate-fade-in-up stagger-2">
             Cannabis legal premium de la mas alta calidad
-          </p>
-
-          <p className="text-sm text-neutral-600 mb-10 tracking-widest uppercase animate-fade-in-up stagger-3">
-            Solo para mayores de 18 anos
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up stagger-4">
@@ -159,7 +154,8 @@ export const Home = () => {
       {/* Products */}
       <div className="container mx-auto px-4 py-16">
         <section id="vapers" className="scroll-mt-40 mb-24">
-          <IntensityInfo />
+          <h2 className="section-heading mb-2">Nuestros Vapers de 10-OH-HHC</h2>
+          <div className="divider-dark mt-4 mb-8" />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {vapers.map((product) => (
               <ProductCard
