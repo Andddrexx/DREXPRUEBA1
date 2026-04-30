@@ -65,9 +65,11 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const getDiscount = () => {
     const totalItems = getTotalItems();
-    if (totalItems >= 5) {
-      return 10;
+    if (totalItems >= 4) {
+      return 20;
     } else if (totalItems >= 3) {
+      return 10;
+    } else if (totalItems >= 2) {
       return 5;
     }
     return 0;

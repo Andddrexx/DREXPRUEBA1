@@ -3,12 +3,13 @@ import { Product, Promotion, PromoColor } from '../types';
 import { X, Minus, Plus, ShoppingCart, MessageCircle, TrendingDown } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { promotions as promotionsData } from '../data/products';
+import { formatProductMessageForDetail } from '../lib/whatsappMessages';
 
-const promoColorStyles: Record<PromoColor, { bg: string; border: string; icon: string; text: string }> = {
-  orange: { bg: 'bg-amber-900/20', border: 'border-amber-800/30', icon: 'text-amber-500', text: 'text-amber-400' },
-  pink: { bg: 'bg-pink-900/20', border: 'border-pink-500/30', icon: 'text-pink-400', text: 'text-pink-300' },
-  green: { bg: 'bg-lime-900/25', border: 'border-lime-400/40', icon: 'text-lime-300', text: 'text-lime-200' },
-  purple: { bg: 'bg-purple-900/20', border: 'border-purple-500/30', icon: 'text-purple-400', text: 'text-purple-300' },
+const promoColorStyles: Record<PromoColor, { bg: string; border: string; icon: string; text: string; savingsBg: string; savingsBorder: string; savingsText: string }> = {
+  orange: { bg: 'bg-amber-900/20', border: 'border-amber-800/30', icon: 'text-amber-500', text: 'text-amber-400', savingsBg: 'bg-amber-900/40', savingsBorder: 'border-amber-700/50', savingsText: 'text-amber-400' },
+  pink: { bg: 'bg-pink-900/20', border: 'border-pink-500/30', icon: 'text-pink-400', text: 'text-pink-300', savingsBg: 'bg-pink-900/40', savingsBorder: 'border-pink-500/50', savingsText: 'text-pink-300' },
+  green: { bg: 'bg-lime-900/25', border: 'border-lime-400/40', icon: 'text-lime-300', text: 'text-lime-200', savingsBg: 'bg-lime-900/40', savingsBorder: 'border-lime-400/50', savingsText: 'text-lime-300' },
+  purple: { bg: 'bg-purple-900/20', border: 'border-purple-500/30', icon: 'text-purple-400', text: 'text-purple-300', savingsBg: 'bg-purple-900/40', savingsBorder: 'border-purple-500/50', savingsText: 'text-purple-300' },
 };
 
 interface ProductDetailProps {
@@ -49,9 +50,7 @@ export const ProductDetail = ({ product, onClose }: ProductDetailProps) => {
     onClose();
   };
 
-  const whatsappMessage = encodeURIComponent(
-    `Hola \nEstoy interesado en:\n Producto: ${product.name}\n Precio: ${product.price}€\n Confirmo que soy mayor de 18 años\n\n¿Puedes darme más información?`
-  );
+  const whatsappMessage = encodeURIComponent(formatProductMessageForDetail(product.name, product.price));
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={onClose}>
@@ -149,7 +148,7 @@ export const ProductDetail = ({ product, onClose }: ProductDetailProps) => {
                       <div className="flex items-baseline gap-3">
                         <span className="text-4xl font-bold text-white tracking-tight">{totalPrice.toFixed(2)}€</span>
                         {savings > 0 && (
-                          <span className="badge-gold">
+                          <span className={`badge ${promoColorStyles[product.promoColor || 'orange'].savingsBg} ${promoColorStyles[product.promoColor || 'orange'].savingsText} border ${promoColorStyles[product.promoColor || 'orange'].savingsBorder}`}>
                             Ahorras {savings.toFixed(2)}€
                           </span>
                         )}

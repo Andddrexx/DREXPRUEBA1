@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { Trash2, Plus, Minus, ShoppingBag, MessageCircle, ArrowLeft } from 'lucide-react';
+import { formatOrderMessage } from '../lib/whatsappMessages';
 
 export const Cart = () => {
   const { cart, removeFromCart, updateQuantity, getTotalPrice, getDiscount, getFinalPrice, clearCart } = useCart();
@@ -23,16 +24,7 @@ export const Cart = () => {
 
     try {
       const whatsappMessage = encodeURIComponent(
-        `NUEVO PEDIDO\n\n` +
-        `Cliente: ${formData.name}\n` +
-        `Telefono: ${formData.phone}\n\n` +
-        `PRODUCTOS:\n` +
-        cart.map(item => `- ${item.product.name} x${item.quantity} - ${(item.product.price * item.quantity).toFixed(2)}EUR`).join('\n') +
-        `\n\nSUBTOTAL: ${totalPrice.toFixed(2)}EUR` +
-        (discount > 0 ? `\nDESCUENTO: -${discount.toFixed(2)}EUR\nTOTAL: ${finalPrice.toFixed(2)}EUR` : `\nTOTAL: ${totalPrice.toFixed(2)}EUR`) +
-        `\n\n` +
-        (formData.notes ? `Notas: ${formData.notes}\n\n` : '') +
-        `Confirmo que soy mayor de 18 anos y acepto las condiciones de entrega en mano.`
+        formatOrderMessage(formData.name, formData.phone, cart, totalPrice, discount, finalPrice, formData.notes)
       );
 
       window.open(`https://wa.me/34681872420?text=${whatsappMessage}`, '_blank');
@@ -177,10 +169,10 @@ export const Cart = () => {
                 <div className="bg-amber-900/20 border border-amber-800/30 rounded-2xl p-5">
                   <p className="text-sm text-amber-300">
                     <strong>Importante:</strong> Este pedido NO se paga automaticamente.
-                    Te contactaremos por WhatsApp para confirmar y coordinar la entrega en mano.
+                    Te contactaremos por WhatsApp para confirmar y coordinar la entrega.
                   </p>
                   <p className="text-sm text-amber-300 mt-2">
-                    <strong>Forma de pago:</strong> Efectivo en la entrega o transferencia tras confirmacion.
+                    <strong>Forma de pago:</strong> Efectivo o transferencia tras confirmacion.
                   </p>
                 </div>
 
@@ -270,7 +262,7 @@ export const Cart = () => {
                   <span>{totalPrice.toFixed(2)}€</span>
                 </div>
                 <div className="flex justify-between text-emerald-400 font-semibold">
-                  <span>Descuento (3+ items)</span>
+                  <span>Descuento ({cart.reduce((total, item) => total + item.quantity, 0)}+ items)</span>
                   <span>-{discount.toFixed(2)}€</span>
                 </div>
               </div>
