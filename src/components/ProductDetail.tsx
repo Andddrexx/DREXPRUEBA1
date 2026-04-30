@@ -57,6 +57,7 @@ export const ProductDetail = ({ product, onClose }: ProductDetailProps) => {
       isOpen={showWhatsAppModal}
       onClose={() => setShowWhatsAppModal(false)}
       productName={product.name}
+      initialQuantity={quantity}
     />
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={onClose}>
       <div
@@ -146,6 +147,13 @@ export const ProductDetail = ({ product, onClose }: ProductDetailProps) => {
                           <Plus className="w-4 h-4" />
                         </button>
                       </div>
+                      <button
+                        onClick={() => setShowWhatsAppModal(true)}
+                        className="flex items-center gap-2 bg-neutral-700 hover:bg-neutral-600 text-white px-4 py-2.5 rounded-xl transition-colors border border-neutral-600/50 text-sm font-medium"
+                      >
+                        <MessageCircle className="w-4 h-4" />
+                        Consultar
+                      </button>
                     </div>
 
                     <div className="bg-neutral-700/60 rounded-2xl p-5 mb-5 border border-neutral-600/40">
@@ -160,21 +168,13 @@ export const ProductDetail = ({ product, onClose }: ProductDetailProps) => {
                       </div>
                     </div>
 
-                    <div className="flex gap-3">
-                      <button
-                        onClick={handleAddToCart}
-                        className="flex-1 btn-primary flex items-center justify-center gap-2"
-                      >
-                        <ShoppingCart className="w-5 h-5" />
-                        Anadir al carrito
-                      </button>
-                      <button
-                        onClick={() => setShowWhatsAppModal(true)}
-                        className="bg-neutral-700 hover:bg-neutral-600 text-white p-3.5 rounded-xl transition-colors border border-neutral-600/50"
-                      >
-                        <MessageCircle className="w-5 h-5" />
-                      </button>
-                    </div>
+                    <button
+                      onClick={handleAddToCart}
+                      className="w-full btn-primary flex items-center justify-center gap-2"
+                    >
+                      <ShoppingCart className="w-5 h-5" />
+                      Anadir al carrito
+                    </button>
                   </>
                 ) : (
                   <button

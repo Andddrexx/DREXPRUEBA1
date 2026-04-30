@@ -1,5 +1,5 @@
 import { Product } from '../types';
-import { ShoppingCart, Star, MessageCircle } from 'lucide-react';
+import { ShoppingCart, Star } from 'lucide-react';
 
 interface ProductCardProps {
   product: Product;
@@ -8,7 +8,7 @@ interface ProductCardProps {
   onWhatsAppConsult?: (productName: string) => void;
 }
 
-export const ProductCard = ({ product, onViewDetails, onAddToCart, onWhatsAppConsult }: ProductCardProps) => {
+export const ProductCard = ({ product, onViewDetails, onAddToCart }: ProductCardProps) => {
   return (
     <div className="card-premium overflow-hidden group">
       <div className="relative h-72 overflow-hidden cursor-pointer bg-black" onClick={() => onViewDetails(product)}>
@@ -58,20 +58,12 @@ export const ProductCard = ({ product, onViewDetails, onAddToCart, onWhatsAppCon
           </div>
 
           {product.stock > 0 ? (
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => onWhatsAppConsult?.(product.name)}
-                className="bg-neutral-700 hover:bg-neutral-600 text-white p-2.5 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95 border border-neutral-600/50"
-              >
-                <MessageCircle className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => onAddToCart(product)}
-                className="bg-white hover:bg-neutral-200 text-neutral-900 p-2.5 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
-              >
-                <ShoppingCart className="w-4 h-4" />
-              </button>
-            </div>
+            <button
+              onClick={() => onAddToCart(product)}
+              className="bg-white hover:bg-neutral-200 text-neutral-900 p-2.5 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95"
+            >
+              <ShoppingCart className="w-4 h-4" />
+            </button>
           ) : (
             <span className="text-xs font-semibold text-neutral-500 bg-neutral-700 px-3 py-1.5 rounded-lg">
               Sin stock

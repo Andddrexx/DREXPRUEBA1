@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { ShoppingCart, MessageCircle, ChevronDown, Menu, X } from 'lucide-react';
+import { ShoppingCart, ChevronDown, Menu, X } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { WhatsAppConsultModal } from './WhatsAppConsultModal';
 
 interface HeaderProps {
   onNavigate: (page: string) => void;
@@ -15,7 +14,6 @@ export const Header = ({ onNavigate, currentPage, onScrollToSection }: HeaderPro
   const [showCatalogMenu, setShowCatalogMenu] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -125,26 +123,15 @@ export const Header = ({ onNavigate, currentPage, onScrollToSection }: HeaderPro
 
             <div className="flex items-center gap-3">
               <button
-                onClick={() => setShowWhatsAppModal(true)}
-                className={`hidden md:flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all duration-200 text-sm ${
-                  scrolled
-                    ? 'bg-white text-neutral-900 hover:bg-neutral-200'
-                    : 'bg-white/10 text-white hover:bg-white/20 border border-white/20'
-                }`}
-              >
-                <MessageCircle className="w-4 h-4" />
-                WhatsApp
-              </button>
-
-              <button
                 onClick={() => onNavigate('cart')}
-                className={`relative p-2.5 rounded-xl transition-all duration-200 ${
+                className={`relative flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium transition-all duration-200 text-sm ${
                   scrolled
                     ? 'bg-neutral-800 text-white hover:bg-neutral-700'
                     : 'bg-white/10 text-white hover:bg-white/20'
                 }`}
               >
                 <ShoppingCart className="w-5 h-5" />
+                <span className="hidden sm:inline">Carrito</span>
                 {totalItems > 0 && (
                   <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center animate-scale-in">
                     {totalItems}
@@ -195,21 +182,16 @@ export const Header = ({ onNavigate, currentPage, onScrollToSection }: HeaderPro
               </button>
               <div className="border-t border-neutral-700/50 my-4" />
               <button
-                onClick={() => { setMobileMenuOpen(false); setShowWhatsAppModal(true); }}
+                onClick={() => { onNavigate('cart'); setMobileMenuOpen(false); }}
                 className="flex items-center justify-center gap-2 w-full btn-primary"
               >
-                <MessageCircle className="w-5 h-5" />
-                WhatsApp
+                <ShoppingCart className="w-5 h-5" />
+                Carrito
               </button>
             </div>
           </div>
         </div>
       )}
-
-      <WhatsAppConsultModal
-        isOpen={showWhatsAppModal}
-        onClose={() => setShowWhatsAppModal(false)}
-      />
     </>
   );
 };

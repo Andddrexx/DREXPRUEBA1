@@ -5,6 +5,7 @@ interface WhatsAppConsultModalProps {
   isOpen: boolean;
   onClose: () => void;
   productName?: string;
+  initialQuantity?: number;
 }
 
 const deliveryOptions = [
@@ -12,9 +13,10 @@ const deliveryOptions = [
   { value: 'esta-semana', label: 'Esta semana' },
 ];
 
-export const WhatsAppConsultModal = ({ isOpen, onClose, productName = '' }: WhatsAppConsultModalProps) => {
+export const WhatsAppConsultModal = ({ isOpen, onClose, productName = '', initialQuantity = 1 }: WhatsAppConsultModalProps) => {
   const [product, setProduct] = useState(productName);
-  const [quantity, setQuantity] = useState(1);
+  const [name, setName] = useState('');
+  const [quantity, setQuantity] = useState(initialQuantity);
   const [delivery, setDelivery] = useState('24-48h');
   const [message, setMessage] = useState('');
   const [ageConfirmed, setAgeConfirmed] = useState(false);
@@ -23,13 +25,14 @@ export const WhatsAppConsultModal = ({ isOpen, onClose, productName = '' }: What
   useEffect(() => {
     if (isOpen) {
       setProduct(productName);
-      setQuantity(1);
+      setName('');
+      setQuantity(initialQuantity);
       setDelivery('24-48h');
       setMessage('');
       setAgeConfirmed(false);
       setError('');
     }
-  }, [isOpen, productName]);
+  }, [isOpen, productName, initialQuantity]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,19 +43,25 @@ export const WhatsAppConsultModal = ({ isOpen, onClose, productName = '' }: What
       return;
     }
 
+    if (!name.trim()) {
+      setError('Indica tu nombre');
+      return;
+    }
+
     if (!ageConfirmed) {
-      setError('Debes confirmar que eres mayor de 18 años');
+      setError('Debes confirmar que eres mayor de 18 anos');
       return;
     }
 
     const deliveryLabel = deliveryOptions.find(o => o.value === delivery)?.label || delivery;
 
-    const whatsappText = `NUEVA CONSULTA\nProducto: ${product.trim()}\nCantidad: ${quantity}\nEntrega: ${deliveryLabel}\nMayor de edad: Sí${message.trim() ? `\nMensaje: ${message.trim()}` : ''}`;
+    const whatsappText = `NUEVA CONSULTA\nProducto: ${product.trim()}\nCantidad: ${quantity}\nNombre: ${name.trim()}\nEntrega: ${deliveryLabel}\nMayor de edad: Si${message.trim() ? `\nMensaje: ${message.trim()}` : ''}`;
 
     const encoded = encodeURIComponent(whatsappText);
     window.open(`https://wa.me/34681872420?text=${encoded}`, '_blank');
 
     setProduct('');
+    setName('');
     setQuantity(1);
     setDelivery('24-48h');
     setMessage('');
@@ -121,6 +130,19 @@ export const WhatsAppConsultModal = ({ isOpen, onClose, productName = '' }: What
 
           <div>
             <label className="block text-sm font-medium text-neutral-400 mb-2">
+              Tu nombre *
+            </label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="input-field"
+              placeholder="Ej: Juan Garcia"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-neutral-400 mb-2">
               Cuando lo quieres?
             </label>
             <div className="flex gap-2">
@@ -162,7 +184,7 @@ export const WhatsAppConsultModal = ({ isOpen, onClose, productName = '' }: What
               className="mt-1 w-4 h-4 rounded border-neutral-600 bg-neutral-700 text-white accent-white cursor-pointer"
             />
             <span className="text-sm text-neutral-400 group-hover:text-neutral-300 transition-colors">
-              Confirmo ser mayor de 18 años
+              Confirmo ser mayor de 18 anos
             </span>
           </label>
 
