@@ -74,7 +74,7 @@ export const Contact = () => {
                 { icon: Phone, title: 'Telefono', info: '+34 681 872 420', sub: 'Lunes a Sabado: 10:00 - 20:00' },
                 { icon: MapPin, title: 'Entrega', info: 'Entrega en mano', sub: 'Verificacion de edad +18 obligatoria' },
                 { icon: Clock, title: 'Horario', info: 'Lun - Sab: 10:00 - 20:00', sub: 'Domingo cerrado' },
-                { icon: Shield, title: 'Legal', info: '100% legal en Espana', sub: 'THC menor a 0.2%' },
+                { icon: Shield, title: 'Legal', info: '100% legal en España', sub: 'THC menor a 0.2%' },
               ].map((item) => (
                 <div key={item.title} className="flex gap-4 p-4 bg-neutral-700/50 rounded-xl border border-neutral-600/40">
                   <div className="w-10 h-10 bg-neutral-700 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -93,8 +93,8 @@ export const Contact = () => {
               <h4 className="font-bold text-amber-300 mb-3">Importante</h4>
               <ul className="space-y-2 text-sm text-amber-200/80">
                 {[
-                  'Todos nuestros productos son legales en Espana',
-                  'Venta exclusiva a mayores de 18 anos',
+                  'Todos nuestros productos son legales en España',
+                  'Venta exclusiva a mayores de 18 años',
                   'Se verificara la edad en el momento de la entrega',
                   'Entrega en mano con confirmacion previa',
                   'Pago en efectivo o transferencia tras confirmacion',

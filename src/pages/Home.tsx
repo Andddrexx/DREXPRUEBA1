@@ -3,6 +3,7 @@ import { Product } from '../types';
 import { ProductCard } from '../components/ProductCard';
 import { ProductDetail } from '../components/ProductDetail';
 import { WhatsAppConsultModal } from '../components/WhatsAppConsultModal';
+import { ComingSoon } from '../components/ComingSoon';
 import { products as productsData } from '../data/products';
 import { useCart } from '../context/CartContext';
 import { MessageCircle, ArrowDown, Flame, Shield, Truck } from 'lucide-react';
@@ -17,7 +18,7 @@ export const Home = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['vapers', 'mecheros', 'accesorios'];
+      const sections = ['vapers', 'accesorios'];
       const scrollPosition = window.scrollY + 200;
 
       for (const section of sections) {
@@ -56,8 +57,6 @@ export const Home = () => {
   };
 
   const vapers = products.filter(p => p.category === '10-OH-HHC');
-  const mecheros = products.filter(p => p.category === 'mechero');
-  const accesorios = products.filter(p => p.category === 'accesorio');
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-neutral-950 via-neutral-700 to-neutral-500">
@@ -135,21 +134,27 @@ export const Home = () => {
         <div className="container mx-auto px-4">
           <div className="flex justify-center gap-2 py-3">
             {[
-              { id: 'vapers', label: 'Vapers' },
-              { id: 'mecheros', label: 'Mecheros' },
-              { id: 'accesorios', label: 'Estuches / Accesorios' },
+              { id: 'vapers', label: 'Vapers', comingSoon: false },
+              { id: 'accesorios', label: 'Smoke Accessories', comingSoon: true },
             ].map((item, i) => (
               <span key={item.id} className="flex items-center gap-2">
                 {i > 0 && <span className="text-neutral-500 hidden sm:block">|</span>}
                 <button
                   onClick={() => scrollToSection(item.id)}
                   className={`px-5 py-2 font-medium transition-all duration-200 rounded-xl text-sm ${
-                    activeSection === item.id
-                      ? 'bg-white text-neutral-900'
-                      : 'text-neutral-400 hover:bg-white/10 hover:text-white'
+                    item.comingSoon
+                      ? 'text-neutral-500 hover:bg-white/5 hover:text-neutral-400 relative'
+                      : activeSection === item.id
+                        ? 'bg-white text-neutral-900'
+                        : 'text-neutral-400 hover:bg-white/10 hover:text-white'
                   }`}
                 >
                   {item.label}
+                  {item.comingSoon && (
+                    <span className="ml-1.5 text-[9px] font-bold tracking-wider uppercase text-neutral-600">
+                      Soon
+                    </span>
+                  )}
                 </button>
               </span>
             ))}
@@ -180,48 +185,16 @@ export const Home = () => {
           )}
         </section>
 
-        <section id="mecheros" className="scroll-mt-40 mb-24">
-          <h2 className="section-heading mb-2">Mecheros</h2>
-          <p className="text-neutral-400 mb-3 text-lg">Encendido confiable con disenos unicos</p>
-          <div className="divider-dark mb-8" />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {mecheros.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onViewDetails={setSelectedProduct}
-                onAddToCart={handleAddToCart}
-                onWhatsAppConsult={(name) => handleWhatsAppConsult(name)}
-              />
-            ))}
-          </div>
-          {mecheros.length === 0 && (
-            <div className="text-center py-20">
-              <p className="text-neutral-400 text-lg">No hay mecheros disponibles en este momento.</p>
-            </div>
-          )}
-        </section>
-
         <section id="accesorios" className="scroll-mt-40 mb-16">
-          <h2 className="section-heading mb-2">Estuches y Accesorios</h2>
-          <p className="text-neutral-400 mb-3 text-lg">Complementos premium para proteger y transportar</p>
-          <div className="divider-dark mb-8" />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {accesorios.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onViewDetails={setSelectedProduct}
-                onAddToCart={handleAddToCart}
-                onWhatsAppConsult={(name) => handleWhatsAppConsult(name)}
-              />
-            ))}
-          </div>
-          {accesorios.length === 0 && (
-            <div className="text-center py-20">
-              <p className="text-neutral-400 text-lg">No hay accesorios disponibles en este momento.</p>
-            </div>
-          )}
+          <ComingSoon
+            title="Smoke Accessories"
+            items={[  'Mecheros', 'Grinders',
+  'Bandejas',
+  'Joint Holders',
+  'Ceniceros',
+  'Bongs',
+  'Pipas']}
+          />
         </section>
       </div>
 

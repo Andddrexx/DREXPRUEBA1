@@ -95,17 +95,19 @@ export const Header = ({ onNavigate, currentPage, onScrollToSection }: HeaderPro
                   <div className="absolute top-full right-0 mt-2 bg-neutral-800 border border-neutral-600/50 rounded-2xl shadow-xl shadow-black/30 overflow-hidden min-w-[220px] animate-scale-in">
                     <div className="p-2">
                       {[
-                        { id: 'vapers', label: 'Vapers' },
-                        { id: 'mecheros', label: 'Mecheros' },
-                        { id: 'accesorios', label: 'Estuches / Accesorios' },
+                        { id: 'vapers', label: 'Vapers', comingSoon: false },
+                        { id: 'accesorios', label: 'Smoke Accessories', comingSoon: true },
                       ].map((item) => (
                         <button
                           key={item.id}
                           onClick={() => handleCatalogClick(item.id)}
                           className="flex items-center gap-3 w-full text-left px-4 py-3 text-neutral-300 hover:text-white hover:bg-neutral-700 rounded-xl transition-colors duration-150 group"
                         >
-                          <span className="w-1.5 h-1.5 rounded-full bg-white group-hover:scale-150 transition-transform" />
+                          <span className={`w-1.5 h-1.5 rounded-full ${item.comingSoon ? 'bg-neutral-500' : 'bg-white'} group-hover:scale-150 transition-transform`} />
                           <span className="font-medium">{item.label}</span>
+                          {item.comingSoon && (
+                            <span className="ml-auto text-[9px] font-bold tracking-wider uppercase text-neutral-500">Soon</span>
+                          )}
                         </button>
                       ))}
                     </div>
@@ -161,16 +163,22 @@ export const Header = ({ onNavigate, currentPage, onScrollToSection }: HeaderPro
             <div className="p-6 pt-24 space-y-2">
               <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-neutral-600 mb-4 px-4">Navegacion</p>
               {[
-                { id: 'vapers', label: 'Vapers' },
-                { id: 'mecheros', label: 'Mecheros' },
-                { id: 'accesorios', label: 'Estuches / Accesorios' },
+                { id: 'vapers', label: 'Vapers', comingSoon: false },
+                { id: 'accesorios', label: 'Smoke Accessories', comingSoon: true },
               ].map((item) => (
                 <button
                   key={item.id}
                   onClick={() => handleCatalogClick(item.id)}
-                  className="w-full text-left px-4 py-3 text-neutral-300 hover:text-white hover:bg-neutral-900 rounded-xl font-medium transition-colors"
+                  className={`w-full text-left px-4 py-3 rounded-xl font-medium transition-colors flex items-center justify-between ${
+                    item.comingSoon
+                      ? 'text-neutral-500 hover:text-neutral-400 hover:bg-neutral-900'
+                      : 'text-neutral-300 hover:text-white hover:bg-neutral-900'
+                  }`}
                 >
-                  {item.label}
+                  <span>{item.label}</span>
+                  {item.comingSoon && (
+                    <span className="text-[9px] font-bold tracking-wider uppercase text-neutral-600">Soon</span>
+                  )}
                 </button>
               ))}
               <div className="border-t border-neutral-700/50 my-4" />
