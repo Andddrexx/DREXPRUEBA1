@@ -53,8 +53,8 @@ export const Cart = () => {
             <div className="w-24 h-24 bg-neutral-800/80 rounded-3xl flex items-center justify-center mx-auto mb-6 border border-neutral-600/50">
               <ShoppingBag className="w-12 h-12 text-neutral-600" />
             </div>
-            <h2 className="font-display text-3xl font-bold text-white mb-3">Tu carrito esta vacio</h2>
-            <p className="text-neutral-500 mb-8">Anade productos para comenzar tu pedido</p>
+            <h2 className="font-display text-3xl font-bold text-white mb-3">Tu carrito esta vacío</h2>
+            <p className="text-neutral-500 mb-8">Añade productos para comenzar tu pedido</p>
           </div>
         </div>
       </div>

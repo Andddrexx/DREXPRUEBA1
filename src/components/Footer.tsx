@@ -17,24 +17,10 @@ export const Footer = () => {
               onClick={scrollToTop}
             />
             <p className="text-neutral-500 text-sm leading-relaxed max-w-xs">
-              Cannabis legal premium. Calidad garantizada para usuarios adultos responsables.
-            </p>
+Productos premium con diseño, calidad y discreción.            </p> 
           </div>
 
-          <div className="md:col-span-3">
-            <h3 className="text-xs font-bold tracking-[0.2em] uppercase text-neutral-600 mb-5">Enlaces</h3>
-            <ul className="space-y-3">
-              {['Politica de privacidad', 'Terminos y condiciones', 'Aviso legal'].map((link) => (
-                <li key={link}>
-                  <a href="#" className="text-sm text-neutral-500 hover:text-white transition-colors duration-200">
-                    {link}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="md:col-span-5">
+          <div className="md:col-span-8">
             <h3 className="text-xs font-bold tracking-[0.2em] uppercase text-neutral-600 mb-5">Contacto</h3>
             <div className="space-y-4">
               <a
@@ -69,7 +55,7 @@ export const Footer = () => {
 
         <div className="border-t border-neutral-700/50 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-neutral-600 text-xs tracking-wide">
-            2026 CBDREX. Todos los derechos reservados. Cannabis legal en Espana.
+            2026 CBDREX. Todos los derechos reservados. Cannabis legal en España.
           </p>
         </div>
       </div>

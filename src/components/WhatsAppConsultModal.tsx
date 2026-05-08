@@ -49,7 +49,7 @@ export const WhatsAppConsultModal = ({ isOpen, onClose, productName = '', initia
     }
 
     if (!ageConfirmed) {
-      setError('Debes confirmar que eres mayor de 18 anos');
+      setError('Debes confirmar que eres mayor de 18 años');
       return;
     }
 
@@ -101,7 +101,7 @@ export const WhatsAppConsultModal = ({ isOpen, onClose, productName = '', initia
               value={product}
               onChange={(e) => setProduct(e.target.value)}
               className="input-field"
-              placeholder="Ej: Vape Pen MAC 1ml"
+              placeholder="Vape Pen MAC 1ml"
             />
           </div>
 
@@ -137,7 +137,6 @@ export const WhatsAppConsultModal = ({ isOpen, onClose, productName = '', initia
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="input-field"
-              placeholder="Ej: Juan Garcia"
             />
           </div>
 
@@ -172,7 +171,7 @@ export const WhatsAppConsultModal = ({ isOpen, onClose, productName = '', initia
               onChange={(e) => setMessage(e.target.value)}
               rows={3}
               className="input-field resize-none"
-              placeholder="Ej: Tengo una duda sobre el sabor..."
+              placeholder="Tengo una duda sobre el sabor..."
             />
           </div>
 
@@ -184,7 +183,7 @@ export const WhatsAppConsultModal = ({ isOpen, onClose, productName = '', initia
               className="mt-1 w-4 h-4 rounded border-neutral-600 bg-neutral-700 text-white accent-white cursor-pointer"
             />
             <span className="text-sm text-neutral-400 group-hover:text-neutral-300 transition-colors">
-              Confirmo ser mayor de 18 anos
+              Confirmo ser mayor de 18 años
             </span>
           </label>
 

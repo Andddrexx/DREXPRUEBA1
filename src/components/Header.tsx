@@ -87,7 +87,7 @@ export const Header = ({ onNavigate, currentPage, onScrollToSection }: HeaderPro
                   onClick={() => setShowCatalogMenu(!showCatalogMenu)}
                   className={`flex items-center gap-1.5 px-4 py-2 rounded-xl font-medium transition-all duration-200 ${navTextClass(currentPage === 'home')}`}
                 >
-                  Catalogo
+                  Catálogo
                   <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${showCatalogMenu ? 'rotate-180' : ''}`} />
                 </button>
 
