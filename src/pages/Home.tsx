@@ -71,8 +71,8 @@ export const Home = () => {
         <div className="relative z-10 container mx-auto px-4 flex flex-col items-center justify-center h-full">
           <img
             src="/assets/logo.png"
-            alt="CBDREX"
-            className="w-[50vw] max-w-[500px] max-h-[50vh] h-auto animate-float relative z-10 object-contain flex-shrink-0"
+            alt="CBDREX" 
+            className="w-[50vw] max-w-[1000px] max-h-[50vh] h-auto animate-float relative z-10 object-contain flex-shrink-0"
           />
 
           <p className="text-lg md:text-xl text-neutral-200 mt-4 mb-5 max-w-xl mx-auto text-center animate-fade-in-up stagger-2">
@@ -91,7 +91,7 @@ export const Home = () => {
               onClick={() => scrollToSection('vapers')}
               className="inline-flex items-center gap-2 border border-neutral-700 text-neutral-300 px-8 py-3.5 rounded-xl font-semibold hover:bg-neutral-800 hover:border-neutral-600 transition-all duration-300"
             >
-              Ver catalogo
+              Ver catálogo
               <ArrowDown className="w-4 h-4" />
             </button>
           </div>

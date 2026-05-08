@@ -69,7 +69,7 @@ export const Footer = () => {
 
         <div className="border-t border-neutral-700/50 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-neutral-600 text-xs tracking-wide">
-            2026 CBDREX. Todos los derechos reservados. Cannabis legal en Espana.
+            2026 CBDREX. Todos los derechos reservados. Cannabis legal en España.
           </p>
         </div>
       </div>

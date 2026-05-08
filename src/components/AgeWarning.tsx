@@ -56,7 +56,7 @@ export const AgeWarning = () => {
         </div>
 
         <p className="text-xs text-neutral-600 mt-6 tracking-wide">
-          Cannabis legal en Espana. Uso responsable para adultos.
+          Cannabis legal en España. Uso responsable para adultos.
         </p>
       </div>
     </div>
