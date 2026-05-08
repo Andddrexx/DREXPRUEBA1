@@ -17,8 +17,7 @@ export const Footer = () => {
               onClick={scrollToTop}
             />
             <p className="text-neutral-500 text-sm leading-relaxed max-w-xs">
-              Cannabis legal premium. Calidad garantizada para usuarios adultos responsables.
-            </p>
+Productos premium con diseño, calidad y discreción.            </p> 
           </div>
 
           <div className="md:col-span-8">

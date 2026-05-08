@@ -6,12 +6,12 @@ import { WhatsAppConsultModal } from '../components/WhatsAppConsultModal';
 import { ComingSoon } from '../components/ComingSoon';
 import { products as productsData } from '../data/products';
 import { useCart } from '../context/CartContext';
-import { MessageCircle, ArrowDown, Flame, Shield, Truck } from 'lucide-react';
+import { MessageCircle, ArrowDown, Flame, Shield, Lock } from 'lucide-react';
 
 export const Home = () => {
   const [products] = useState<Product[]>(productsData);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [activeSection, setActiveSection] = useState('vapers');
+  const [activeSection, setActiveSection] = useState('vapers'); 
   const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
   const [whatsappProductName, setWhatsappProductName] = useState('');
   const { addToCart } = useCart();
@@ -76,8 +76,7 @@ export const Home = () => {
           />
 
           <p className="text-lg md:text-xl text-neutral-200 mt-4 mb-5 max-w-xl mx-auto text-center animate-fade-in-up stagger-2">
-            Cannabis legal premium de la mas alta calidad
-          </p>
+ Calidad garantizada. Diseño discreto.        </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up stagger-2">
             <button
@@ -93,21 +92,21 @@ export const Home = () => {
             >
               Ver catálogo
               <ArrowDown className="w-4 h-4" />
-            </button>
+            </button> 
           </div>
         </div>
 
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-neutral-500 to-transparent" />
       </section>
 
-      {/* Trust badges */}
+      {/* Trust badges */} 
       <section className="py-12 border-b border-neutral-700/30">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
               { icon: Flame, title: '97% 10-OH-HHC', desc: 'Maxima concentracion legal' },
               { icon: Shield, title: '100% Legal', desc: 'THC menor a 0.2%' },
-              { icon: Truck, title: 'Entrega en mano', desc: 'Verificacion de edad +18' },
+              { icon: Lock, title: 'Entrega discreta', desc: 'Verificacion +18' },
             ].map((item) => (
               <div key={item.title} className="flex items-center gap-4 p-5 bg-neutral-800/60 rounded-2xl border border-neutral-600/40 backdrop-blur-sm">
                 <div className="w-12 h-12 rounded-xl bg-neutral-700 flex items-center justify-center flex-shrink-0">
