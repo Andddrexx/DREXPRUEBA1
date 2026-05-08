@@ -11,9 +11,9 @@ export const Footer = () => {
         <div className="py-16 grid md:grid-cols-12 gap-10">
           <div className="md:col-span-4">
             <img
-              src="/assets/logo.jpeg"
+              src="/assets/logo.png"
               alt="CBDREX"
-              className="h-14 w-auto mb-5 cursor-pointer hover:opacity-80 transition rounded-xl"
+              className="h-20 w-auto mb-5 cursor-pointer hover:opacity-80 transition rounded-xl"
               onClick={scrollToTop}
             />
             <p className="text-neutral-500 text-sm leading-relaxed max-w-xs">

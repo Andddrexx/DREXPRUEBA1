@@ -68,9 +68,9 @@ export const Header = ({ onNavigate, currentPage, onScrollToSection }: HeaderPro
               onClick={() => { onNavigate('home'); setMobileMenuOpen(false); }}
             >
               <img
-                src="/assets/logo.jpeg"
+                src="/assets/logo.png"
                 alt="CBDREX"
-                className="h-10 lg:h-12 w-auto rounded-lg transition-transform duration-300 group-hover:scale-105"
+                className="h-14 lg:h-16 w-auto rounded-lg transition-transform duration-300 group-hover:scale-105"
               />
               <div className="hidden sm:block">
                 <p className={`text-[10px] font-bold tracking-[0.25em] uppercase transition-colors duration-300 ${

@@ -56,36 +56,30 @@ export const Home = () => {
     }
   };
 
-  const vapers = products.filter(p => p.category === '10-OH-HHC');
+  const vapers = products.filter(p => p.category === '10-OH-HHC'); 
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-neutral-950 via-neutral-700 to-neutral-500">
       {/* Hero */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-neutral-950">
+      <section className="relative h-screen flex items-center justify-center overflow-hidden bg-neutral-950">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-b from-neutral-950 via-neutral-700 to-neutral-400" />
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl" />
           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-neutral-300/10 rounded-full blur-3xl" />
         </div>
 
-        <div className="relative z-10 container mx-auto px-4 text-center">
-          <div className="animate-fade-in-up">
-            <img
-              src="/assets/logo.jpeg"
-              alt="CBDREX"
-              className="h-28 w-auto mx-auto mb-8 rounded-2xl shadow-2xl animate-float"
-            />
-          </div>
+        <div className="relative z-10 container mx-auto px-4 flex flex-col items-center justify-center h-full">
+          <img
+            src="/assets/logo.png"
+            alt="CBDREX"
+            className="w-[50vw] max-w-[500px] max-h-[50vh] h-auto animate-float relative z-10 object-contain flex-shrink-0"
+          />
 
-          <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-4 animate-fade-in-up stagger-1">
-            CBDREX
-          </h1>
-
-          <p className="text-lg md:text-xl text-neutral-400 mb-4 max-w-xl mx-auto animate-fade-in-up stagger-2">
+          <p className="text-lg md:text-xl text-neutral-200 mt-4 mb-5 max-w-xl mx-auto text-center animate-fade-in-up stagger-2">
             Cannabis legal premium de la mas alta calidad
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up stagger-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up stagger-2">
             <button
               onClick={() => handleWhatsAppConsult()}
               className="inline-flex items-center gap-2 bg-white text-neutral-900 px-8 py-3.5 rounded-xl font-semibold hover:bg-neutral-200 transition-all duration-300 hover:scale-105 active:scale-95"
