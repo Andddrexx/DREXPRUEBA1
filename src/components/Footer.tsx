@@ -21,20 +21,7 @@ export const Footer = () => {
             </p>
           </div>
 
-          <div className="md:col-span-3">
-            <h3 className="text-xs font-bold tracking-[0.2em] uppercase text-neutral-600 mb-5">Enlaces</h3>
-            <ul className="space-y-3">
-              {['Politica de privacidad', 'Terminos y condiciones', 'Aviso legal'].map((link) => (
-                <li key={link}>
-                  <a href="#" className="text-sm text-neutral-500 hover:text-white transition-colors duration-200">
-                    {link}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="md:col-span-5">
+          <div className="md:col-span-8">
             <h3 className="text-xs font-bold tracking-[0.2em] uppercase text-neutral-600 mb-5">Contacto</h3>
             <div className="space-y-4">
               <a
