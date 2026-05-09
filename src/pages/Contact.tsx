@@ -58,7 +58,7 @@ export const Contact = () => {
                 Envíanos un correo y te responderemos lo antes posible.
               </p>
               <a
-                href="mailto:cbdrexstore@gmail.com"
+                href="mailto:cbdrexstore@gmail.com" 
                 className="block text-center btn-outline"
               >
                 cbdrexstore@gmail.com
@@ -71,10 +71,10 @@ export const Contact = () => {
 
             <div className="grid md:grid-cols-2 gap-4">
               {[
-                { icon: Phone, title: 'Teléfono', info: '+34 681 872 420', sub: 'Lunes a Sabado: 10:00 - 20:00' },
-                { icon: MapPin, title: 'Entrega', info: 'Entrega en mano', sub: 'Verificación de edad +18 obligatoria' },
-                { icon: Clock, title: 'Horario', info: 'Lun - Sab: 10:00 - 20:00', sub: 'Domingo cerrado' },
-                { icon: Shield, title: 'Legal', info: '100% legal en España', sub: 'THC menor a 0.2%' },
+                { icon: Phone, title: 'Teléfono', info: '+34 681 872 420' },
+                { icon: MapPin, title: 'Entrega', info: 'Venta exclusiva para mayores de 18 años'},
+                { icon: Clock, title: 'Horario', info: 'Lunes a Sábado de 10:00 a 20:00  Domingos cerrados'},
+                { icon: Shield, title: 'Legal', info: 'Todos los productos cumplen con la legislación vigente en España'},
               ].map((item) => (
                 <div key={item.title} className="flex gap-4 p-4 bg-neutral-700/50 rounded-xl border border-neutral-600/40">
                   <div className="w-10 h-10 bg-neutral-700 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -89,13 +89,11 @@ export const Contact = () => {
               ))}
             </div>
 
-            <div className="mt-6 p-5 bg-amber-900/20 border border-amber-800/30 rounded-2xl">
+            <div className="mt-6 p-5 bg-amber-900/20 border border-amber-800/30 rounded-2xl"> 
               <h4 className="font-bold text-amber-300 mb-3">Importante</h4>
               <ul className="space-y-2 text-sm text-amber-200/80">
                 {[
                   'Todos los productos cumplen con la legislación vigente en España',
-                  'Venta exclusiva para mayores de 18 años',
-  'Entrega tras confirmación previa',
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-amber-500 flex-shrink-0 mt-1.5" />
