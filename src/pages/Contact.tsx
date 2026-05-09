@@ -89,18 +89,8 @@ export const Contact = () => {
               ))}
             </div>
 
-            <div className="mt-6 p-5 bg-amber-900/20 border border-amber-800/30 rounded-2xl"> 
-              <h4 className="font-bold text-amber-300 mb-3">Importante</h4>
-              <ul className="space-y-2 text-sm text-amber-200/80">
-                {[
-                  'Todos los productos cumplen con la legislación vigente en España',
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 flex-shrink-0 mt-1.5" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
+            <div className=""> 
+        
             </div>
           </div>
 
