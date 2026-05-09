@@ -56,7 +56,7 @@ export const WhatsAppConsultModal = ({ isOpen, onClose, productName = '', initia
     const deliveryLabel = deliveryOptions.find(o => o.value === delivery)?.label || delivery;
 
     const whatsappText = `NUEVA CONSULTA\nProducto: ${product.trim()}\nCantidad: ${quantity}\nNombre: ${name.trim()}\nEntrega: ${deliveryLabel}\nMayor de edad: Si${message.trim() ? `\nMensaje: ${message.trim()}` : ''}`;
-
+ 
     const encoded = encodeURIComponent(whatsappText);
     window.open(`https://wa.me/34681872420?text=${encoded}`, '_blank');
 
@@ -142,7 +142,7 @@ export const WhatsAppConsultModal = ({ isOpen, onClose, productName = '', initia
 
           <div>
             <label className="block text-sm font-medium text-neutral-400 mb-2">
-              Cuando lo quieres?
+              ¿Cuándo lo quieres?
             </label>
             <div className="flex gap-2">
               {deliveryOptions.map((option) => (

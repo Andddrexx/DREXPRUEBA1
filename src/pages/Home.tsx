@@ -104,9 +104,9 @@ export const Home = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
-              { icon: Flame, title: '97% 10-OH-HHC', desc: 'Maxima concentracion legal' },
+              { icon: Flame, title: '97% 10-OH-HHC', desc: 'Máxima concentración legal' },
               { icon: Shield, title: '100% Legal', desc: 'THC menor a 0.2%' },
-              { icon: Lock, title: 'Entrega discreta', desc: 'Verificacion +18' },
+              { icon: Lock, title: 'Entrega discreta', desc: 'Verificación +18' },
             ].map((item) => (
               <div key={item.title} className="flex items-center gap-4 p-5 bg-neutral-800/60 rounded-2xl border border-neutral-600/40 backdrop-blur-sm">
                 <div className="w-12 h-12 rounded-xl bg-neutral-700 flex items-center justify-center flex-shrink-0">
