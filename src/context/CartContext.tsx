@@ -1,8 +1,15 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 import { Product, CartItem } from '../types';
 
+export type DeliveryMethod = 'hand' | 'shipping';
+
+export const SHIPPING_BASE_COST = 3.99;
+export const FREE_SHIPPING_MIN_ITEMS = 2;
+
 interface CartContextType {
   cart: CartItem[];
+  deliveryMethod: DeliveryMethod;
+  setDeliveryMethod: (method: DeliveryMethod) => void;
   addToCart: (product: Product, quantity: number) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
@@ -11,12 +18,14 @@ interface CartContextType {
   getTotalPrice: () => number;
   getDiscount: () => number;
   getFinalPrice: () => number;
+  getShippingCost: () => number;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>('hand');
 
   const addToCart = (product: Product, quantity: number) => {
     setCart((prevCart) => {
@@ -76,13 +85,20 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const getFinalPrice = () => {
-    return Math.max(0, getTotalPrice() - getDiscount());
+    return Math.max(0, getTotalPrice() - getDiscount() + getShippingCost());
+  };
+
+  const getShippingCost = () => {
+    if (deliveryMethod !== 'shipping') return 0;
+    return getTotalItems() >= FREE_SHIPPING_MIN_ITEMS ? 0 : SHIPPING_BASE_COST;
   };
 
   return (
     <CartContext.Provider
       value={{
         cart,
+        deliveryMethod,
+        setDeliveryMethod,
         addToCart,
         removeFromCart,
         updateQuantity,
@@ -91,6 +107,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         getTotalPrice,
         getDiscount,
         getFinalPrice,
+        getShippingCost,
       }}
     >
       {children}

@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { useCart } from '../context/CartContext';
-import { Trash2, Plus, Minus, ShoppingBag, MessageCircle, ArrowLeft } from 'lucide-react';
+import { useCart, DeliveryMethod, SHIPPING_BASE_COST, FREE_SHIPPING_MIN_ITEMS } from '../context/CartContext';
+import { Trash2, Plus, Minus, ShoppingBag, MessageCircle, ArrowLeft, Truck, Handshake } from 'lucide-react';
 import { formatOrderMessage } from '../lib/whatsappMessages';
 
 export const Cart = () => {
-  const { cart, removeFromCart, updateQuantity, getTotalPrice, getDiscount, getFinalPrice, clearCart } = useCart();
+  const { cart, deliveryMethod, setDeliveryMethod, removeFromCart, updateQuantity, getTotalPrice, getDiscount, getFinalPrice, getShippingCost, clearCart } = useCart();
   const [showCheckout, setShowCheckout] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -16,7 +16,10 @@ export const Cart = () => {
 
   const totalPrice = getTotalPrice();
   const discount = getDiscount();
+  const shippingCost = getShippingCost();
   const finalPrice = getFinalPrice();
+  const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+  const isFreeShipping = totalItems >= FREE_SHIPPING_MIN_ITEMS;
 
   const handleSubmitOrder = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,7 +27,7 @@ export const Cart = () => {
 
     try {
       const whatsappMessage = encodeURIComponent(
-        formatOrderMessage(formData.name, formData.phone, cart, totalPrice, discount, finalPrice, formData.notes)
+        formatOrderMessage(formData.name, formData.phone, cart, totalPrice, discount, shippingCost, finalPrice, formData.notes, deliveryMethod)
       );
 
       window.open(`https://wa.me/34681872420?text=${whatsappMessage}`, '_blank');
@@ -114,9 +117,49 @@ export const Cart = () => {
                   <span>-{discount.toFixed(2)}€</span>
                 </div>
               )}
+              {shippingCost > 0 && (
+                <div className="flex justify-between py-3 border-t border-neutral-800 text-neutral-400 text-sm">
+                  <span>Envio</span>
+                  <span>+{shippingCost.toFixed(2)}€</span>
+                </div>
+              )}
               <div className="flex justify-between py-4 font-bold text-lg border-t border-neutral-800">
                 <span className="text-white">Total</span>
                 <span className="text-white">{finalPrice.toFixed(2)}€</span>
+              </div>
+            </div>
+
+            <div className="bg-neutral-800/60 border border-neutral-600/40 rounded-2xl p-6 mb-6">
+              <h3 className="text-xs font-bold tracking-[0.2em] uppercase text-neutral-500 mb-4">Forma de entrega</h3>
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => setDeliveryMethod('hand')}
+                  className={`flex flex-col items-center gap-2 p-4 rounded-xl border transition-all duration-200 ${
+                    deliveryMethod === 'hand'
+                      ? 'bg-white text-neutral-900 border-white'
+                      : 'bg-neutral-700/50 text-neutral-400 border-neutral-600/50 hover:bg-neutral-700 hover:text-white'
+                  }`}
+                >
+                  <Handshake className="w-5 h-5" />
+                  <span className="text-sm font-semibold">Entrega en mano (Recogida)</span>
+                  <span className="text-xs opacity-70">Gratis</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setDeliveryMethod('shipping')}
+                  className={`flex flex-col items-center gap-2 p-4 rounded-xl border transition-all duration-200 ${
+                    deliveryMethod === 'shipping'
+                      ? 'bg-white text-neutral-900 border-white'
+                      : 'bg-neutral-700/50 text-neutral-400 border-neutral-600/50 hover:bg-neutral-700 hover:text-white'
+                  }`}
+                >
+                  <Truck className="w-5 h-5" />
+                  <span className="text-sm font-semibold">Envio</span>
+                  <span className="text-xs opacity-70">
+                    {isFreeShipping ? 'Gratis' : `+${SHIPPING_BASE_COST.toFixed(2)}€`}
+                  </span>
+                </button>
               </div>
             </div>
 
@@ -267,10 +310,13 @@ export const Cart = () => {
                 </div>
               </div>
             )}
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex justify-between items-center mb-2">
               <span className="text-lg font-bold text-white">Total</span>
               <span className="text-3xl font-bold text-white tracking-tight">{finalPrice.toFixed(2)}€</span>
             </div>
+            <p className="text-xs text-neutral-500 mb-6">
+              Envio disponible +{SHIPPING_BASE_COST.toFixed(2)}€ &middot; Gratis a partir de {FREE_SHIPPING_MIN_ITEMS} unidades
+            </p>
 
             <button
               onClick={() => setShowCheckout(true)}

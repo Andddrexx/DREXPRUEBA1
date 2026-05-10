@@ -1,4 +1,5 @@
 import { CartItem } from '../types';
+import { DeliveryMethod } from '../context/CartContext';
 
 export const generateOrderId = () => {
   return Math.random().toString(36).substring(2, 10).toUpperCase();
@@ -26,8 +27,10 @@ export const formatOrderMessage = (
   cart: CartItem[],
   subtotal: number,
   discount: number,
+  shipping: number,
   final: number,
-  notes: string
+  notes: string,
+  deliveryMethod: DeliveryMethod
 ) => {
   const orderId = generateOrderId();
 
@@ -39,14 +42,25 @@ export const formatOrderMessage = (
     })
     .join('\n');
 
+  const deliveryLabel = deliveryMethod === 'shipping' ? 'Envio' : 'Entrega en mano';
+
   let message = ` NUEVO PEDIDO #${orderId}\n`;
   message += `\n Cliente: ${name}`;
   message += `\n Teléfono: ${phone}`;
+  message += `\n Entrega: ${deliveryLabel}`;
   message += `\n\n PRODUCTOS:\n${productsList}`;
   message += `\n\n Subtotal: ${subtotal.toFixed(2)}€`;
 
   if (discount > 0) {
     message += `\n Descuento: -${discount.toFixed(2)}€`;
+  }
+
+  if (deliveryMethod === 'shipping') {
+    if (shipping > 0) {
+      message += `\n Envio: +${shipping.toFixed(2)}€`;
+    } else {
+      message += `\n Envio: Gratis (2+ vapers)`;
+    }
   }
 
   message += `\n Total: ${final.toFixed(2)}€`;
