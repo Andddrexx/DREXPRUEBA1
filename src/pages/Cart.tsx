@@ -138,7 +138,7 @@ export const Cart = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-neutral-400 mb-2">
-                    Teléfono *
+                    Telefono *
                   </label>
                   <input
                     type="tel"
@@ -168,11 +168,11 @@ export const Cart = () => {
 
                 <div className="bg-amber-900/20 border border-amber-800/30 rounded-2xl p-5">
                   <p className="text-sm text-amber-300">
-                    <strong>Importante:</strong> Este pedido NO se paga automáticamente.
-                    Contactaremos por WhatsApp para confirmar y coordinar la entrega.
+                    <strong>Importante:</strong> Este pedido NO se paga automaticamente.
+                    Te contactaremos por WhatsApp para confirmar y coordinar la entrega.
                   </p>
                   <p className="text-sm text-amber-300 mt-2">
-                    <strong>Forma de pago:</strong> Efectivo o transferencia tras confirmación.
+                    <strong>Forma de pago:</strong> Efectivo o transferencia tras confirmacion.
                   </p>
                 </div>
 

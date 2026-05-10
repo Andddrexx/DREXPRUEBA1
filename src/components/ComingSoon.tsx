@@ -27,7 +27,7 @@ export const ComingSoon = ({ title, items }: ComingSoonProps) => {
         </h3>
 
         <p className="text-neutral-500 max-w-md mx-auto mb-10 leading-relaxed">
-          Estamos preparando algo especial. Estos productos estarán disponibles muy pronto.
+          Estamos preparando algo especial. Estos productos estaran disponibles muy pronto.
         </p> 
 
         <div className="flex flex-wrap justify-center gap-3 max-w-sm mx-auto">
