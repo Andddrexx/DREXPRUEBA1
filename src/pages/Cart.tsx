@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { useCart, DeliveryMethod, SHIPPING_BASE_COST, FREE_SHIPPING_MIN_ITEMS } from '../context/CartContext';
-import { Trash2, Plus, Minus, ShoppingBag, MessageCircle, ArrowLeft, Truck, Handshake } from 'lucide-react';
-import { formatOrderMessage, generateOrderId, buildEmailPayload } from '../lib/whatsappMessages';
+import { Trash2, Plus, Minus, ShoppingBag, Mail, ArrowLeft, Truck, Handshake } from 'lucide-react';
+import { generateOrderId, buildEmailPayload } from '../lib/whatsappMessages';
 
 export const Cart = () => {
   const { cart, deliveryMethod, setDeliveryMethod, removeFromCart, updateQuantity, getTotalPrice, getDiscount, getFinalPrice, getShippingCost, clearCart } = useCart();
   const [showCheckout, setShowCheckout] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
+    email: '',
     phone: '',
     notes: '',
   });
@@ -27,25 +28,24 @@ export const Cart = () => {
 
     try {
       const orderId = generateOrderId();
-      const whatsappMessage = encodeURIComponent(
-        formatOrderMessage(orderId, formData.name, formData.phone, cart, totalPrice, discount, shippingCost, finalPrice, formData.notes, deliveryMethod)
-      );
+      const emailPayload = buildEmailPayload(orderId, formData.name, formData.email, formData.phone, cart, totalPrice, discount, shippingCost, finalPrice, formData.notes, deliveryMethod);
 
-      window.open(`https://wa.me/34681872420?text=${whatsappMessage}`, '_blank');
-
-      const emailPayload = buildEmailPayload(orderId, formData.name, formData.phone, cart, totalPrice, discount, shippingCost, finalPrice, formData.notes, deliveryMethod);
-      fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-order-email`, {
+      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-order-email`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
         },
         body: JSON.stringify(emailPayload),
-      }).catch(() => {});
+      });
+
+      if (!res.ok) {
+        throw new Error('Error sending order email');
+      }
 
       setOrderSuccess(true);
       clearCart();
-      setFormData({ name: '', phone: '', notes: '' });
+      setFormData({ name: '', email: '', phone: '', notes: '' });
 
       setTimeout(() => {
         setOrderSuccess(false);
@@ -80,11 +80,11 @@ export const Cart = () => {
       <div className="min-h-screen bg-gradient-to-b from-neutral-950 via-neutral-800 to-neutral-600 pt-28 pb-16 flex items-center justify-center">
         <div className="bg-neutral-800 border border-neutral-600/50 rounded-3xl p-10 max-w-md text-center animate-scale-in">
           <div className="w-16 h-16 bg-emerald-900/30 rounded-2xl flex items-center justify-center mx-auto mb-5 border border-emerald-800/30">
-            <MessageCircle className="w-8 h-8 text-emerald-400" />
+            <Mail className="w-8 h-8 text-emerald-400" />
           </div>
           <h2 className="font-display text-2xl font-bold text-white mb-2">Pedido Enviado!</h2>
           <p className="text-neutral-400 leading-relaxed">
-            Tu pedido ha sido registrado y enviado por WhatsApp. Te contactaremos pronto para confirmar.
+            Tu pedido ha sido registrado. Recibirás un email de confirmación y nos pondremos en contacto contigo pronto.
           </p>
         </div>
       </div>
@@ -198,6 +198,21 @@ export const Cart = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-neutral-400 mb-2">
+                    Email *
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className="input-field"
+                    placeholder="tu@email.com"
+                  />
+                  <p className="text-xs text-neutral-500 mt-1.5">Usaremos tu email únicamente para enviarte la confirmación del pedido.</p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-neutral-400 mb-2">
                     Teléfono *
                   </label>
                   <input
@@ -229,7 +244,7 @@ export const Cart = () => {
                 <div className="bg-amber-900/20 border border-amber-800/30 rounded-2xl p-5">
                   <p className="text-sm text-amber-300">
                     <strong>Importante:</strong> Este pedido NO se paga automáticamente.
-                    Contactaremos por WhatsApp para confirmar y coordinar el pedido.
+                    Recibirás un email de confirmación y te contactaremos para coordinar la entrega.
                   </p>
                 </div>
 
@@ -240,7 +255,7 @@ export const Cart = () => {
                 >
                   {loading ? 'Enviando...' : (
                     <>
-                      <MessageCircle className="w-5 h-5" />
+                      <Mail className="w-5 h-5" />
                       Confirmar pedido
                     </>
                   )}

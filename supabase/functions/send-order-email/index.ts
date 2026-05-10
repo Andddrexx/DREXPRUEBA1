@@ -1,4 +1,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+import nodemailer from "npm:nodemailer@6.9.13";
+
+const LOGO_URL = Deno.env.get("SUPABASE_URL") + "/storage/v1/object/public/assets/logo.png";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -16,6 +19,7 @@ interface OrderItem {
 interface EmailOrderPayload {
   orderId: string;
   name: string;
+  email: string;
   phone: string;
   items: OrderItem[];
   subtotal: number;
@@ -26,7 +30,119 @@ interface EmailOrderPayload {
   deliveryMethod: string;
 }
 
-function buildEmailHtml(payload: EmailOrderPayload): string {
+function buildClientEmailHtml(payload: EmailOrderPayload): string {
+  const itemsRows = payload.items
+    .map(
+      (item) => `
+      <tr>
+        <td style="padding: 10px 0; border-bottom: 1px solid #2a2a2a; color: #d4d4d4;">${item.name}</td>
+        <td style="padding: 10px 0; border-bottom: 1px solid #2a2a2a; color: #d4d4d4; text-align: center;">${item.quantity}</td>
+        <td style="padding: 10px 0; border-bottom: 1px solid #2a2a2a; color: #d4d4d4; text-align: right;">${item.total.toFixed(2)}€</td>
+      </tr>`
+    )
+    .join("");
+
+  const discountRow =
+    payload.discount > 0
+      ? `<tr>
+          <td colspan="2" style="padding: 8px 0; color: #34d399; text-align: right;">Descuento aplicado:</td>
+          <td style="padding: 8px 0; color: #34d399; text-align: right;">-${payload.discount.toFixed(2)}€</td>
+        </tr>`
+      : "";
+
+  const shippingRow =
+    payload.deliveryMethod === "Envío"
+      ? payload.shipping > 0
+        ? `<tr>
+            <td colspan="2" style="padding: 8px 0; color: #a3a3a3; text-align: right;">Envío:</td>
+            <td style="padding: 8px 0; color: #a3a3a3; text-align: right;">+${payload.shipping.toFixed(2)}€</td>
+          </tr>`
+        : `<tr>
+            <td colspan="2" style="padding: 8px 0; color: #a3a3a3; text-align: right;">Envío:</td>
+            <td style="padding: 8px 0; color: #34d399; text-align: right;">Gratis</td>
+          </tr>`
+      : "";
+
+  const deliveryLabel = payload.deliveryMethod === "Envío"
+    ? "Envío a domicilio (3-5 días laborables)"
+    : "Entrega en mano / Recogida (24-48h)";
+
+  return `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Confirmación de pedido #${payload.orderId}</title>
+</head>
+<body style="margin: 0; padding: 0; background: #0a0a0a; font-family: 'Inter', -apple-system, sans-serif; color: #e5e5e5;">
+  <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+
+    <div style="text-align: center; margin-bottom: 40px;">
+      <img src="${LOGO_URL}" alt="CBDREX" style="max-width: 180px; height: auto; margin: 0 auto;" />
+    </div>
+
+    <div style="background: #171717; border: 1px solid #262626; border-radius: 16px; padding: 32px; margin-bottom: 24px;">
+
+      <div style="text-align: center; margin-bottom: 32px;">
+        <div style="width: 56px; height: 56px; background: #064e3b; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px;">
+          <span style="font-size: 28px; color: #34d399;">&#10003;</span>
+        </div>
+        <h2 style="color: #ffffff; font-size: 22px; margin: 0 0 8px 0;">Pedido confirmado</h2>
+        <p style="color: #737373; font-size: 14px; margin: 0;">Gracias, ${payload.name}. Tu pedido ha sido registrado correctamente.</p>
+      </div>
+
+      <div style="background: #0a0a0a; border: 1px solid #262626; border-radius: 10px; padding: 16px; margin-bottom: 24px; text-align: center;">
+        <p style="color: #737373; font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; margin: 0 0 4px 0;">Número de pedido</p>
+        <p style="color: #ffffff; font-size: 20px; font-weight: 700; margin: 0; letter-spacing: 0.05em;">#${payload.orderId}</p>
+      </div>
+
+      <p style="color: #737373; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 12px 0;">Productos</p>
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 16px;">
+        <thead>
+          <tr>
+            <th style="text-align: left; padding: 8px 0; color: #525252; font-size: 12px; border-bottom: 1px solid #262626;">Producto</th>
+            <th style="text-align: center; padding: 8px 0; color: #525252; font-size: 12px; border-bottom: 1px solid #262626;">Cant.</th>
+            <th style="text-align: right; padding: 8px 0; color: #525252; font-size: 12px; border-bottom: 1px solid #262626;">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${itemsRows}
+        </tbody>
+      </table>
+
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <td colspan="2" style="padding: 8px 0; color: #a3a3a3; text-align: right;">Subtotal:</td>
+          <td style="padding: 8px 0; color: #a3a3a3; text-align: right;">${payload.subtotal.toFixed(2)}€</td>
+        </tr>
+        ${discountRow}
+        ${shippingRow}
+        <tr>
+          <td colspan="2" style="padding: 12px 0; color: #ffffff; font-weight: 700; font-size: 18px; text-align: right; border-top: 1px solid #262626;">Total:</td>
+          <td style="padding: 12px 0; color: #ffffff; font-weight: 700; font-size: 18px; text-align: right; border-top: 1px solid #262626;">${payload.finalPrice.toFixed(2)}€</td>
+        </tr>
+      </table>
+
+      <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid #262626;">
+        <p style="color: #737373; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 8px 0;">Entrega</p>
+        <p style="color: #e5e5e5; font-size: 14px; margin: 0;">${deliveryLabel}</p>
+      </div>
+
+    </div>
+
+    <div style="background: #171717; border: 1px solid #262626; border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+      <p style="color: #a3a3a3; font-size: 13px; margin: 0 0 8px 0;">Nos pondremos en contacto contigo para confirmar tu pedido y coordinar la entrega.</p>
+      <p style="color: #737373; font-size: 12px; margin: 0;">Si tienes alguna duda, escríbenos a <a href="mailto:cbdrexstore@gmail.com" style="color: #34d399; text-decoration: none;">cbdrexstore@gmail.com</a></p>
+    </div>
+
+    <p style="color: #525252; font-size: 12px; text-align: center; margin: 0;">
+      CBDREX &mdash; Cannabis Legal Premium
+    </p>
+  </div>
+</body>
+</html>`;
+}
+
+function buildInternalEmailHtml(payload: EmailOrderPayload): string {
   const itemsRows = payload.items
     .map(
       (item) => `
@@ -78,8 +194,7 @@ function buildEmailHtml(payload: EmailOrderPayload): string {
   <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
 
     <div style="text-align: center; margin-bottom: 40px;">
-      <h1 style="color: #ffffff; font-size: 28px; margin: 0 0 8px 0;">CBDREX</h1>
-      <p style="color: #737373; font-size: 13px; margin: 0; text-transform: uppercase; letter-spacing: 0.15em;">Cannabis Legal Premium</p>
+      <img src="${LOGO_URL}" alt="CBDREX" style="max-width: 180px; height: auto; margin: 0 auto;" />
     </div>
 
     <div style="background: #171717; border: 1px solid #262626; border-radius: 16px; padding: 32px; margin-bottom: 24px;">
@@ -100,6 +215,10 @@ function buildEmailHtml(payload: EmailOrderPayload): string {
             <tr>
               <td style="color: #737373; padding: 4px 0; width: 100px; font-size: 14px;">Nombre</td>
               <td style="color: #e5e5e5; padding: 4px 0; font-weight: 600;">${payload.name}</td>
+            </tr>
+            <tr>
+              <td style="color: #737373; padding: 4px 0; font-size: 14px;">Email</td>
+              <td style="color: #e5e5e5; padding: 4px 0; font-weight: 600;">${payload.email}</td>
             </tr>
             <tr>
               <td style="color: #737373; padding: 4px 0; font-size: 14px;">Teléfono</td>
@@ -160,41 +279,45 @@ Deno.serve(async (req: Request) => {
   try {
     const payload: EmailOrderPayload = await req.json();
 
-    const resendApiKey = Deno.env.get("RESEND_API_KEY");
-    if (!resendApiKey) {
-      console.warn("RESEND_API_KEY not configured, skipping email");
+    const gmailUser = Deno.env.get("GMAIL_USER");
+    const gmailAppPassword = Deno.env.get("GMAIL_APP_PASSWORD");
+
+    if (!gmailUser || !gmailAppPassword) {
+      console.warn("Gmail SMTP credentials not configured, skipping email");
       return new Response(JSON.stringify({ ok: true, skipped: true }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    const emailHtml = buildEmailHtml(payload);
-
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${resendApiKey}`,
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: gmailUser,
+        pass: gmailAppPassword,
       },
-      body: JSON.stringify({
-        from: "CBDREX Pedidos <onboarding@resend.dev>",
-        to: ["cbdrexstore@gmail.com"],
-        subject: `Nuevo pedido #${payload.orderId}`,
-        html: emailHtml,
-      }),
     });
 
-    if (!res.ok) {
-      const err = await res.text();
-      console.error("Resend error:", err);
-      return new Response(JSON.stringify({ ok: false, error: err }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
+    const clientHtml = buildClientEmailHtml(payload);
+    const internalHtml = buildInternalEmailHtml(payload);
 
-    const data = await res.json();
-    return new Response(JSON.stringify({ ok: true, data }), {
+    await Promise.all([
+      transporter.sendMail({
+        from: `"CBDREX" <${gmailUser}>`,
+        to: payload.email,
+        subject: `Confirmación de pedido #${payload.orderId}`,
+        html: clientHtml,
+      }),
+      transporter.sendMail({
+        from: `"CBDREX Pedidos" <${gmailUser}>`,
+        to: "cbdrexstore@gmail.com",
+        subject: `Nuevo pedido #${payload.orderId}`,
+        html: internalHtml,
+      }),
+    ]);
+
+    return new Response(JSON.stringify({ ok: true }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (err) {

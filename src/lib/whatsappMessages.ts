@@ -58,6 +58,7 @@ export const formatOrderMessage = (
 export interface EmailOrderPayload {
   orderId: string;
   name: string;
+  email: string;
   phone: string;
   items: { name: string; quantity: number; unitPrice: number; total: number }[];
   subtotal: number;
@@ -71,6 +72,7 @@ export interface EmailOrderPayload {
 export const buildEmailPayload = (
   orderId: string,
   name: string,
+  email: string,
   phone: string,
   cart: CartItem[],
   subtotal: number,
@@ -82,6 +84,7 @@ export const buildEmailPayload = (
 ): EmailOrderPayload => ({
   orderId,
   name,
+  email,
   phone,
   items: cart.map(item => ({
     name: formatProductName(item.product.name),
