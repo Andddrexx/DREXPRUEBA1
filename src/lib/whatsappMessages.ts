@@ -6,7 +6,6 @@ export const generateOrderId = () => {
 };
 
 export const formatProductName = (name: string) => {
-  // "Vape Pen Desechable 10-OH-HHC Triple Berry 1ml – Rollz" -> "Rollz 1ml Triple Berry"
   if (name.includes('Rollz')) {
     const match = name.match(/10-OH-HHC\s+(.+?)\s+(\d+ml)\s*–\s*Rollz/i);
     if (match) {
@@ -22,54 +21,78 @@ export const formatProductMessageForDetail = (name: string, price: number) => {
 };
 
 export const formatOrderMessage = (
+  orderId: string,
+  name: string,
+  phone: string,
+  cart: CartItem[],
+  _subtotal: number,
+  _discount: number,
+  _shipping: number,
+  final: number,
+  notes: string,
+  deliveryMethod: DeliveryMethod
+) => {
+  const productsList = cart
+    .map(item => {
+      const simplified = formatProductName(item.product.name);
+      return `- ${simplified} ×${item.quantity}`;
+    })
+    .join('\n');
+
+  const deliveryLabel = deliveryMethod === 'shipping' ? 'Envío' : 'Entrega en mano (Recogida)';
+
+  let message = `Nuevo pedido #${orderId}\n`;
+  message += `\nCliente: ${name}`;
+  message += `\nTeléfono: ${phone}`;
+  message += `\nEntrega: ${deliveryLabel}`;
+  message += `\n\nProductos:\n${productsList}`;
+  message += `\n\nTotal: ${final.toFixed(2)}€`;
+
+  if (notes.trim()) {
+    message += `\nNotas: ${notes}`;
+  }
+
+  return message;
+};
+
+export interface EmailOrderPayload {
+  orderId: string;
+  name: string;
+  phone: string;
+  items: { name: string; quantity: number; unitPrice: number; total: number }[];
+  subtotal: number;
+  discount: number;
+  shipping: number;
+  finalPrice: number;
+  notes: string;
+  deliveryMethod: string;
+}
+
+export const buildEmailPayload = (
+  orderId: string,
   name: string,
   phone: string,
   cart: CartItem[],
   subtotal: number,
   discount: number,
   shipping: number,
-  final: number,
+  finalPrice: number,
   notes: string,
   deliveryMethod: DeliveryMethod
-) => {
-  const orderId = generateOrderId();
-
-  const productsList = cart
-    .map(item => {
-      const simplified = formatProductName(item.product.name);
-      const itemTotal = (item.product.price * item.quantity).toFixed(2);
-      return `• ${simplified} ×${item.quantity} → ${itemTotal}€`;
-    })
-    .join('\n');
-
-  const deliveryLabel = deliveryMethod === 'shipping' ? 'Envio' : 'Entrega en mano';
-
-  let message = ` NUEVO PEDIDO #${orderId}\n`;
-  message += `\n Cliente: ${name}`;
-  message += `\n Teléfono: ${phone}`;
-  message += `\n Entrega: ${deliveryLabel}`;
-  message += `\n\n PRODUCTOS:\n${productsList}`;
-  message += `\n\n Subtotal: ${subtotal.toFixed(2)}€`;
-
-  if (discount > 0) {
-    message += `\n Descuento: -${discount.toFixed(2)}€`;
-  }
-
-  if (deliveryMethod === 'shipping') {
-    if (shipping > 0) {
-      message += `\n Envio: +${shipping.toFixed(2)}€`;
-    } else {
-      message += `\n Envio: Gratis (2+ vapers)`;
-    }
-  }
-
-  message += `\n Total: ${final.toFixed(2)}€`;
-
-  if (notes.trim()) {
-    message += `\n\n Notas: ${notes}`;
-  }
-
-  message += `\n\n Estado: Pendiente de confirmación`;
-
-  return message;
-};
+): EmailOrderPayload => ({
+  orderId,
+  name,
+  phone,
+  items: cart.map(item => ({
+    name: formatProductName(item.product.name),
+    quantity: item.quantity,
+    unitPrice: item.product.price,
+    total: item.product.price * item.quantity,
+  })),
+  subtotal,
+  discount,
+  shipping,
+  finalPrice,
+  notes,
+  deliveryMethod: deliveryMethod === 'shipping' ? 'Envío' : 'Entrega en mano (Recogida)',
+});

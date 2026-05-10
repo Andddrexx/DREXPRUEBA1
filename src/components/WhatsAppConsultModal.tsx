@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { X, Minus, Plus } from 'lucide-react';
+import { X } from 'lucide-react';
 
 interface WhatsAppConsultModalProps {
   isOpen: boolean;
@@ -8,16 +8,9 @@ interface WhatsAppConsultModalProps {
   initialQuantity?: number;
 }
 
-const deliveryOptions = [
-  { value: '24-48h', label: '24-48h' },
-  { value: 'esta-semana', label: 'Esta semana' },
-];
-
-export const WhatsAppConsultModal = ({ isOpen, onClose, productName = '', initialQuantity = 1 }: WhatsAppConsultModalProps) => {
+export const WhatsAppConsultModal = ({ isOpen, onClose, productName = '' }: WhatsAppConsultModalProps) => {
   const [product, setProduct] = useState(productName);
   const [name, setName] = useState('');
-  const [quantity, setQuantity] = useState(initialQuantity);
-  const [delivery, setDelivery] = useState('24-48h');
   const [message, setMessage] = useState('');
   const [ageConfirmed, setAgeConfirmed] = useState(false);
   const [error, setError] = useState('');
@@ -26,13 +19,11 @@ export const WhatsAppConsultModal = ({ isOpen, onClose, productName = '', initia
     if (isOpen) {
       setProduct(productName);
       setName('');
-      setQuantity(initialQuantity);
-      setDelivery('24-48h');
       setMessage('');
       setAgeConfirmed(false);
       setError('');
     }
-  }, [isOpen, productName, initialQuantity]);
+  }, [isOpen, productName]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,18 +44,13 @@ export const WhatsAppConsultModal = ({ isOpen, onClose, productName = '', initia
       return;
     }
 
-    const deliveryLabel = deliveryOptions.find(o => o.value === delivery)?.label || delivery;
-    
-    const whatsappText = `NUEVA CONSULTA\nProducto: ${product.trim()}\nCantidad: ${quantity}\nNombre: ${name.trim()}\nEntrega: ${deliveryLabel}${message.trim() ? `\nMensaje: ${message.trim()}` : ''}`;
-    
- 
+    const whatsappText = `NUEVA CONSULTA\nProducto: ${product.trim()}\nNombre: ${name.trim()}${message.trim() ? `\nMensaje: ${message.trim()}` : ''}`;
+
     const encoded = encodeURIComponent(whatsappText);
     window.open(`https://wa.me/34681872420?text=${encoded}`, '_blank');
 
     setProduct('');
     setName('');
-    setQuantity(1);
-    setDelivery('24-48h');
     setMessage('');
     setAgeConfirmed(false);
     setError('');
@@ -108,29 +94,6 @@ export const WhatsAppConsultModal = ({ isOpen, onClose, productName = '', initia
 
           <div>
             <label className="block text-sm font-medium text-neutral-400 mb-2">
-              Cantidad
-            </label>
-            <div className="flex items-center gap-1 bg-neutral-700 rounded-xl p-1 border border-neutral-600/50 w-fit">
-              <button
-                type="button"
-                onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="w-9 h-9 rounded-lg hover:bg-neutral-600 flex items-center justify-center transition-colors text-neutral-300"
-              >
-                <Minus className="w-4 h-4" />
-              </button>
-              <span className="w-10 text-center font-bold text-white">{quantity}</span>
-              <button
-                type="button"
-                onClick={() => setQuantity(quantity + 1)}
-                className="w-9 h-9 rounded-lg hover:bg-neutral-600 flex items-center justify-center transition-colors text-neutral-300"
-              >
-                <Plus className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-neutral-400 mb-2">
               Tu nombre *
             </label>
             <input
@@ -143,36 +106,14 @@ export const WhatsAppConsultModal = ({ isOpen, onClose, productName = '', initia
 
           <div>
             <label className="block text-sm font-medium text-neutral-400 mb-2">
-              ¿Cuándo lo quieres?
-            </label>
-            <div className="flex gap-2">
-              {deliveryOptions.map((option) => (
-                <button
-                  key={option.value}
-                  type="button"
-                  onClick={() => setDelivery(option.value)}
-                  className={`flex-1 py-2.5 px-3 rounded-xl text-sm font-medium transition-all duration-200 border ${
-                    delivery === option.value
-                      ? 'bg-white text-neutral-900 border-white'
-                      : 'bg-neutral-700 text-neutral-400 border-neutral-600/50 hover:bg-neutral-600 hover:text-white'
-                  }`}
-                >
-                  {option.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-neutral-400 mb-2">
-              Mensaje adicional (opcional)
+              Mensaje (opcional)
             </label>
             <textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               rows={3}
               className="input-field resize-none"
-              placeholder="Tengo una duda sobre el sabor..."
+              placeholder="Tengo una duda sobre el sabor, recomendación, disponibilidad…"
             />
           </div>
 

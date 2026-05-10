@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useCart, DeliveryMethod, SHIPPING_BASE_COST, FREE_SHIPPING_MIN_ITEMS } from '../context/CartContext';
 import { Trash2, Plus, Minus, ShoppingBag, MessageCircle, ArrowLeft, Truck, Handshake } from 'lucide-react';
-import { formatOrderMessage } from '../lib/whatsappMessages';
+import { formatOrderMessage, generateOrderId, buildEmailPayload } from '../lib/whatsappMessages';
 
 export const Cart = () => {
   const { cart, deliveryMethod, setDeliveryMethod, removeFromCart, updateQuantity, getTotalPrice, getDiscount, getFinalPrice, getShippingCost, clearCart } = useCart();
@@ -26,11 +26,22 @@ export const Cart = () => {
     setLoading(true);
 
     try {
+      const orderId = generateOrderId();
       const whatsappMessage = encodeURIComponent(
-        formatOrderMessage(formData.name, formData.phone, cart, totalPrice, discount, shippingCost, finalPrice, formData.notes, deliveryMethod)
+        formatOrderMessage(orderId, formData.name, formData.phone, cart, totalPrice, discount, shippingCost, finalPrice, formData.notes, deliveryMethod)
       );
 
       window.open(`https://wa.me/34681872420?text=${whatsappMessage}`, '_blank');
+
+      const emailPayload = buildEmailPayload(orderId, formData.name, formData.phone, cart, totalPrice, discount, shippingCost, finalPrice, formData.notes, deliveryMethod);
+      fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-order-email`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+        },
+        body: JSON.stringify(emailPayload),
+      }).catch(() => {});
 
       setOrderSuccess(true);
       clearCart();
@@ -131,34 +142,40 @@ export const Cart = () => {
 
             <div className="bg-neutral-800/60 border border-neutral-600/40 rounded-2xl p-6 mb-6">
               <h3 className="text-xs font-bold tracking-[0.2em] uppercase text-neutral-500 mb-4">Forma de entrega</h3>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="flex flex-col gap-3">
                 <button
                   type="button"
                   onClick={() => setDeliveryMethod('hand')}
-                  className={`flex flex-col items-center gap-2 p-4 rounded-xl border transition-all duration-200 ${
+                  className={`flex items-start gap-4 p-4 rounded-xl border transition-all duration-200 text-left ${
                     deliveryMethod === 'hand'
                       ? 'bg-white text-neutral-900 border-white'
                       : 'bg-neutral-700/50 text-neutral-400 border-neutral-600/50 hover:bg-neutral-700 hover:text-white'
                   }`}
                 >
-                  <Handshake className="w-5 h-5" />
-                  <span className="text-sm font-semibold">Entrega en mano (Recogida)</span>
-                  <span className="text-xs opacity-70">Gratis</span>
+                  <Handshake className="w-5 h-5 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-semibold leading-snug">Entrega en mano (Recogida)</p>
+                    <p className={`text-xs font-bold mt-0.5 ${deliveryMethod === 'hand' ? 'text-emerald-600' : 'text-emerald-400'}`}>Gratis</p>
+                    <p className={`text-xs mt-1 ${deliveryMethod === 'hand' ? 'text-neutral-500' : 'text-neutral-500'}`}>Entrega hoy o en 24–48h (según disponibilidad y zona)</p>
+                  </div>
                 </button>
                 <button
                   type="button"
                   onClick={() => setDeliveryMethod('shipping')}
-                  className={`flex flex-col items-center gap-2 p-4 rounded-xl border transition-all duration-200 ${
+                  className={`flex items-start gap-4 p-4 rounded-xl border transition-all duration-200 text-left ${
                     deliveryMethod === 'shipping'
                       ? 'bg-white text-neutral-900 border-white'
                       : 'bg-neutral-700/50 text-neutral-400 border-neutral-600/50 hover:bg-neutral-700 hover:text-white'
                   }`}
                 >
-                  <Truck className="w-5 h-5" />
-                  <span className="text-sm font-semibold">Envio</span>
-                  <span className="text-xs opacity-70">
-                    {isFreeShipping ? 'Gratis' : `+${SHIPPING_BASE_COST.toFixed(2)}€`}
-                  </span>
+                  <Truck className="w-5 h-5 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-semibold leading-snug">Envío</p>
+                    <p className={`text-xs font-bold mt-0.5 ${deliveryMethod === 'shipping' ? (isFreeShipping ? 'text-emerald-600' : 'text-neutral-600') : isFreeShipping ? 'text-emerald-400' : 'text-neutral-300'}`}>
+                      {isFreeShipping ? 'Gratis (desde 2 vapers)' : `3,99 € (gratis desde 2 vapers)`}
+                    </p>
+                    <p className={`text-xs mt-1 ${deliveryMethod === 'shipping' ? 'text-neutral-500' : 'text-neutral-500'}`}>Entrega estimada: 3–5 días laborables</p>
+                  </div>
                 </button>
               </div>
             </div>
@@ -193,13 +210,13 @@ export const Cart = () => {
                       setFormData({ ...formData, phone: value });
                     }}
                     className="input-field"
-                    placeholder="Ej: 681872420"
+                    placeholder="Ej: 648574219"
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-neutral-400 mb-2">
-                    Notas adicionales (opcional)
+                    Notas (opcional)
                   </label>
                   <textarea
                     value={formData.notes}
@@ -212,10 +229,7 @@ export const Cart = () => {
                 <div className="bg-amber-900/20 border border-amber-800/30 rounded-2xl p-5">
                   <p className="text-sm text-amber-300">
                     <strong>Importante:</strong> Este pedido NO se paga automáticamente.
-                    Contactaremos por WhatsApp para confirmar y coordinar la entrega.
-                  </p>
-                  <p className="text-sm text-amber-300 mt-2">
-                    <strong>Forma de pago:</strong> Efectivo o transferencia tras confirmación.
+                    Contactaremos por WhatsApp para confirmar y coordinar el pedido.
                   </p>
                 </div>
 
@@ -227,7 +241,7 @@ export const Cart = () => {
                   {loading ? 'Enviando...' : (
                     <>
                       <MessageCircle className="w-5 h-5" />
-                      Enviar por WhatsApp
+                      Confirmar pedido
                     </>
                   )}
                 </button>
