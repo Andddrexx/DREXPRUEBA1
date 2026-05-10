@@ -29,7 +29,7 @@ export const AgeWarning = () => {
           </div>
         </div>
 
-        <h2 className="font-display text-3xl font-bold mb-3 text-white">Verificacion de Edad</h2>
+        <h2 className="font-display text-3xl font-bold mb-3 text-white">Verificación de Edad</h2>
         <div className="divider-dark mx-auto mb-6" />
 
         <p className="text-neutral-400 mb-6 leading-relaxed">

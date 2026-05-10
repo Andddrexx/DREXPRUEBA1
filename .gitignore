@@ -21,3 +21,6 @@ dist-ssr
 *.sln
 *.sw?
 .env
+src/pages/Home.tsx
+/src/pages
+*.tsx

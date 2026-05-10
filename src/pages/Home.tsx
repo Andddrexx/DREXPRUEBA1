@@ -71,9 +71,9 @@ export const Home = () => {
         <div className="relative z-10 container mx-auto px-4 flex flex-col items-center justify-center h-full">
           <img
             src="/assets/logo.png"
-            alt="CBDREX" 
-            className="w-[50vw] max-w-[1000px] max-h-[50vh] h-auto animate-float relative z-10 object-contain flex-shrink-0"
-          />
+            alt="CBDREX"
+            className="w-[119vw] sm:w-[70vw] md:w-[50vw] max-w-[1000px] max-h-[50vh] h-auto animate-float relative z-10 object-contain flex-shrink-0"
+          /> 
 
           <p className="text-lg md:text-xl text-neutral-200 mt-4 mb-5 max-w-xl mx-auto text-center animate-fade-in-up stagger-2">
  Calidad garantizada. Diseño discreto.        </p>
@@ -104,9 +104,9 @@ export const Home = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
-              { icon: Flame, title: '97% 10-OH-HHC', desc: 'Maxima concentracion legal' },
+              { icon: Flame, title: '97% 10-OH-HHC', desc: 'Máxima concentración legal' },
               { icon: Shield, title: '100% Legal', desc: 'THC menor a 0.2%' },
-              { icon: Lock, title: 'Entrega discreta', desc: 'Verificacion +18' },
+              { icon: Lock, title: 'Entrega discreta', desc: 'Verificación +18' },
             ].map((item) => (
               <div key={item.title} className="flex items-center gap-4 p-5 bg-neutral-800/60 rounded-2xl border border-neutral-600/40 backdrop-blur-sm">
                 <div className="w-12 h-12 rounded-xl bg-neutral-700 flex items-center justify-center flex-shrink-0">
