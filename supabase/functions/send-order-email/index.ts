@@ -34,9 +34,9 @@ function buildClientEmailHtml(payload: EmailOrderPayload): string {
     .map(
       (item) => `
       <tr>
-        <td style="padding: 10px 0; border-bottom: 1px solid #2a2a2a; color: #d4d4d4;">${item.name}</td>
-        <td style="padding: 10px 0; border-bottom: 1px solid #2a2a2a; color: #d4d4d4; text-align: center;">${item.quantity}</td>
-        <td style="padding: 10px 0; border-bottom: 1px solid #2a2a2a; color: #d4d4d4; text-align: right;">${item.total.toFixed(2)}€</td>
+        <td style="padding: 10px 0; border-bottom: 1px solid #404040; color: #d4d4d4;">${item.name}</td>
+        <td style="padding: 10px 0; border-bottom: 1px solid #404040; color: #d4d4d4; text-align: center;">${item.quantity}</td>
+        <td style="padding: 10px 0; border-bottom: 1px solid #404040; color: #d4d4d4; text-align: right;">${item.total.toFixed(2)}€</td>
       </tr>`
     )
     .join("");
@@ -72,14 +72,14 @@ function buildClientEmailHtml(payload: EmailOrderPayload): string {
   <meta charset="UTF-8">
   <title>Confirmación de pedido #${payload.orderId}</title>
 </head>
-<body style="margin: 0; padding: 0; background: #0a0a0a; font-family: 'Inter', -apple-system, sans-serif; color: #e5e5e5;">
+<body style="margin: 0; padding: 0; background: linear-gradient(to bottom, #0a0a0a 0%, #1a1a1a 15%, #2a2a2a 30%, #3a3a3a 45%, #4a4a4a 60%, #5a5a5a 75%, #6a6a6a 90%, #7a7a7a 100%); font-family: 'Inter', -apple-system, sans-serif; color: #e5e5e5;">
   <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
 
     <div style="text-align: center; margin-bottom: 40px;">
       <img src="${LOGO_URL}" alt="CBDREX" style="max-width: 180px; height: auto; margin: 0 auto;" />
     </div>
 
-    <div style="background: #171717; border: 1px solid #262626; border-radius: 16px; padding: 32px; margin-bottom: 24px;">
+    <div style="background: rgba(38, 38, 38, 0.85); border: 1px solid #404040; border-radius: 16px; padding: 32px; margin-bottom: 24px;">
 
       <div style="text-align: center; margin-bottom: 32px;">
         <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin: 0 auto 16px auto;">
@@ -90,11 +90,11 @@ function buildClientEmailHtml(payload: EmailOrderPayload): string {
           </tr>
         </table>
         <h2 style="color: #ffffff; font-size: 22px; margin: 0 0 8px 0;">Pedido confirmado</h2>
-        <p style="color: #737373; font-size: 14px; margin: 0;">Gracias, ${payload.name}. Tu pedido ha sido registrado correctamente.</p>
+        <p style="color: #a3a3a3; font-size: 14px; margin: 0;">Gracias, ${payload.name}. Tu pedido ha sido registrado correctamente.</p>
       </div>
 
-      <div style="background: #0a0a0a; border: 1px solid #262626; border-radius: 10px; padding: 16px; margin-bottom: 24px; text-align: center;">
-        <p style="color: #737373; font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; margin: 0 0 4px 0;">Número de pedido</p>
+      <div style="background: rgba(10, 10, 10, 0.6); border: 1px solid #404040; border-radius: 10px; padding: 16px; margin-bottom: 24px; text-align: center;">
+        <p style="color: #a3a3a3; font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; margin: 0 0 4px 0;">Número de pedido</p>
         <p style="color: #ffffff; font-size: 20px; font-weight: 700; margin: 0; letter-spacing: 0.05em;">#${payload.orderId}</p>
       </div>
 
@@ -102,9 +102,9 @@ function buildClientEmailHtml(payload: EmailOrderPayload): string {
       <table style="width: 100%; border-collapse: collapse; margin-bottom: 16px;">
         <thead>
           <tr>
-            <th style="text-align: left; padding: 8px 0; color: #525252; font-size: 12px; border-bottom: 1px solid #262626;">Producto</th>
-            <th style="text-align: center; padding: 8px 0; color: #525252; font-size: 12px; border-bottom: 1px solid #262626;">Cant.</th>
-            <th style="text-align: right; padding: 8px 0; color: #525252; font-size: 12px; border-bottom: 1px solid #262626;">Total</th>
+            <th style="text-align: left; padding: 8px 0; color: #525252; font-size: 12px; border-bottom: 1px solid #404040;">Producto</th>
+            <th style="text-align: center; padding: 8px 0; color: #525252; font-size: 12px; border-bottom: 1px solid #404040;">Cant.</th>
+            <th style="text-align: right; padding: 8px 0; color: #525252; font-size: 12px; border-bottom: 1px solid #404040;">Total</th>
           </tr>
         </thead>
         <tbody>
@@ -120,24 +120,24 @@ function buildClientEmailHtml(payload: EmailOrderPayload): string {
         ${discountRow}
         ${shippingRow}
         <tr>
-          <td colspan="2" style="padding: 12px 0; color: #ffffff; font-weight: 700; font-size: 18px; text-align: right; border-top: 1px solid #262626;">Total:</td>
-          <td style="padding: 12px 0; color: #ffffff; font-weight: 700; font-size: 18px; text-align: right; border-top: 1px solid #262626;">${payload.finalPrice.toFixed(2)}€</td>
+          <td colspan="2" style="padding: 12px 0; color: #ffffff; font-weight: 700; font-size: 18px; text-align: right; border-top: 1px solid #404040;">Total:</td>
+          <td style="padding: 12px 0; color: #ffffff; font-weight: 700; font-size: 18px; text-align: right; border-top: 1px solid #404040;">${payload.finalPrice.toFixed(2)}€</td>
         </tr>
       </table>
 
-      <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid #262626;">
+      <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid #404040;">
         <p style="color: #737373; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 8px 0;">Entrega</p>
         <p style="color: #e5e5e5; font-size: 14px; margin: 0;">${deliveryLabel}</p>
       </div>
 
     </div>
 
-    <div style="background: #171717; border: 1px solid #262626; border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+    <div style="background: rgba(38, 38, 38, 0.85); border: 1px solid #404040; border-radius: 12px; padding: 20px; margin-bottom: 24px;">
       <p style="color: #a3a3a3; font-size: 13px; margin: 0 0 8px 0;">Nos pondremos en contacto contigo para confirmar tu pedido y coordinar la entrega.</p>
       <p style="color: #737373; font-size: 12px; margin: 0;">Si tienes alguna duda, escríbenos a <a href="mailto:cbdrexstore@gmail.com" style="color: #34d399; text-decoration: none;">cbdrexstore@gmail.com</a></p>
     </div>
 
-    <p style="color: #525252; font-size: 12px; text-align: center; margin: 0;">
+    <p style="color: #737373; font-size: 12px; text-align: center; margin: 0;">
       CBDREX &mdash; Cannabis Legal Premium
     </p>
   </div>
@@ -150,10 +150,10 @@ function buildInternalEmailHtml(payload: EmailOrderPayload): string {
     .map(
       (item) => `
       <tr>
-        <td style="padding: 10px 0; border-bottom: 1px solid #2a2a2a; color: #d4d4d4;">${item.name}</td>
-        <td style="padding: 10px 0; border-bottom: 1px solid #2a2a2a; color: #d4d4d4; text-align: center;">${item.quantity}</td>
-        <td style="padding: 10px 0; border-bottom: 1px solid #2a2a2a; color: #d4d4d4; text-align: right;">${item.unitPrice.toFixed(2)}€</td>
-        <td style="padding: 10px 0; border-bottom: 1px solid #2a2a2a; color: #d4d4d4; text-align: right;">${item.total.toFixed(2)}€</td>
+        <td style="padding: 10px 0; border-bottom: 1px solid #404040; color: #d4d4d4;">${item.name}</td>
+        <td style="padding: 10px 0; border-bottom: 1px solid #404040; color: #d4d4d4; text-align: center;">${item.quantity}</td>
+        <td style="padding: 10px 0; border-bottom: 1px solid #404040; color: #d4d4d4; text-align: right;">${item.unitPrice.toFixed(2)}€</td>
+        <td style="padding: 10px 0; border-bottom: 1px solid #404040; color: #d4d4d4; text-align: right;">${item.total.toFixed(2)}€</td>
       </tr>`
     )
     .join("");
@@ -181,7 +181,7 @@ function buildInternalEmailHtml(payload: EmailOrderPayload): string {
     payload.deliveryMethod === "Envío" ? shippingRow : "";
 
   const notesSection = payload.notes.trim()
-    ? `<div style="background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 16px; margin-top: 24px;">
+    ? `<div style="background: rgba(26, 26, 26, 0.7); border: 1px solid #404040; border-radius: 8px; padding: 16px; margin-top: 24px;">
         <p style="color: #a3a3a3; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 8px 0;">Notas del cliente</p>
         <p style="color: #e5e5e5; margin: 0;">${payload.notes}</p>
       </div>`
@@ -193,16 +193,16 @@ function buildInternalEmailHtml(payload: EmailOrderPayload): string {
   <meta charset="UTF-8">
   <title>Nuevo pedido #${payload.orderId}</title>
 </head>
-<body style="margin: 0; padding: 0; background: #0a0a0a; font-family: 'Inter', -apple-system, sans-serif; color: #e5e5e5;">
+<body style="margin: 0; padding: 0; background: linear-gradient(to bottom, #0a0a0a 0%, #1a1a1a 15%, #2a2a2a 30%, #3a3a3a 45%, #4a4a4a 60%, #5a5a5a 75%, #6a6a6a 90%, #7a7a7a 100%); font-family: 'Inter', -apple-system, sans-serif; color: #e5e5e5;">
   <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
 
     <div style="text-align: center; margin-bottom: 40px;">
       <img src="${LOGO_URL}" alt="CBDREX" style="max-width: 180px; height: auto; margin: 0 auto;" />
     </div>
 
-    <div style="background: #171717; border: 1px solid #262626; border-radius: 16px; padding: 32px; margin-bottom: 24px;">
-      <div style="text-align: center; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #262626;">
-        <p style="color: #737373; font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; margin: 0 0 4px 0;">Nuevo Pedido</p>
+    <div style="background: rgba(38, 38, 38, 0.85); border: 1px solid #404040; border-radius: 16px; padding: 32px; margin-bottom: 24px;">
+      <div style="text-align: center; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #404040;">
+        <p style="color: #a3a3a3; font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; margin: 0 0 4px 0;">Nuevo Pedido</p>
         <h2 style="color: #ffffff; font-size: 22px; margin: 0 0 12px 0;">#${payload.orderId}</h2>
         <div style="background: #fef3c7; color: #92400e; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; display: inline-block;">
           Pendiente de confirmación
@@ -210,8 +210,8 @@ function buildInternalEmailHtml(payload: EmailOrderPayload): string {
       </div>
 
       <div style="display: grid; gap: 16px; margin-bottom: 24px;">
-        <div style="background: #0a0a0a; border: 1px solid #262626; border-radius: 10px; padding: 16px;">
-          <p style="color: #737373; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 12px 0;">Datos del cliente</p>
+        <div style="background: rgba(10, 10, 10, 0.6); border: 1px solid #404040; border-radius: 10px; padding: 16px;">
+          <p style="color: #a3a3a3; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 12px 0;">Datos del cliente</p>
           <table style="width: 100%; border-collapse: collapse;">
             <tr>
               <td style="color: #737373; padding: 4px 0; width: 100px; font-size: 14px;">Nombre</td>
@@ -237,10 +237,10 @@ function buildInternalEmailHtml(payload: EmailOrderPayload): string {
       <table style="width: 100%; border-collapse: collapse; margin-bottom: 16px;">
         <thead>
           <tr>
-            <th style="text-align: left; padding: 8px 0; color: #525252; font-size: 12px; border-bottom: 1px solid #262626;">Producto</th>
-            <th style="text-align: center; padding: 8px 0; color: #525252; font-size: 12px; border-bottom: 1px solid #262626;">Cant.</th>
-            <th style="text-align: right; padding: 8px 0; color: #525252; font-size: 12px; border-bottom: 1px solid #262626;">Precio</th>
-            <th style="text-align: right; padding: 8px 0; color: #525252; font-size: 12px; border-bottom: 1px solid #262626;">Total</th>
+            <th style="text-align: left; padding: 8px 0; color: #525252; font-size: 12px; border-bottom: 1px solid #404040;">Producto</th>
+            <th style="text-align: center; padding: 8px 0; color: #525252; font-size: 12px; border-bottom: 1px solid #404040;">Cant.</th>
+            <th style="text-align: right; padding: 8px 0; color: #525252; font-size: 12px; border-bottom: 1px solid #404040;">Precio</th>
+            <th style="text-align: right; padding: 8px 0; color: #525252; font-size: 12px; border-bottom: 1px solid #404040;">Total</th>
           </tr>
         </thead>
         <tbody>
@@ -256,15 +256,15 @@ function buildInternalEmailHtml(payload: EmailOrderPayload): string {
         ${discountRow}
         ${shippingSection}
         <tr>
-          <td colspan="3" style="padding: 12px 0; color: #ffffff; font-weight: 700; font-size: 18px; text-align: right; border-top: 1px solid #262626;">Total:</td>
-          <td style="padding: 12px 0; color: #ffffff; font-weight: 700; font-size: 18px; text-align: right; border-top: 1px solid #262626;">${payload.finalPrice.toFixed(2)}€</td>
+          <td colspan="3" style="padding: 12px 0; color: #ffffff; font-weight: 700; font-size: 18px; text-align: right; border-top: 1px solid #404040;">Total:</td>
+          <td style="padding: 12px 0; color: #ffffff; font-weight: 700; font-size: 18px; text-align: right; border-top: 1px solid #404040;">${payload.finalPrice.toFixed(2)}€</td>
         </tr>
       </table>
 
       ${notesSection}
     </div>
 
-    <p style="color: #525252; font-size: 12px; text-align: center; margin: 0;">
+    <p style="color: #737373; font-size: 12px; text-align: center; margin: 0;">
       CBDREX &mdash; Cannabis Legal Premium &mdash; cbdrexstore@gmail.com
     </p>
   </div>
