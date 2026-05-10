@@ -82,9 +82,13 @@ function buildClientEmailHtml(payload: EmailOrderPayload): string {
     <div style="background: #171717; border: 1px solid #262626; border-radius: 16px; padding: 32px; margin-bottom: 24px;">
 
       <div style="text-align: center; margin-bottom: 32px;">
-        <div style="width: 56px; height: 56px; background: #064e3b; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px;">
-          <span style="font-size: 28px; color: #34d399;">&#10003;</span>
-        </div>
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin: 0 auto 16px auto;">
+          <tr>
+            <td width="56" height="56" valign="middle" align="center" style="width: 56px; height: 56px; background: #065f46; border-radius: 50%; text-align: center; vertical-align: middle; line-height: 56px;">
+              <span style="font-size: 30px; color: #6ee7b7; line-height: 56px; vertical-align: middle; display: inline-block;">&#10003;</span>
+            </td>
+          </tr>
+        </table>
         <h2 style="color: #ffffff; font-size: 22px; margin: 0 0 8px 0;">Pedido confirmado</h2>
         <p style="color: #737373; font-size: 14px; margin: 0;">Gracias, ${payload.name}. Tu pedido ha sido registrado correctamente.</p>
       </div>
@@ -197,12 +201,10 @@ function buildInternalEmailHtml(payload: EmailOrderPayload): string {
     </div>
 
     <div style="background: #171717; border: 1px solid #262626; border-radius: 16px; padding: 32px; margin-bottom: 24px;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #262626;">
-        <div>
-          <p style="color: #737373; font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; margin: 0 0 4px 0;">Nuevo Pedido</p>
-          <h2 style="color: #ffffff; font-size: 22px; margin: 0;">#${payload.orderId}</h2>
-        </div>
-        <div style="background: #fef3c7; color: #92400e; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">
+      <div style="text-align: center; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #262626;">
+        <p style="color: #737373; font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; margin: 0 0 4px 0;">Nuevo Pedido</p>
+        <h2 style="color: #ffffff; font-size: 22px; margin: 0 0 12px 0;">#${payload.orderId}</h2>
+        <div style="background: #fef3c7; color: #92400e; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; display: inline-block;">
           Pendiente de confirmación
         </div>
       </div>
