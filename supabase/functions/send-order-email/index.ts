@@ -1,8 +1,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import nodemailer from "npm:nodemailer@6.9.13";
 
-const LOGO_URL = Deno.env.get("SUPABASE_URL") + "/storage/v1/object/public/assets/logo.png";
-
+const LOGO_URL = "https://tofwyhslelgguhecvmnc.supabase.co/storage/v1/object/public/assets/logo.png";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
