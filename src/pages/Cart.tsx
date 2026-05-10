@@ -40,7 +40,15 @@ export const Cart = () => {
       });
 
       if (!res.ok) {
-        throw new Error('Error sending order email');
+        const errorData = await res.json().catch(() => null);
+        const errorMsg = errorData?.error || `Error ${res.status}: ${res.statusText}`;
+        console.error('Edge Function error:', res.status, errorData);
+        throw new Error(errorMsg);
+      }
+
+      const result = await res.json();
+      if (result.skipped) {
+        console.warn('Email was skipped - SMTP credentials may not be configured');
       }
 
       setOrderSuccess(true);
@@ -53,7 +61,8 @@ export const Cart = () => {
       }, 3000);
     } catch (error) {
       console.error('Error creating order:', error);
-      alert('Error al procesar el pedido. Por favor, intenta de nuevo.');
+      const msg = error instanceof Error ? error.message : 'Error desconocido';
+      alert(`Error al procesar el pedido: ${msg}`);
     } finally {
       setLoading(false);
     }
