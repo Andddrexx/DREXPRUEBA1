@@ -75,7 +75,7 @@ export const Home = () => {
             className="w-[50vw] max-w-[1000px] max-h-[50vh] h-auto animate-float relative z-10 object-contain flex-shrink-0"
           />
 
-          <p className="text-lg md:text-xl text-neutral-200 mt-4 mb-5 max-w-xl mx-auto text-center animate-fade-in-up stagger-2">
+          <p className="text-lg md:text-xl text-red-500 mt-4 mb-5 max-w-xl mx-auto text-center animate-fade-in-up stagger-2">
  Calidad garantizada. Diseño discreto.        </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up stagger-2">
