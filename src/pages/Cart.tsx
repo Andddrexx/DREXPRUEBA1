@@ -10,8 +10,12 @@ export const Cart = () => {
     name: '',
     email: '',
     phone: '',
+    address: '',
+    city: '',
+    postalCode: '',
     notes: '',
   });
+  const [phoneError, setPhoneError] = useState('');
   const [loading, setLoading] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
 
@@ -22,13 +26,35 @@ export const Cart = () => {
   const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
   const isFreeShipping = totalItems >= FREE_SHIPPING_MIN_ITEMS;
 
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/[^\d]/g, '');
+    setFormData({ ...formData, phone: value });
+    if (phoneError && value.length >= 9) setPhoneError('');
+  };
+
+  const validatePhone = () => {
+    if (formData.phone.length < 9) {
+      setPhoneError('El teléfono debe tener al menos 9 dígitos');
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmitOrder = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validatePhone()) return;
     setLoading(true);
 
     try {
       const orderId = generateOrderId();
-      const emailPayload = buildEmailPayload(orderId, formData.name, formData.email, formData.phone, cart, totalPrice, discount, shippingCost, finalPrice, formData.notes, deliveryMethod);
+      const shippingAddress = deliveryMethod === 'shipping'
+        ? `${formData.address}${formData.city ? `, ${formData.city}` : ''}${formData.postalCode ? ` ${formData.postalCode}` : ''}`
+        : '';
+      const notesWithAddress = shippingAddress
+        ? `${shippingAddress}${formData.notes ? `\n${formData.notes}` : ''}`
+        : formData.notes;
+
+      const emailPayload = buildEmailPayload(orderId, formData.name, formData.email, formData.phone, cart, totalPrice, discount, shippingCost, finalPrice, notesWithAddress, deliveryMethod);
 
       const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-order-email`, {
         method: 'POST',
@@ -53,7 +79,7 @@ export const Cart = () => {
 
       setOrderSuccess(true);
       clearCart();
-      setFormData({ name: '', email: '', phone: '', notes: '' });
+      setFormData({ name: '', email: '', phone: '', address: '', city: '', postalCode: '', notes: '' });
 
       setTimeout(() => {
         setOrderSuccess(false);
@@ -165,7 +191,7 @@ export const Cart = () => {
                   <div>
                     <p className="text-sm font-semibold leading-snug">Entrega en mano (Recogida)</p>
                     <p className={`text-xs font-bold mt-0.5 ${deliveryMethod === 'hand' ? 'text-emerald-600' : 'text-emerald-400'}`}>Gratis</p>
-                    <p className={`text-xs mt-1 ${deliveryMethod === 'hand' ? 'text-neutral-500' : 'text-neutral-500'}`}>Entrega hoy o en 24–48h (según disponibilidad y zona)</p>
+                    <p className="text-xs mt-1 text-neutral-500">Entrega hoy o en 24–48h (según disponibilidad y zona)</p>
                   </div>
                 </button>
                 <button
@@ -183,7 +209,7 @@ export const Cart = () => {
                     <p className={`text-xs font-bold mt-0.5 ${deliveryMethod === 'shipping' ? (isFreeShipping ? 'text-emerald-600' : 'text-neutral-600') : isFreeShipping ? 'text-emerald-400' : 'text-neutral-300'}`}>
                       {isFreeShipping ? 'Gratis (desde 2 vapers)' : `3,99 € (gratis desde 2 vapers)`}
                     </p>
-                    <p className={`text-xs mt-1 ${deliveryMethod === 'shipping' ? 'text-neutral-500' : 'text-neutral-500'}`}>Entrega estimada: 3–5 días laborables</p>
+                    <p className="text-xs mt-1 text-neutral-500">Entrega estimada: 3–5 días laborables</p>
                   </div>
                 </button>
               </div>
@@ -229,14 +255,71 @@ export const Cart = () => {
                     required
                     inputMode="numeric"
                     value={formData.phone}
-                    onChange={(e) => {
-                      const value = e.target.value.replace(/[^\d]/g, '');
-                      setFormData({ ...formData, phone: value });
-                    }}
-                    className="input-field"
+                    onChange={handlePhoneChange}
+                    onBlur={validatePhone}
+                    className={`input-field ${phoneError ? 'border-red-500 focus:ring-red-500/30' : ''}`}
                     placeholder="Ej: 648574219"
                   />
+                  {phoneError && (
+                    <p className="text-xs text-red-400 mt-1.5">{phoneError}</p>
+                  )}
                 </div>
+
+                {deliveryMethod === 'shipping' && (
+                  <>
+                    <div className="border-t border-neutral-700/50 pt-5">
+                      <p className="text-xs font-bold tracking-[0.15em] uppercase text-neutral-500 mb-4">Dirección de entrega</p>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-neutral-400 mb-2">
+                        Calle y número *
+                      </label>
+                      <input
+                        type="text"
+                        required={deliveryMethod === 'shipping'}
+                        value={formData.address}
+                        onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                        className="input-field"
+                        placeholder="Ej: Calle Mayor 12, 3º B"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-neutral-400 mb-2">
+                          Ciudad *
+                        </label>
+                        <input
+                          type="text"
+                          required={deliveryMethod === 'shipping'}
+                          value={formData.city}
+                          onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                          className="input-field"
+                          placeholder="Ej: Madrid"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-neutral-400 mb-2">
+                          Código postal *
+                        </label>
+                        <input
+                          type="text"
+                          required={deliveryMethod === 'shipping'}
+                          inputMode="numeric"
+                          maxLength={5}
+                          value={formData.postalCode}
+                          onChange={(e) => {
+                            const value = e.target.value.replace(/[^\d]/g, '').slice(0, 5);
+                            setFormData({ ...formData, postalCode: value });
+                          }}
+                          className="input-field"
+                          placeholder="Ej: 28001"
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
 
                 <div>
                   <label className="block text-sm font-medium text-neutral-400 mb-2">
@@ -287,21 +370,23 @@ export const Cart = () => {
             {cart.map((item) => (
               <div
                 key={item.product.id}
-                className="flex flex-col md:flex-row gap-5 py-5 border-b border-neutral-600/30 last:border-b-0"
+                className="flex flex-col sm:flex-row gap-4 py-5 border-b border-neutral-600/30 last:border-b-0"
               >
-                <img
-                  src={item.product.image_url}
-                  alt={item.product.name}
-                  className="w-full md:w-28 h-28 object-cover rounded-2xl"
-                />
+                <div className="flex-shrink-0 flex justify-center">
+                  <img
+                    src={item.product.image_url}
+                    alt={item.product.name}
+                    className="w-28 h-28 object-contain rounded-2xl bg-neutral-900"
+                  />
+                </div>
 
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
                   <h3 className="font-bold text-white mb-1">{item.product.name}</h3>
                   <p className="text-sm text-neutral-500 mb-2">{item.product.flavor}</p>
                   <p className="text-white font-bold">{item.product.price.toFixed(2)}€</p>
                 </div>
 
-                <div className="flex md:flex-col items-center md:items-end gap-4">
+                <div className="flex sm:flex-col items-center sm:items-end gap-4">
                   <div className="flex items-center gap-1 bg-neutral-700 rounded-xl p-1 border border-neutral-600/50">
                     <button
                       onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
@@ -326,7 +411,7 @@ export const Cart = () => {
                   </button>
                 </div>
 
-                <div className="md:text-right flex items-start">
+                <div className="sm:text-right flex sm:items-start items-center">
                   <p className="font-bold text-lg text-white">
                     {(item.product.price * item.quantity).toFixed(2)}€
                   </p>
