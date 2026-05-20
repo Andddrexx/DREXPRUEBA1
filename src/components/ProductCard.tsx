@@ -43,7 +43,10 @@ export const ProductCard = ({ product, onViewDetails, onAddToCart }: ProductCard
           </span>
         </div>
 
-        <h3 className="font-bold text-white mb-1.5 leading-snug line-clamp-2 text-[15px]">
+        <h3
+          className="font-bold text-white mb-1.5 leading-snug line-clamp-2 text-[15px] cursor-pointer hover:text-neutral-300 transition-colors duration-200"
+          onClick={() => onViewDetails(product)}
+        >
           {product.name}
         </h3>
 
