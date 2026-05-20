@@ -71,10 +71,10 @@ export const Contact = () => {
 
             <div className="grid md:grid-cols-2 gap-4">
               {[
-                { icon: Phone, title: 'Teléfono', info: '+34 681 872 420' },
                 { icon: MapPin, title: 'Entrega', info: 'Venta exclusiva para mayores de 18 años'},
                 { icon: Clock, title: 'Horario', info: 'Lunes a Sábado de 10:00 a 20:00  Domingos cerrados'},
                 { icon: Shield, title: 'Legal', info: 'Todos los productos cumplen con la legislación vigente en España'},
+
               ].map((item) => (
                 <div key={item.title} className="flex gap-4 p-4 bg-neutral-700/50 rounded-xl border border-neutral-600/40">
                   <div className="w-10 h-10 bg-neutral-700 rounded-lg flex items-center justify-center flex-shrink-0">
