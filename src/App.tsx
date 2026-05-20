@@ -32,7 +32,7 @@ function App() {
       case 'home':
         return <Home />;
       case 'cart':
-        return <Cart />;
+        return <Cart onNavigate={handleNavigate} />;
       case 'contact':
         return <Contact />;
       default:

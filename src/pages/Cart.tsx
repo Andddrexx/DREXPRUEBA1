@@ -1,9 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCart, DeliveryMethod, SHIPPING_BASE_COST, FREE_SHIPPING_MIN_ITEMS } from '../context/CartContext';
-import { Trash2, Plus, Minus, ShoppingBag, Mail, ArrowLeft, Truck, Handshake } from 'lucide-react';
+import { Trash2, Plus, Minus, ShoppingBag, Mail, ArrowLeft, Truck, Handshake, CheckCircle } from 'lucide-react';
 import { generateOrderId, buildEmailPayload } from '../lib/whatsappMessages';
 
-export const Cart = () => {
+interface CartProps {
+  onNavigate: (page: string) => void;
+}
+
+export const Cart = ({ onNavigate }: CartProps) => {
   const { cart, deliveryMethod, setDeliveryMethod, removeFromCart, updateQuantity, getTotalPrice, getDiscount, getFinalPrice, getShippingCost, clearCart } = useCart();
   const [showCheckout, setShowCheckout] = useState(false);
   const [formData, setFormData] = useState({
@@ -19,6 +23,10 @@ export const Cart = () => {
   const [loading, setLoading] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, []);
+
   const totalPrice = getTotalPrice();
   const discount = getDiscount();
   const shippingCost = getShippingCost();
@@ -27,17 +35,27 @@ export const Cart = () => {
   const isFreeShipping = totalItems >= FREE_SHIPPING_MIN_ITEMS;
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/[^\d]/g, '');
+    const value = e.target.value.replace(/[^\d]/g, '').slice(0, 9);
     setFormData({ ...formData, phone: value });
-    if (phoneError && value.length >= 9) setPhoneError('');
+    if (phoneError && value.length === 9) setPhoneError('');
   };
 
   const validatePhone = () => {
-    if (formData.phone.length < 9) {
-      setPhoneError('El teléfono debe tener al menos 9 dígitos');
+    if (formData.phone.length !== 9) {
+      setPhoneError('El teléfono debe tener exactamente 9 dígitos');
       return false;
     }
     return true;
+  };
+
+  const handleProceedToCheckout = () => {
+    setShowCheckout(true);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  };
+
+  const handleBackToCart = () => {
+    setShowCheckout(false);
+    window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
   const handleSubmitOrder = async (e: React.FormEvent) => {
@@ -77,13 +95,13 @@ export const Cart = () => {
         console.warn('Email was skipped - SMTP credentials may not be configured');
       }
 
-      setOrderSuccess(true);
       clearCart();
       setFormData({ name: '', email: '', phone: '', address: '', city: '', postalCode: '', notes: '' });
+      setOrderSuccess(true);
+      window.scrollTo({ top: 0, behavior: 'instant' });
 
       setTimeout(() => {
-        setOrderSuccess(false);
-        setShowCheckout(false);
+        onNavigate('home');
       }, 3000);
     } catch (error) {
       console.error('Error creating order:', error);
@@ -93,6 +111,23 @@ export const Cart = () => {
       setLoading(false);
     }
   };
+
+  if (orderSuccess) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-neutral-950 via-neutral-800 to-neutral-600 pt-28 pb-16 flex items-center justify-center">
+        <div className="bg-neutral-800 border border-neutral-600/50 rounded-3xl p-10 max-w-md w-full mx-4 text-center animate-scale-in">
+          <div className="w-20 h-20 bg-emerald-900/30 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-emerald-800/30">
+            <CheckCircle className="w-10 h-10 text-emerald-400" />
+          </div>
+          <h2 className="font-display text-3xl font-bold text-white mb-3">Pedido realizado</h2>
+          <p className="text-neutral-400 leading-relaxed">
+            Tu pedido ha sido registrado. Recibirás un email de confirmación y nos pondremos en contacto contigo pronto.
+          </p>
+          <p className="text-neutral-600 text-sm mt-5">Redirigiendo a inicio...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (cart.length === 0) {
     return (
@@ -110,29 +145,13 @@ export const Cart = () => {
     );
   }
 
-  if (orderSuccess) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-neutral-950 via-neutral-800 to-neutral-600 pt-28 pb-16 flex items-center justify-center">
-        <div className="bg-neutral-800 border border-neutral-600/50 rounded-3xl p-10 max-w-md text-center animate-scale-in">
-          <div className="w-16 h-16 bg-emerald-900/30 rounded-2xl flex items-center justify-center mx-auto mb-5 border border-emerald-800/30">
-            <Mail className="w-8 h-8 text-emerald-400" />
-          </div>
-          <h2 className="font-display text-2xl font-bold text-white mb-2">Pedido Enviado!</h2>
-          <p className="text-neutral-400 leading-relaxed">
-            Tu pedido ha sido registrado. Recibirás un email de confirmación y nos pondremos en contacto contigo pronto.
-          </p>
-        </div>
-      </div>
-    );
-  }
-
   if (showCheckout) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-neutral-950 via-neutral-700 to-neutral-500 pt-28 pb-16">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto">
             <button
-              onClick={() => setShowCheckout(false)}
+              onClick={handleBackToCart}
               className="flex items-center gap-2 text-neutral-400 hover:text-white font-medium mb-6 transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
@@ -254,6 +273,7 @@ export const Cart = () => {
                     type="tel"
                     required
                     inputMode="numeric"
+                    maxLength={9}
                     value={formData.phone}
                     onChange={handlePhoneChange}
                     onBlur={validatePhone}
@@ -370,49 +390,51 @@ export const Cart = () => {
             {cart.map((item) => (
               <div
                 key={item.product.id}
-                className="flex flex-col sm:flex-row gap-4 py-5 border-b border-neutral-600/30 last:border-b-0"
+                className="flex flex-row gap-4 py-5 border-b border-neutral-600/30 last:border-b-0"
               >
-                <div className="flex-shrink-0 flex justify-center">
+                <div className="flex-shrink-0">
                   <img
                     src={item.product.image_url}
                     alt={item.product.name}
-                    className="w-28 h-28 object-contain rounded-2xl bg-neutral-900"
+                    className="w-24 h-24 sm:w-28 sm:h-28 object-contain rounded-2xl bg-neutral-900"
                   />
                 </div>
 
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-bold text-white mb-1">{item.product.name}</h3>
-                  <p className="text-sm text-neutral-500 mb-2">{item.product.flavor}</p>
-                  <p className="text-white font-bold">{item.product.price.toFixed(2)}€</p>
-                </div>
-
-                <div className="flex sm:flex-col items-center sm:items-end gap-4">
-                  <div className="flex items-center gap-1 bg-neutral-700 rounded-xl p-1 border border-neutral-600/50">
-                    <button
-                      onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                      className="w-8 h-8 rounded-lg hover:bg-neutral-600 flex items-center justify-center transition-colors text-neutral-300"
-                    >
-                      <Minus className="w-3.5 h-3.5" />
-                    </button>
-                    <span className="w-8 text-center font-bold text-white text-sm">{item.quantity}</span>
-                    <button
-                      onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                      className="w-8 h-8 rounded-lg hover:bg-neutral-600 flex items-center justify-center transition-colors text-neutral-300"
-                    >
-                      <Plus className="w-3.5 h-3.5" />
-                    </button>
+                <div className="flex-1 min-w-0 flex flex-col justify-between">
+                  <div>
+                    <h3 className="font-bold text-white mb-1 text-sm sm:text-base leading-snug">{item.product.name}</h3>
+                    <p className="text-xs sm:text-sm text-neutral-500 mb-1">{item.product.flavor}</p>
+                    <p className="text-white font-bold text-sm">{item.product.price.toFixed(2)}€</p>
                   </div>
 
-                  <button
-                    onClick={() => removeFromCart(item.product.id)}
-                    className="text-neutral-600 hover:text-red-400 transition-colors"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+                  <div className="flex items-center gap-3 mt-3">
+                    <div className="flex items-center gap-1 bg-neutral-700 rounded-xl p-1 border border-neutral-600/50">
+                      <button
+                        onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
+                        className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg hover:bg-neutral-600 flex items-center justify-center transition-colors text-neutral-300"
+                      >
+                        <Minus className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                      </button>
+                      <span className="w-7 sm:w-8 text-center font-bold text-white text-sm">{item.quantity}</span>
+                      <button
+                        onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                        className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg hover:bg-neutral-600 flex items-center justify-center transition-colors text-neutral-300"
+                      >
+                        <Plus className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                      </button>
+                    </div>
+
+                    <button
+                      onClick={() => removeFromCart(item.product.id)}
+                      className="text-neutral-600 hover:text-red-400 transition-colors"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
 
-                <div className="sm:text-right flex sm:items-start items-center">
-                  <p className="font-bold text-lg text-white">
+                <div className="flex-shrink-0 flex items-start justify-end">
+                  <p className="font-bold text-base sm:text-lg text-white">
                     {(item.product.price * item.quantity).toFixed(2)}€
                   </p>
                 </div>
@@ -442,7 +464,7 @@ export const Cart = () => {
             </p>
 
             <button
-              onClick={() => setShowCheckout(true)}
+              onClick={handleProceedToCheckout}
               className="w-full btn-primary py-4 text-base"
             >
               Proceder al pedido

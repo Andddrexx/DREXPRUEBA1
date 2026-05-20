@@ -7,7 +7,7 @@ export const CartToast = () => {
   const { toasts, dismissToast } = useCart();
 
   return (
-    <div className="fixed top-24 right-4 z-[100] flex flex-col gap-2 pointer-events-none">
+    <div className="fixed top-24 left-1/2 -translate-x-1/2 z-[100] flex flex-col gap-2 pointer-events-none items-center w-full px-4">
       {toasts.map((toast) => (
         <ToastItem key={toast.id} id={toast.id} productName={toast.productName} onDismiss={dismissToast} />
       ))}
@@ -37,8 +37,8 @@ const ToastItem = ({ id, productName, onDismiss }: ToastItemProps) => {
 
   return (
     <div
-      className={`pointer-events-auto flex items-start gap-3 bg-neutral-800 border border-neutral-600/60 rounded-2xl shadow-2xl shadow-black/40 px-4 py-3.5 max-w-xs transition-all duration-500 ${
-        visible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
+      className={`pointer-events-auto flex items-start gap-3 bg-neutral-800 border border-neutral-600/60 rounded-2xl shadow-2xl shadow-black/40 px-4 py-3.5 max-w-xs w-full transition-all duration-500 ${
+        visible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
       }`}
     >
       <div className="w-8 h-8 bg-emerald-900/40 border border-emerald-700/50 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
