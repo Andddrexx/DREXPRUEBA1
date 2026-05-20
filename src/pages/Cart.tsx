@@ -228,9 +228,6 @@ export const Cart = () => {
                     type="tel"
                     required
                     inputMode="numeric"
-                    minLength={9}
-                    pattern="[0-9]{9,}"
-                    title="Introduce un numero de telefono valido (minimo 9 digitos)"
                     value={formData.phone}
                     onChange={(e) => {
                       const value = e.target.value.replace(/[^\d]/g, '');
@@ -295,7 +292,7 @@ export const Cart = () => {
                 <img
                   src={item.product.image_url}
                   alt={item.product.name}
-                  className="w-full md:w-28 h-36 md:h-28 object-contain bg-neutral-900 rounded-2xl"
+                  className="w-full md:w-28 h-28 object-cover rounded-2xl"
                 />
 
                 <div className="flex-1">

@@ -45,6 +45,7 @@ export const WhatsAppConsultModal = ({ isOpen, onClose, productName = '' }: What
     }
 
     const whatsappText = `NUEVA CONSULTA\nProducto: ${product.trim()}\nNombre: ${name.trim()}${message.trim() ? `\nMensaje: ${message.trim()}` : ''}`;
+
     const encoded = encodeURIComponent(whatsappText);
     window.open(`https://wa.me/34681872420?text=${encoded}`, '_blank');
 
@@ -60,29 +61,24 @@ export const WhatsAppConsultModal = ({ isOpen, onClose, productName = '' }: What
 
   return (
     <div
-      className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[60] md:flex md:items-center md:justify-center md:p-4"
+      className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-[60]"
       onClick={onClose}
     >
       <div
-        className="
-          fixed inset-0 overflow-y-auto bg-neutral-800 shadow-2xl shadow-black/50
-          md:relative md:inset-auto md:rounded-3xl md:max-w-md md:w-full md:max-h-[90vh] md:overflow-y-auto
-          md:border md:border-neutral-600/50 md:animate-scale-in
-          animate-fade-in
-        "
+        className="bg-neutral-800 border border-neutral-600/50 shadow-2xl shadow-black/50 rounded-3xl max-w-md w-full max-h-[90vh] overflow-y-auto animate-scale-in"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-between items-center p-6 border-b border-neutral-600/50 sticky top-0 bg-neutral-800/95 backdrop-blur-md z-10">
+        <div className="flex justify-between items-center p-6 border-b border-neutral-600/50">
           <h3 className="font-display text-lg font-bold text-white">Consulta por WhatsApp</h3>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-lg bg-neutral-700 hover:bg-neutral-600 flex items-center justify-center transition-colors"
+            className="w-8 h-8 rounded-lg bg-neutral-800 hover:bg-neutral-700 flex items-center justify-center transition-colors"
           >
             <X size={16} className="text-neutral-400" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-5 pb-10">
+        <form onSubmit={handleSubmit} className="p-6 space-y-5">
           <div>
             <label className="block text-sm font-medium text-neutral-400 mb-2">
               Producto *
@@ -117,7 +113,7 @@ export const WhatsAppConsultModal = ({ isOpen, onClose, productName = '' }: What
               onChange={(e) => setMessage(e.target.value)}
               rows={3}
               className="input-field resize-none"
-              placeholder="Tengo una duda sobre el sabor, recomendacion, disponibilidad..."
+              placeholder="Tengo una duda sobre el sabor, recomendación, disponibilidad…"
             />
           </div>
 
@@ -129,7 +125,7 @@ export const WhatsAppConsultModal = ({ isOpen, onClose, productName = '' }: What
               className="mt-1 w-4 h-4 rounded border-neutral-600 bg-neutral-700 text-white accent-white cursor-pointer"
             />
             <span className="text-sm text-neutral-400 group-hover:text-neutral-300 transition-colors">
-              Confirmo ser mayor de 18 anos
+              Confirmo ser mayor de 18 años
             </span>
           </label>
 
