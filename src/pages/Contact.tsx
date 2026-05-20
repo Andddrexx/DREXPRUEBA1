@@ -69,7 +69,7 @@ export const Contact = () => {
           <div className="bg-neutral-800/60 border border-neutral-600/40 rounded-2xl p-8 mb-10">
             <h3 className="text-xs font-bold tracking-[0.2em] uppercase text-neutral-500 mb-6 text-center">Información Adicional</h3>
 
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid md:grid-cols-1 gap-3">
               {[
                 { icon: MapPin, title: 'Entrega', info: 'Venta exclusiva para mayores de 18 años'},
                 { icon: Clock, title: 'Horario', info: 'Lunes a Sábado de 10:00 a 20:00  Domingos cerrados'},
