@@ -1,10 +1,15 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode, useCallback } from 'react';
 import { Product, CartItem } from '../types';
 
 export type DeliveryMethod = 'hand' | 'shipping';
 
 export const SHIPPING_BASE_COST = 3.99;
 export const FREE_SHIPPING_MIN_ITEMS = 2;
+
+export interface CartToast {
+  id: number;
+  productName: string;
+}
 
 interface CartContextType {
   cart: CartItem[];
@@ -19,6 +24,8 @@ interface CartContextType {
   getDiscount: () => number;
   getFinalPrice: () => number;
   getShippingCost: () => number;
+  toasts: CartToast[];
+  dismissToast: (id: number) => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -26,6 +33,12 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>('hand');
+  const [toasts, setToasts] = useState<CartToast[]>([]);
+  const [toastCounter, setToastCounter] = useState(0);
+
+  const dismissToast = useCallback((id: number) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  }, []);
 
   const addToCart = (product: Product, quantity: number) => {
     setCart((prevCart) => {
@@ -40,6 +53,16 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       }
 
       return [...prevCart, { product, quantity }];
+    });
+
+    setToastCounter((c) => {
+      const id = c + 1;
+      const toast: CartToast = { id, productName: product.name };
+      setToasts((prev) => [...prev, toast]);
+      setTimeout(() => {
+        setToasts((prev) => prev.filter((t) => t.id !== id));
+      }, 3000);
+      return id;
     });
   };
 
@@ -108,6 +131,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         getDiscount,
         getFinalPrice,
         getShippingCost,
+        toasts,
+        dismissToast,
       }}
     >
       {children}

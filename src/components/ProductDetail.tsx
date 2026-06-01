@@ -59,12 +59,12 @@ export const ProductDetail = ({ product, onClose }: ProductDetailProps) => {
       productName={product.name}
       initialQuantity={quantity}
     />
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={onClose}>
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex md:items-center md:justify-center z-50 md:p-4" onClick={onClose}>
       <div
-        className="bg-neutral-800 border border-neutral-600/50 rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto animate-scale-in shadow-2xl shadow-black/50"
+        className="bg-neutral-800 md:border border-neutral-600/50 md:rounded-3xl max-w-4xl w-full h-full md:h-auto md:max-h-[90vh] overflow-y-auto md:animate-scale-in shadow-2xl shadow-black/50 animate-fade-in-up md:[animation:none]"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="sticky top-0 bg-neutral-800/95 backdrop-blur-md border-b border-neutral-600/50 flex justify-between items-center p-5 rounded-t-3xl z-10">
+        <div className="sticky top-0 bg-neutral-800/95 backdrop-blur-md border-b border-neutral-600/50 flex justify-between items-center p-5 md:rounded-t-3xl z-10">
           <div>
             <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-neutral-400">
               {product.category === '10-OH-HHC' ? '10-OH-HHC' : product.category}

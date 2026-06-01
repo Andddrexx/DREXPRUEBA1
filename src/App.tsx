@@ -4,6 +4,7 @@ import { AgeWarning } from './components/AgeWarning';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { ScrollToTop } from './components/ScrollToTop';
+import { CartToast } from './components/CartToast';
 import { Home } from './pages/Home';
 import { Cart } from './pages/Cart';
 import { Contact } from './pages/Contact';
@@ -31,7 +32,7 @@ function App() {
       case 'home':
         return <Home />;
       case 'cart':
-        return <Cart />;
+        return <Cart onNavigate={handleNavigate} />;
       case 'contact':
         return <Contact />;
       default:
@@ -51,6 +52,7 @@ function App() {
         <main className="flex-1">{renderPage()}</main>
         <Footer />
         <ScrollToTop />
+        <CartToast />
       </div>
     </CartProvider>
   );
