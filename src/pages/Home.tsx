@@ -72,7 +72,7 @@ export const Home = () => {
           <img
             src="/assets/logo.png"
             alt="CBDREX"
-            className="w-[140vw] sm:w-[70vw] md:w-[50vw] max-w-[1000px] max-h-[45vh] h-auto animate-float relative z-10 object-contain flex-shrink-0"
+            className="w-[150vw] sm:w-[70vw] md:w-[50vw] max-w-[1000px] max-h-[60vh] h-auto animate-float relative z-10 object-contain flex-shrink-0"
           /> 
 
           <p className="text-lg md:text-xl text-neutral-200 mt-4 mb-5 max-w-xl mx-auto text-center animate-fade-in-up stagger-2">
