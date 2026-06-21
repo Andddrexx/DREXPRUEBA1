@@ -1,5 +1,11 @@
 import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
+import { products as productsData } from '../data/products';
+import { formatProductName } from '../lib/whatsappMessages';
+
+const productOptions = productsData
+  .filter(p => p.category === '10-OH-HHC')
+  .map(p => ({ value: p.name, label: formatProductName(p.name) }));
 
 interface WhatsAppConsultModalProps {
   isOpen: boolean;
@@ -83,13 +89,24 @@ export const WhatsAppConsultModal = ({ isOpen, onClose, productName = '' }: What
             <label className="block text-sm font-medium text-neutral-400 mb-2">
               Producto *
             </label>
-            <input
-              type="text"
+            <select
               value={product}
               onChange={(e) => setProduct(e.target.value)}
-              className="input-field"
-              placeholder="Vape Pen MAC 1ml"
-            />
+              className={`input-field ${!product ? 'text-neutral-500' : 'text-neutral-200'}`}
+            >
+              <option value="">
+                {product
+                  ? productOptions.some((o) => o.value === product)
+                    ? '— Selecciona un producto —'
+                    : product
+                  : '— Selecciona un producto —'}
+              </option>
+              {productOptions.map((option) => (
+                <option key={option.value} value={option.value} className="text-neutral-200">
+                  {option.label}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div>

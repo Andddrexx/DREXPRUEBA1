@@ -12,11 +12,14 @@ export const Home = () => {
   const [products] = useState<Product[]>(productsData);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [activeSection, setActiveSection] = useState('vapers'); 
+  const [showCategoryNav, setShowCategoryNav] = useState(true);
   const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
   const [whatsappProductName, setWhatsappProductName] = useState('');
   const { addToCart } = useCart();
 
   useEffect(() => {
+    let lastScroll = window.scrollY;
+
     const handleScroll = () => {
       const sections = ['vapers', 'accesorios'];
       const scrollPosition = window.scrollY + 200;
@@ -31,9 +34,22 @@ export const Home = () => {
           }
         }
       }
+
+      const currentScroll = window.scrollY;
+      const isMobile = window.matchMedia('(max-width: 1023px)').matches;
+      if (isMobile) {
+        if (currentScroll > lastScroll && currentScroll > 160) {
+          setShowCategoryNav(false);
+        } else {
+          setShowCategoryNav(true);
+        }
+      } else {
+        setShowCategoryNav(true);
+      }
+      lastScroll = currentScroll;
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -123,7 +139,11 @@ export const Home = () => {
       </section>
 
       {/* Category nav */}
-      <nav className="sticky top-16 lg:top-20 z-30 glass border-b border-neutral-600/30">
+      <nav
+        className={`sticky top-16 lg:top-20 z-30 glass border-b border-neutral-600/30 transition-transform duration-300 landscape-mobile-hidden ${
+          showCategoryNav ? 'translate-y-0' : '-translate-y-full'
+        }`}
+      >
         <div className="container mx-auto px-4">
           <div className="flex justify-center gap-2 py-3">
             {[

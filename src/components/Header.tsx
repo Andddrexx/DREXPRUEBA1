@@ -157,7 +157,7 @@ export const Header = ({ onNavigate, currentPage, onScrollToSection }: HeaderPro
       </header>
 
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-30 lg:hidden">
+        <div className="fixed inset-0 z-50 lg:hidden">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)} />
           <div className="absolute top-0 right-0 w-80 max-w-[85vw] h-full bg-neutral-900 border-l border-neutral-700/50 shadow-2xl animate-slide-in-right">
             <div className="p-6 pt-24 space-y-2">

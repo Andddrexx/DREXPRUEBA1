@@ -202,3 +202,10 @@
 html {
   scroll-behavior: smooth;
 }
+
+/* Hide category nav bar on mobile landscape (small height) */
+@media (max-width: 1023px) and (max-height: 500px) and (orientation: landscape) {
+  .landscape-mobile-hidden {
+    display: none !important;
+  }
+}
