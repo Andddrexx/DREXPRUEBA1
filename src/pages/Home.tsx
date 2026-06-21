@@ -19,34 +19,49 @@ export const Home = () => {
 
   useEffect(() => {
     let lastScroll = window.scrollY;
+    let ticking = false;
 
     const handleScroll = () => {
-      const sections = ['vapers', 'accesorios'];
-      const scrollPosition = window.scrollY + 200;
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const sections = ['vapers', 'accesorios'];
+        const scrollPosition = window.scrollY + 200;
 
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const { offsetTop, offsetHeight } = element;
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveSection(section);
-            break;
+        for (const section of sections) {
+          const element = document.getElementById(section);
+          if (element) {
+            const { offsetTop, offsetHeight } = element;
+            if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+              setActiveSection(section);
+              break;
+            }
           }
         }
-      }
 
-      const currentScroll = window.scrollY;
-      const isMobile = window.matchMedia('(max-width: 1023px)').matches;
-      if (isMobile) {
-        if (currentScroll > lastScroll && currentScroll > 160) {
-          setShowCategoryNav(false);
+        const currentScroll = window.scrollY;
+        const isMobile = window.matchMedia('(max-width: 1023px)').matches;
+        const vapersSection = document.getElementById('vapers');
+        const hideThreshold = vapersSection
+          ? vapersSection.getBoundingClientRect().top + window.scrollY - 80
+          : 120;
+        const delta = currentScroll - lastScroll;
+        if (isMobile) {
+          if (currentScroll < hideThreshold) {
+            setShowCategoryNav(true);
+          } else if (Math.abs(delta) < 6) {
+            // ignore tiny scroll jitter to avoid flicker
+          } else if (delta > 0) {
+            setShowCategoryNav(false);
+          } else {
+            setShowCategoryNav(true);
+          }
         } else {
           setShowCategoryNav(true);
         }
-      } else {
-        setShowCategoryNav(true);
-      }
-      lastScroll = currentScroll;
+        lastScroll = currentScroll;
+        ticking = false;
+      });
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
