@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MessageCircle, Mail, Phone, MapPin, X, Clock, Shield } from 'lucide-react';
+import { MessageCircle, Mail, Phone, MapPin, X, Clock, Shield, Instagram } from 'lucide-react';
 import { WhatsAppConsultModal } from '../components/WhatsAppConsultModal';
 
 export const Contact = () => {
@@ -22,7 +22,7 @@ export const Contact = () => {
             <div className="divider-dark mx-auto mt-6" />
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 mb-10">
+          <div className="grid md:grid-cols-3 gap-6 mb-10">
             <div className="bg-neutral-800/60 border border-neutral-600/40 rounded-2xl p-8 hover:border-neutral-500/50 transition-all duration-300">
               <div className="flex items-center gap-4 mb-5">
                 <div className="w-12 h-12 bg-neutral-700 rounded-xl flex items-center justify-center">
@@ -30,11 +30,11 @@ export const Contact = () => {
                 </div>
                 <div>
                   <h3 className="font-bold text-white text-lg">WhatsApp</h3>
-                  <p className="text-sm text-neutral-500">Respuesta inmediata</p>
+                  <p className="text-sm text-neutral-500">Respuesta rápida</p>
                 </div>
               </div>
               <p className="text-neutral-400 mb-6 leading-relaxed">
-                La forma más rápida de contactarnos. Respondemos en minutos.
+La forma más directa de contactarnos.
               </p>
               <button
                 onClick={() => setShowWhatsAppModal(true)}
@@ -42,6 +42,29 @@ export const Contact = () => {
               >
                 Abrir WhatsApp
               </button>
+            </div>
+
+            <div className="bg-neutral-800/60 border border-neutral-600/40 rounded-2xl p-8 hover:border-neutral-500/50 transition-all duration-300">
+              <div className="flex items-center gap-4 mb-5">
+                <div className="w-12 h-12 bg-neutral-700 rounded-xl flex items-center justify-center">
+                  <Instagram className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-white text-lg">Instagram</h3>
+                  <p className="text-sm text-neutral-500">Sigue contenido</p>
+                </div>
+              </div>
+              <p className="text-neutral-400 mb-6 leading-relaxed">
+                Nuestras novedades y lanzamientos.
+              </p>
+              <a
+                href="https://instagram.com/cbdrex"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-center btn-primary w-full"
+              >
+                Ver Instagram
+              </a>
             </div>
 
             <div className="bg-neutral-800/60 border border-neutral-600/40 rounded-2xl p-8 hover:border-neutral-500/50 transition-all duration-300">
@@ -55,13 +78,14 @@ export const Contact = () => {
                 </div>
               </div>
               <p className="text-neutral-400 mb-6 leading-relaxed">
-                Envíanos un correo y te responderemos lo antes posible.
+                Te responderemos lo antes posible.
               </p>
               <a
-                href="mailto:cbdrexstore@gmail.com" 
-                className="block text-center btn-outline"
+                href="mailto:cbdrexstore@gmail.com"
+                
+                className="block text-center btn-primary w-full"
               >
-                cbdrexstore@gmail.com
+               Escribir Email
               </a>
             </div>
           </div>
@@ -72,7 +96,7 @@ export const Contact = () => {
             <div className="grid md:grid-cols-1 gap-3">
               {[
                 { icon: MapPin, title: 'Entrega', info: 'Venta exclusiva para mayores de 18 años'},
-                { icon: Clock, title: 'Horario', info: 'Lunes a Sábado de 10:00 a 20:00  Domingos cerrados'},
+                { icon: Clock, title: 'Horario', info: 'Lunes-Sábado de 10:00 a 20:00'},
                 { icon: Shield, title: 'Legal', info: 'Todos los productos cumplen con la legislación vigente en España'},
 
               ].map((item) => (
@@ -99,13 +123,24 @@ export const Contact = () => {
             <p className="text-neutral-400 mb-8 max-w-md mx-auto">
               Nuestro equipo está disponible para resolver todas tus preguntas sobre nuestros productos.
             </p>
-            <button
-              onClick={() => setShowWhatsAppModal(true)}
-              className="inline-flex items-center gap-2 bg-white text-neutral-900 px-8 py-3.5 rounded-xl font-semibold hover:bg-neutral-200 transition-all duration-300 hover:scale-105 active:scale-95"
-            >
-              <MessageCircle className="w-5 h-5" />
-              Chatea con nosotros
-            </button>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <button
+                onClick={() => setShowWhatsAppModal(true)}
+                className="inline-flex items-center gap-2 bg-white text-neutral-900 px-8 py-3.5 rounded-xl font-semibold hover:bg-neutral-200 transition-all duration-300 hover:scale-105 active:scale-95"
+              >
+                <MessageCircle className="w-5 h-5" />
+                WhatsApp
+              </button>
+              <a
+                href="https://instagram.com/cbdrex"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 border-2 border-white/30 text-white px-8 py-3.5 rounded-xl font-semibold hover:bg-white/10 transition-all duration-300 hover:scale-105 active:scale-95"
+              >
+                <Instagram className="w-5 h-5" />
+                Instagram
+              </a>
+            </div>
           </div>
 
           <WhatsAppConsultModal

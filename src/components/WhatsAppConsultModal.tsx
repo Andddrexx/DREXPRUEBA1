@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
+import { X, Instagram, MessageCircle } from 'lucide-react';
 import { products as productsData } from '../data/products';
 import { formatProductName } from '../lib/whatsappMessages';
 
 const productOptions = productsData
   .filter(p => p.category === '10-OH-HHC')
-  .map(p => ({ value: p.name, label: formatProductName(p.name) }));
+  .map(p => ({ value: formatProductName(p.name), label: formatProductName(p.name) }));
 
 interface WhatsAppConsultModalProps {
   isOpen: boolean;
@@ -15,19 +15,21 @@ interface WhatsAppConsultModalProps {
 }
 
 export const WhatsAppConsultModal = ({ isOpen, onClose, productName = '' }: WhatsAppConsultModalProps) => {
-  const [product, setProduct] = useState(productName);
+  const [product, setProduct] = useState(productName ? formatProductName(productName) : '');
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
   const [ageConfirmed, setAgeConfirmed] = useState(false);
   const [error, setError] = useState('');
+  const [sendMethod, setSendMethod] = useState<'whatsapp' | 'instagram'>('whatsapp');
 
   useEffect(() => {
     if (isOpen) {
-      setProduct(productName);
+      setProduct(productName ? formatProductName(productName) : '');
       setName('');
       setMessage('');
       setAgeConfirmed(false);
       setError('');
+      setSendMethod('whatsapp');
     }
   }, [isOpen, productName]);
 
@@ -50,10 +52,16 @@ export const WhatsAppConsultModal = ({ isOpen, onClose, productName = '' }: What
       return;
     }
 
-    const whatsappText = `NUEVA CONSULTA\nProducto: ${product.trim()}\nNombre: ${name.trim()}${message.trim() ? `\nMensaje: ${message.trim()}` : ''}`;
+    const consultText = `NUEVA CONSULTA\nProducto: ${product.trim()}\nNombre: ${name.trim()}${message.trim() ? `\nMensaje: ${message.trim()}` : ''}`;
 
-    const encoded = encodeURIComponent(whatsappText);
-    window.open(`https://wa.me/34681872420?text=${encoded}`, '_blank');
+    if (sendMethod === 'whatsapp') {
+      const encoded = encodeURIComponent(consultText);
+      window.open(`https://wa.me/34681872420?text=${encoded}`, '_blank');
+    } else {
+      navigator.clipboard.writeText(consultText).then(() => {
+        window.open('https://instagram.com/cbdrex', '_blank');
+      });
+    }
 
     setProduct('');
     setName('');
@@ -75,7 +83,7 @@ export const WhatsAppConsultModal = ({ isOpen, onClose, productName = '' }: What
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center p-6 border-b border-neutral-600/50">
-          <h3 className="font-display text-lg font-bold text-white">Consulta por WhatsApp</h3>
+          <h3 className="font-display text-lg font-bold text-white">Consúltanos por WhatsApp o Instagram</h3>
           <button
             onClick={onClose}
             className="w-8 h-8 rounded-lg bg-neutral-800 hover:bg-neutral-700 flex items-center justify-center transition-colors"
@@ -152,12 +160,24 @@ export const WhatsAppConsultModal = ({ isOpen, onClose, productName = '' }: What
             </div>
           )}
 
-          <button
-            type="submit"
-            className="w-full btn-primary flex items-center justify-center gap-2 py-4"
-          >
-            Enviar consulta por WhatsApp
-          </button>
+          <div className="flex gap-3">
+            <button
+              type="submit"
+              onClick={() => setSendMethod('whatsapp')}
+              className="flex-1 btn-primary flex items-center justify-center gap-2 py-4"
+            >
+              <MessageCircle className="w-5 h-5" />
+              WhatsApp
+            </button>
+            <button
+              type="submit"
+              onClick={() => setSendMethod('instagram')}
+              className="flex-1 bg-neutral-700 hover:bg-neutral-600 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 border border-neutral-600/50 flex items-center justify-center gap-2"
+            >
+              <Instagram className="w-5 h-5" />
+              Instagram
+            </button>
+          </div>
         </form>
       </div>
     </div>

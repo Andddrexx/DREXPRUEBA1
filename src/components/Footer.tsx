@@ -1,4 +1,4 @@
-import { MessageCircle, Mail, Phone } from 'lucide-react';
+import { MessageCircle, Mail, Instagram, Phone } from 'lucide-react';
 
 export const Footer = () => {
   const scrollToTop = () => {
@@ -32,7 +32,19 @@ Productos premium con diseño, calidad y discreción.            </p>
                 <div className="w-9 h-9 rounded-lg bg-neutral-800 flex items-center justify-center group-hover:bg-neutral-700 transition-colors border border-neutral-600/50">
                   <MessageCircle className="w-4 h-4" />
                 </div>
-                +34 681 872 420
+                WhtasApp
+              </a>
+
+              <a
+                href="https://instagram.com/cbdrex"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 text-sm text-neutral-500 hover:text-white transition-colors duration-200 group"
+              >
+                <div className="w-9 h-9 rounded-lg bg-neutral-800 flex items-center justify-center group-hover:bg-neutral-700 transition-colors border border-neutral-600/50">
+                  <Instagram className="w-4 h-4" />
+                </div>
+                Instagram
               </a>
               <a
                 href="mailto:cbdrexstore@gmail.com"
@@ -41,8 +53,10 @@ Productos premium con diseño, calidad y discreción.            </p>
                 <div className="w-9 h-9 rounded-lg bg-neutral-800 flex items-center justify-center group-hover:bg-neutral-700 transition-colors border border-neutral-600/50">
                   <Mail className="w-4 h-4" />
                 </div>
-                cbdrexstore@gmail.com
+                Email
               </a>
+          
+              
               <div className="flex items-center gap-3 text-sm text-neutral-500">
                 <div className="w-9 h-9 rounded-lg bg-neutral-800 flex items-center justify-center border border-neutral-600/50">
                   <Phone className="w-4 h-4" />

@@ -7,9 +7,9 @@ export const generateOrderId = () => {
 
 export const formatProductName = (name: string) => {
   if (name.includes('Rollz')) {
-    const match = name.match(/10-OH-HHC\s+(.+?)\s+(\d+ml)\s*–\s*Rollz/i);
+    const match = name.match(/10-OH-HHC\s+(.+?)\s+\d+ml\s*–\s*Rollz/i);
     if (match) {
-      return `Rollz ${match[2]} ${match[1].trim()}`;
+      return `Vape ${match[1].trim()}`;
     }
   }
   return name;

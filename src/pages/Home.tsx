@@ -114,8 +114,8 @@ export const Home = () => {
               onClick={() => handleWhatsAppConsult()}
               className="inline-flex items-center gap-2 bg-white text-neutral-900 px-8 py-3.5 rounded-xl font-semibold hover:bg-neutral-200 transition-all duration-300 hover:scale-105 active:scale-95"
             >
-              <MessageCircle className="w-5 h-5" />
-              Consulta por WhatsApp
+              Consúltanos tus dudas
+            
             </button>
             <button
               onClick={() => scrollToSection('vapers')}
