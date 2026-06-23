@@ -1,14 +1,6 @@
-import { useState } from 'react';
-import { MessageCircle, Mail, Phone, MapPin, X, Clock, Shield, Instagram } from 'lucide-react';
-import { WhatsAppConsultModal } from '../components/WhatsAppConsultModal';
+import { MessageCircle, Mail, MapPin, Clock, Shield, Instagram } from 'lucide-react';
 
 export const Contact = () => {
-  const [showChatInfo, setShowChatInfo] = useState(false);
-  const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
-
-  const whatsappMessage = encodeURIComponent(
-    'Hola\n Gracias por contactar con CBDREX.\n Este servicio es exclusivo para mayores de 18 años y productos de cannabis legal (CBD / THC).\n Indica:\n 1. Producto que te interesa\n 2. Cantidad\n 3. Confirmación de que eres mayor de edad\n Te responderemos lo antes posible.'
-  );
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-neutral-950 via-neutral-700 to-neutral-500 pt-28 pb-16">
@@ -36,12 +28,14 @@ export const Contact = () => {
               <p className="text-neutral-400 mb-6 leading-relaxed">
 La forma más directa de contactarnos.
               </p>
-              <button
-                onClick={() => setShowWhatsAppModal(true)}
+              <a
+                href="https://wa.me/34681872420"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="block text-center btn-primary w-full"
               >
                 Abrir WhatsApp
-              </button>
+              </a>
             </div>
 
             <div className="bg-neutral-800/60 border border-neutral-600/40 rounded-2xl p-8 hover:border-neutral-500/50 transition-all duration-300">
@@ -113,40 +107,7 @@ La forma más directa de contactarnos.
               ))}
             </div>
 
-            <div className=""> 
-        
-            </div>
           </div>
-
-          <div className="bg-gradient-to-br from-neutral-800 to-neutral-700 text-white rounded-3xl p-10 text-center border border-neutral-600/40">
-            <h3 className="font-display text-3xl font-bold mb-3">Tienes dudas?</h3>
-            <p className="text-neutral-400 mb-8 max-w-md mx-auto">
-              Nuestro equipo está disponible para resolver todas tus preguntas sobre nuestros productos.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <button
-                onClick={() => setShowWhatsAppModal(true)}
-                className="inline-flex items-center gap-2 bg-white text-neutral-900 px-8 py-3.5 rounded-xl font-semibold hover:bg-neutral-200 transition-all duration-300 hover:scale-105 active:scale-95"
-              >
-                <MessageCircle className="w-5 h-5" />
-                WhatsApp
-              </button>
-              <a
-                href="https://instagram.com/cbdrex"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 border-2 border-white/30 text-white px-8 py-3.5 rounded-xl font-semibold hover:bg-white/10 transition-all duration-300 hover:scale-105 active:scale-95"
-              >
-                <Instagram className="w-5 h-5" />
-                Instagram
-              </a>
-            </div>
-          </div>
-
-          <WhatsAppConsultModal
-            isOpen={showWhatsAppModal}
-            onClose={() => setShowWhatsAppModal(false)}
-          />
         </div>
       </div>
     </div>
