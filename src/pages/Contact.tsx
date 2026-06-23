@@ -68,7 +68,8 @@ La forma más directa de contactarnos.
                 </div>
                 <div>
                   <h3 className="font-bold text-white text-lg">Email</h3>
-                  <p className="text-sm text-neutral-500">Respuesta en 24h</p>
+                  <p className="text-sm text-neutral-500">Atención personalizada
+</p>
                 </div>
               </div>
               <p className="text-neutral-400 mb-6 leading-relaxed">
@@ -90,7 +91,7 @@ La forma más directa de contactarnos.
             <div className="grid md:grid-cols-1 gap-3">
               {[
                 { icon: MapPin, title: 'Entrega', info: 'Venta exclusiva para mayores de 18 años'},
-                { icon: Clock, title: 'Horario', info: 'Lunes-Sábado de 10:00 a 20:00'},
+                { icon: Clock, title: 'Horario', info: 'De Lunes a Sábado de 10:00 a 20:00'},
                 { icon: Shield, title: 'Legal', info: 'Todos los productos cumplen con la legislación vigente en España'},
 
               ].map((item) => (
